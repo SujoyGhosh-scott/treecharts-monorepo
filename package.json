@@ -1,0 +1,22 @@
+{
+  "name": "treecharts-monorepo",
+  "version": "0.0.0",
+  "main": "index.js",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "A tree chart lib",
+  "devDependencies": {
+    "turbo": "^2.5.2"
+  }
+}

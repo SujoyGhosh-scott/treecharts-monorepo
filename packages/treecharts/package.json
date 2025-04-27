@@ -1,0 +1,29 @@
+{
+  "name": "treecharts",
+  "version": "0.1.0",
+  "description": "Tree chart visualization library",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "dev": "vite dev",
+    "dev:watch": "tsup src/index.ts --format cjs,esm --watch --dts & vite dev",
+    "lint": "eslint src/**/*.ts",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "keywords": [
+    "tree",
+    "chart",
+    "visualization",
+    "hierarchy"
+  ],
+  "devDependencies": {
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.4",
+    "vite": "^6.3.3"
+  }
+}
