@@ -170,7 +170,14 @@ npm install
 npm run dev:watch
 ```
 
-This will start a server with live reloading and display examples of all chart types.
+This will start a Vite development server at **http://localhost:5173/** with live reloading and display interactive examples of all chart types.
+
+**Important**: Access the development page through `http://localhost:5173/` rather than opening the HTML file directly to ensure proper module loading.
+
+Alternative commands:
+
+- `npm run dev`: Start Vite server only
+- `npm run build`: Build the library for production
 
 ## License
 

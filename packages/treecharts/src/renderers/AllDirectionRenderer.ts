@@ -12,8 +12,11 @@ import { ALL_DIRECTION_DIMENSIONS, SVG_NS } from "../constants";
  * AllDirectionRenderer creates a radial tree layout where nodes spread out in all directions
  */
 export class AllDirectionRenderer extends BaseRenderer {
+  private centerX: number;
+  private centerY: number;
+
   /**
-   * Override constructor to use fixed dimensions for all-direction layout
+   * Override constructor to calculate dynamic dimensions for all-direction layout
    */
   constructor(formattedTree: any, options = {}) {
     super(formattedTree, {
@@ -22,12 +25,73 @@ export class AllDirectionRenderer extends BaseRenderer {
       verticalGap: ALL_DIRECTION_DIMENSIONS.verticalGap,
     });
 
-    // Override SVG with fixed dimensions
+    // Calculate dynamic dimensions based on tree depth and breadth
+    const { svgWidth, svgHeight } = this.calculateDynamicDimensions();
+    this.centerX = svgWidth / 2;
+    this.centerY = svgHeight / 2;
+
+    // Override SVG with calculated dimensions
     this.svg = createSvgElement(
-      ALL_DIRECTION_DIMENSIONS.svgWidth,
-      ALL_DIRECTION_DIMENSIONS.svgHeight,
-      `0 0 ${ALL_DIRECTION_DIMENSIONS.svgWidth} ${ALL_DIRECTION_DIMENSIONS.svgHeight}`
+      svgWidth,
+      svgHeight,
+      `0 0 ${svgWidth} ${svgHeight}`
     );
+  }
+
+  /**
+   * Calculate dynamic SVG dimensions based on tree structure
+   */
+  private calculateDynamicDimensions(): {
+    svgWidth: number;
+    svgHeight: number;
+  } {
+    const treeDepth = this.formattedTree.length;
+    const { horizontalGap, verticalGap, boxWidth, boxHeight } = this.options;
+
+    // Calculate the actual maximum distances we'll use
+    const firstLevelHorizontalDistance = Math.min(
+      140,
+      ALL_DIRECTION_DIMENSIONS.horizontalGap
+    );
+    const firstLevelVerticalDistance = Math.min(
+      120,
+      ALL_DIRECTION_DIMENSIONS.verticalGap
+    );
+    const deeperLevelHorizontalDistance = Math.min(
+      110,
+      ALL_DIRECTION_DIMENSIONS.horizontalGap
+    );
+    const deeperLevelVerticalDistance = Math.min(
+      90,
+      ALL_DIRECTION_DIMENSIONS.verticalGap
+    );
+
+    // Calculate maximum extent from center in any direction
+    let maxHorizontalExtent = firstLevelHorizontalDistance; // First level horizontal
+    let maxVerticalExtent = firstLevelVerticalDistance; // First level vertical
+
+    // Add distances for deeper levels
+    if (treeDepth > 2) {
+      maxHorizontalExtent += (treeDepth - 2) * deeperLevelHorizontalDistance;
+      maxVerticalExtent += (treeDepth - 2) * deeperLevelVerticalDistance;
+    }
+
+    // Add half the node size to account for node dimensions
+    maxHorizontalExtent += boxWidth / 2;
+    maxVerticalExtent += boxHeight / 2;
+
+    // Add generous padding to ensure no clipping
+    const padding = 50;
+
+    // Calculate required canvas size
+    const requiredWidth = maxHorizontalExtent * 2 + padding;
+    const requiredHeight = maxVerticalExtent * 2 + padding;
+
+    // Use the larger of the calculated sizes to ensure everything fits
+    const svgWidth = Math.max(400, requiredWidth);
+    const svgHeight = Math.max(400, requiredHeight);
+
+    return { svgWidth, svgHeight };
   }
 
   /**
@@ -44,18 +108,14 @@ export class AllDirectionRenderer extends BaseRenderer {
       fontColor,
     } = this.options;
 
-    // Center coordinates
-    const centerX = ALL_DIRECTION_DIMENSIONS.svgWidth / 2;
-    const centerY = ALL_DIRECTION_DIMENSIONS.svgHeight / 2;
-
     // Group nodes by their parent
     const parentToChildrenMap = createParentChildMap(this.formattedTree);
 
     // Process root node (level 0) first
     if (this.formattedTree.length > 0 && this.formattedTree[0].length > 0) {
       const rootNode = this.formattedTree[0][0];
-      const rootX = centerX - boxWidth / 2;
-      const rootY = centerY - boxHeight / 2;
+      const rootX = this.centerX - boxWidth / 2;
+      const rootY = this.centerY - boxHeight / 2;
 
       // Create root node
       const rect = document.createElementNS(SVG_NS, "rect");
@@ -73,8 +133,8 @@ export class AllDirectionRenderer extends BaseRenderer {
       this.svg.appendChild(rect);
 
       const text = document.createElementNS(SVG_NS, "text");
-      text.setAttribute("x", centerX.toString());
-      text.setAttribute("y", (centerY + 5).toString());
+      text.setAttribute("x", this.centerX.toString());
+      text.setAttribute("y", (this.centerY + 5).toString());
       text.setAttribute("text-anchor", "middle");
       text.setAttribute("font-size", fontSize.toString());
       text.setAttribute("fill", fontColor);
@@ -82,8 +142,8 @@ export class AllDirectionRenderer extends BaseRenderer {
       this.svg.appendChild(text);
 
       this.nodeMap[`0-0`] = {
-        centerX: centerX,
-        centerY: centerY,
+        centerX: this.centerX,
+        centerY: this.centerY,
         x: rootX,
         y: rootY,
         width: boxWidth,
@@ -98,21 +158,21 @@ export class AllDirectionRenderer extends BaseRenderer {
       const childCount = firstLevelChildren.length;
 
       // Distribute first level children in a circle
-      firstLevelChildren.forEach((childInfo, index) => {
+      firstLevelChildren.forEach((childInfo: any, index: number) => {
         // Calculate angle (in radians)
         const angleStep = (2 * Math.PI) / childCount;
         const angle = index * angleStep;
 
-        // Determine which spacing to use based on angle
+        // Determine which spacing to use based on angle - balanced distances
         const isMoreHorizontal =
           Math.abs(Math.cos(angle)) > Math.abs(Math.sin(angle));
         const distance = isMoreHorizontal
-          ? ALL_DIRECTION_DIMENSIONS.horizontalGap
-          : ALL_DIRECTION_DIMENSIONS.verticalGap;
+          ? Math.min(140, ALL_DIRECTION_DIMENSIONS.horizontalGap) // Increased horizontal distance
+          : Math.min(120, ALL_DIRECTION_DIMENSIONS.verticalGap); // Increased vertical distance
 
         // Calculate position
-        const nodeX = centerX + Math.cos(angle) * distance - boxWidth / 2;
-        const nodeY = centerY + Math.sin(angle) * distance - boxHeight / 2;
+        const nodeX = this.centerX + Math.cos(angle) * distance - boxWidth / 2;
+        const nodeY = this.centerY + Math.sin(angle) * distance - boxHeight / 2;
 
         // Create node
         const rect = document.createElementNS(SVG_NS, "rect");
@@ -164,7 +224,7 @@ export class AllDirectionRenderer extends BaseRenderer {
     ) {
       const level = this.formattedTree[levelIndex];
 
-      level.forEach((node, nodeIndex) => {
+      level.forEach((node: any, nodeIndex: number) => {
         if (node.parent) {
           const parent = JSON.parse(node.parent);
           const parentKey = getNodeKey(parent.level, parent.position);
@@ -180,7 +240,7 @@ export class AllDirectionRenderer extends BaseRenderer {
             const siblings = parentToChildrenMap[parentJsonStr] || [];
             const siblingCount = siblings.length;
             const siblingIndex = siblings.findIndex(
-              (s) => s.level === levelIndex && s.position === nodeIndex
+              (s: any) => s.level === levelIndex && s.position === nodeIndex
             );
 
             // Calculate child angle with fan effect for siblings
@@ -193,12 +253,12 @@ export class AllDirectionRenderer extends BaseRenderer {
               angle = parentAngle - fanAngle / 2 + siblingIndex * fanStep;
             }
 
-            // Determine distance based on direction
+            // Determine distance based on direction - balanced distances for better spacing
             const isMoreHorizontal =
               Math.abs(Math.cos(angle)) > Math.abs(Math.sin(angle));
             const distance = isMoreHorizontal
-              ? ALL_DIRECTION_DIMENSIONS.horizontalGap
-              : ALL_DIRECTION_DIMENSIONS.verticalGap;
+              ? Math.min(110, ALL_DIRECTION_DIMENSIONS.horizontalGap) // Increased horizontal distance
+              : Math.min(90, ALL_DIRECTION_DIMENSIONS.verticalGap); // Increased vertical distance
 
             // Calculate position
             const dirX = Math.cos(angle);
@@ -249,16 +309,16 @@ export class AllDirectionRenderer extends BaseRenderer {
   }
 
   /**
-   * Draw edges between nodes for all-direction tree
+   * Draw edges between nodes for all-direction tree with improved edge connection
    */
   protected drawConnections(): void {
     const { lineColor } = this.options;
 
-    this.formattedTree.forEach((level, levelIndex) => {
+    this.formattedTree.forEach((level: any, levelIndex: number) => {
       // Skip the root level (level 0)
       if (levelIndex === 0) return;
 
-      level.forEach((node, nodeIndex) => {
+      level.forEach((node: any, nodeIndex: number) => {
         if (node.parent) {
           const parent = JSON.parse(node.parent);
           const childKey = getNodeKey(levelIndex, nodeIndex);
@@ -281,51 +341,65 @@ export class AllDirectionRenderer extends BaseRenderer {
             const normalizedVectorX = vectorX / length;
             const normalizedVectorY = vectorY / length;
 
-            // Find intersection points with rectangles
+            // Find intersection points with rectangles - improved calculation
             let parentConnectX, parentConnectY, childConnectX, childConnectY;
             const boxWidth = this.options.boxWidth;
             const boxHeight = this.options.boxHeight;
 
-            // For parent node
-            if (Math.abs(normalizedVectorX) > Math.abs(normalizedVectorY)) {
-              // Horizontal predominant direction
+            // Calculate connection points on the edges of rectangles
+            // For parent node - find where the line intersects the rectangle edge
+            const parentHalfWidth = boxWidth / 2;
+            const parentHalfHeight = boxHeight / 2;
+
+            // Check which edge the line intersects
+            const parentTx =
+              Math.abs(normalizedVectorX) < 1e-10
+                ? 1e10
+                : parentHalfWidth / Math.abs(normalizedVectorX);
+            const parentTy =
+              Math.abs(normalizedVectorY) < 1e-10
+                ? 1e10
+                : parentHalfHeight / Math.abs(normalizedVectorY);
+
+            if (parentTx < parentTy) {
+              // Intersects vertical edge
               parentConnectX =
                 parentCenterX +
-                (normalizedVectorX > 0 ? boxWidth / 2 : -boxWidth / 2);
-              parentConnectY =
-                parentCenterY +
-                (normalizedVectorY * (boxWidth / 2)) /
-                  Math.abs(normalizedVectorX);
+                (normalizedVectorX > 0 ? parentHalfWidth : -parentHalfWidth);
+              parentConnectY = parentCenterY + normalizedVectorY * parentTx;
             } else {
-              // Vertical predominant direction
-              parentConnectX =
-                parentCenterX +
-                (normalizedVectorX * (boxHeight / 2)) /
-                  Math.abs(normalizedVectorY);
+              // Intersects horizontal edge
+              parentConnectX = parentCenterX + normalizedVectorX * parentTy;
               parentConnectY =
                 parentCenterY +
-                (normalizedVectorY > 0 ? boxHeight / 2 : -boxHeight / 2);
+                (normalizedVectorY > 0 ? parentHalfHeight : -parentHalfHeight);
             }
 
-            // For child node
-            if (Math.abs(normalizedVectorX) > Math.abs(normalizedVectorY)) {
-              // Horizontal predominant direction
+            // For child node - find where the line intersects the rectangle edge
+            const childHalfWidth = boxWidth / 2;
+            const childHalfHeight = boxHeight / 2;
+
+            const childTx =
+              Math.abs(normalizedVectorX) < 1e-10
+                ? 1e10
+                : childHalfWidth / Math.abs(normalizedVectorX);
+            const childTy =
+              Math.abs(normalizedVectorY) < 1e-10
+                ? 1e10
+                : childHalfHeight / Math.abs(normalizedVectorY);
+
+            if (childTx < childTy) {
+              // Intersects vertical edge
               childConnectX =
                 childCenterX +
-                (normalizedVectorX < 0 ? boxWidth / 2 : -boxWidth / 2);
-              childConnectY =
-                childCenterY +
-                (normalizedVectorY * (boxWidth / 2)) /
-                  Math.abs(normalizedVectorX);
+                (normalizedVectorX < 0 ? childHalfWidth : -childHalfWidth);
+              childConnectY = childCenterY - normalizedVectorY * childTx;
             } else {
-              // Vertical predominant direction
-              childConnectX =
-                childCenterX +
-                (normalizedVectorX * (boxHeight / 2)) /
-                  Math.abs(normalizedVectorY);
+              // Intersects horizontal edge
+              childConnectX = childCenterX - normalizedVectorX * childTy;
               childConnectY =
                 childCenterY +
-                (normalizedVectorY < 0 ? boxHeight / 2 : -boxHeight / 2);
+                (normalizedVectorY < 0 ? childHalfHeight : -childHalfHeight);
             }
 
             // Draw the connection

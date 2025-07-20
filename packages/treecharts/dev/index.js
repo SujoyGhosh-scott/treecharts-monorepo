@@ -7,7 +7,13 @@ const sampleTree = {
     {
       value: "B",
       child: [
-        { value: "D", child: [] },
+        {
+          value: "D",
+          child: [
+            { value: "K", child: [] },
+            { value: "L", child: [] },
+          ],
+        },
         { value: "E", child: [] },
       ],
     },
@@ -21,7 +27,10 @@ const sampleTree = {
     },
     {
       value: "I",
-      child: [],
+      child: [
+        { value: "M", child: [] },
+        { value: "N", child: [] },
+      ],
     },
     {
       value: "J",

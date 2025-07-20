@@ -60,7 +60,17 @@ cd packages/treecharts
 npm run dev:watch
 ```
 
-This will start a development server with hot-reloading and open a browser window with example charts.
+This will start a development server with hot-reloading. The server will be available at:
+
+**🌐 http://localhost:5173/**
+
+**Important**: Make sure to access the development page through the Vite server URL (`http://localhost:5173/`) rather than opening the HTML file directly in your browser. Opening the file directly (`file://`) will prevent the JavaScript modules from loading properly due to CORS restrictions.
+
+The development page includes:
+
+- Interactive controls for testing different chart configurations
+- Live examples of all four visualization types
+- Hot-reloading when you make changes to the source code
 
 ## Core Features
 
