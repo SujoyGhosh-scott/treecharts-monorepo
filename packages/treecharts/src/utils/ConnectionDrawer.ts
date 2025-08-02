@@ -1,32 +1,5 @@
 import { SVG_NS } from "../constants";
-
-export interface ConnectionOptions {
-  // Connection type
-  type?: "direct" | "right-angle" | "curved" | "custom";
-
-  // Line style options
-  color?: string;
-  width?: number;
-  dasharray?: string;
-  opacity?: number;
-
-  // Arrow/direction options
-  showArrows?: boolean;
-  arrowDirection?: "source-to-target" | "target-to-source" | "both";
-  arrowSize?: number;
-  arrowColor?: string;
-
-  // Curve options (for curved connections)
-  curveRadius?: number;
-
-  // Custom path options
-  customPath?: string;
-}
-
-export interface Point {
-  x: number;
-  y: number;
-}
+import { ConnectionOptions, Point } from "../types";
 
 /**
  * ConnectionDrawer class for drawing connections between tree nodes
@@ -46,6 +19,10 @@ export class ConnectionDrawer {
     arrowColor: "black",
     curveRadius: 20,
     customPath: "",
+    edgeText: "",
+    textSize: 12,
+    textColor: "black",
+    textBackgroundColor: "white",
   };
 
   constructor(svg: SVGSVGElement) {
@@ -101,6 +78,11 @@ export class ConnectionDrawer {
 
     if (finalOptions.showArrows) {
       this.addArrow(pathElement, fromPoint, toPoint, finalOptions);
+    }
+
+    // Add edge text if provided
+    if (finalOptions.edgeText && finalOptions.edgeText.trim()) {
+      this.addEdgeText(pathElement, fromPoint, toPoint, finalOptions);
     }
 
     this.svg.appendChild(pathElement);
@@ -302,5 +284,53 @@ export class ConnectionDrawer {
     arrow.setAttribute("fill", arrowColor);
     marker.appendChild(arrow);
     return marker;
+  }
+
+  private addEdgeText(
+    pathElement: SVGElement,
+    fromPoint: Point,
+    toPoint: Point,
+    options: ConnectionOptions
+  ): void {
+    const textElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "text"
+    );
+
+    // Calculate midpoint of the connection
+    const midX = (fromPoint.x + toPoint.x) / 2;
+    const midY = (fromPoint.y + toPoint.y) / 2;
+
+    // Set text position
+    textElement.setAttribute("x", midX.toString());
+    textElement.setAttribute("y", midY.toString());
+
+    // Set text content
+    textElement.textContent = options.edgeText || "";
+
+    // Set text styles
+    textElement.setAttribute("font-size", (options.textSize || 12).toString());
+    textElement.setAttribute("fill", options.textColor || "#000000");
+    textElement.setAttribute("text-anchor", "middle");
+    textElement.setAttribute("dominant-baseline", "central");
+
+    // Add background rectangle if background color is specified
+    if (options.textBackgroundColor) {
+      const bbox = textElement.getBBox();
+      const rectElement = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "rect"
+      );
+      rectElement.setAttribute("x", (midX - bbox.width / 2 - 2).toString());
+      rectElement.setAttribute("y", (midY - bbox.height / 2 - 1).toString());
+      rectElement.setAttribute("width", (bbox.width + 4).toString());
+      rectElement.setAttribute("height", (bbox.height + 2).toString());
+      rectElement.setAttribute("fill", options.textBackgroundColor);
+      rectElement.setAttribute("rx", "2");
+
+      this.svg.appendChild(rectElement);
+    }
+
+    this.svg.appendChild(textElement);
   }
 }

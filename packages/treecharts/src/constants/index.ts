@@ -28,6 +28,10 @@ export const DEFAULT_OPTIONS = {
   arrowDirection: "source-to-target",
   arrowSize: 6,
   curveRadius: 20,
+  // Edge text styling defaults
+  textSize: 12,
+  textColor: "#666666",
+  textBackgroundColor: undefined,
 };
 
 /**

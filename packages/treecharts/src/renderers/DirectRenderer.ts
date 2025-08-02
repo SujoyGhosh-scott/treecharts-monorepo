@@ -48,6 +48,10 @@ export class DirectRenderer extends BaseRenderer {
                 showArrows: this.options.showArrows,
                 arrowDirection: this.options.arrowDirection,
                 arrowSize: this.options.arrowSize,
+                edgeText: node.edgeText || undefined,
+                textSize: this.options.textSize,
+                textColor: this.options.textColor,
+                textBackgroundColor: this.options.textBackgroundColor,
               }
             );
           }

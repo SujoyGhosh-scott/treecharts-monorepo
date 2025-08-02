@@ -49,6 +49,10 @@ export class CurvedRenderer extends BaseRenderer {
                 arrowDirection: this.options.arrowDirection,
                 arrowSize: this.options.arrowSize,
                 curveRadius: this.options.curveRadius,
+                edgeText: node.edgeText || undefined,
+                textSize: this.options.textSize,
+                textColor: this.options.textColor,
+                textBackgroundColor: this.options.textBackgroundColor,
               }
             );
           }

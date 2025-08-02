@@ -6,42 +6,50 @@ const sampleTree = {
   child: [
     {
       value: "B",
+      edgeText: "edge text 1",
       child: [
         {
           value: "D",
+          edgeText: "to D",
           child: [
-            { value: "K", child: [] },
-            { value: "L", child: [] },
+            { value: "K", edgeText: "to K", child: [] },
+            { value: "L", edgeText: "to L", child: [] },
           ],
         },
-        { value: "E", child: [] },
+        { value: "E", edgeText: "to E", child: [] },
       ],
     },
     {
       value: "C",
-      child: [{ value: "F", child: [] }],
+      edgeText: "edge text 2",
+      child: [{ value: "F", edgeText: "to F", child: [] }],
     },
     {
       value: "G",
-      child: [{ value: "H", child: [] }],
+      edgeText: "edge text 3",
+      child: [{ value: "H", edgeText: "to H", child: [] }],
     },
     {
       value: "I",
+      edgeText: "edge text 4",
       child: [
-        { value: "M", child: [] },
-        { value: "N", child: [] },
+        { value: "M", edgeText: "to M", child: [] },
+        { value: "N", edgeText: "to N", child: [] },
       ],
     },
     {
       value: "J",
+      edgeText: "edge text 5",
       child: [],
     },
     {
       value: "K",
+      edgeText: "edge text 6",
       child: [],
     },
     {
       value: "L",
+      edgeText: "edge text 7",
       child: [],
     },
   ],
@@ -51,21 +59,29 @@ const sampleTree = {
 const directChart = new TreeChart("direct-container", {
   type: "direct",
   nodeColor: "#87CEEB",
+  textColor: "#333333",
+  textSize: 11,
 });
 
 const rightAngleChart = new TreeChart("right-angle-container", {
   type: "right-angle",
   nodeColor: "#87CEEB",
+  textColor: "#333333",
+  textSize: 11,
 });
 
 const curvedChart = new TreeChart("curved-container", {
   type: "curved",
   nodeColor: "#87CEEB",
+  textColor: "#333333",
+  textSize: 11,
 });
 
 const allDirectionChart = new TreeChart("all-direction-container", {
   type: "all-direction",
   nodeColor: "#87CEEB",
+  textColor: "#333333",
+  textSize: 11,
 });
 
 // Initialize all charts

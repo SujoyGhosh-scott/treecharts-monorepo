@@ -56,6 +56,10 @@ export class RightAngleRenderer extends BaseRenderer {
               showArrows: this.options.showArrows,
               arrowDirection: this.options.arrowDirection,
               arrowSize: this.options.arrowSize,
+              edgeText: childNode.node?.edgeText || undefined,
+              textSize: this.options.textSize,
+              textColor: this.options.textColor,
+              textBackgroundColor: this.options.textBackgroundColor,
             }
           );
         }
@@ -175,6 +179,10 @@ export class RightAngleRenderer extends BaseRenderer {
                 color: this.options.lineColor,
                 width: this.options.lineWidth,
                 dasharray: this.options.lineDasharray,
+                edgeText: childNode.node?.edgeText || undefined,
+                textSize: this.options.textSize,
+                textColor: this.options.textColor,
+                textBackgroundColor: this.options.textBackgroundColor,
               }
             );
           }
