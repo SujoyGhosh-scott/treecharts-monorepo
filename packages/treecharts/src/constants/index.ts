@@ -20,6 +20,14 @@ export const DEFAULT_OPTIONS = {
   fontSize: 14,
   fontColor: "black",
   type: "direct",
+  // Connection styling defaults
+  connectionType: "direct",
+  lineWidth: 1,
+  lineDasharray: "",
+  showArrows: false,
+  arrowDirection: "source-to-target",
+  arrowSize: 6,
+  curveRadius: 20,
 };
 
 /**

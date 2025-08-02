@@ -1,6 +1,7 @@
 import { FormattedTree, TreeChartOptions, NodeMap } from "../types";
 import { DEFAULT_OPTIONS, SVG_NS } from "../constants";
 import { createSvgElement, createNode, getNodeKey } from "../utils/svgHelpers";
+import { ConnectionDrawer } from "../utils/ConnectionDrawer";
 
 /**
  * BaseRenderer class that all specific renderers extend
@@ -11,6 +12,7 @@ export abstract class BaseRenderer {
   protected options: Required<TreeChartOptions>;
   protected nodeMap: NodeMap = {};
   protected svg: SVGSVGElement;
+  protected connectionDrawer: ConnectionDrawer;
 
   /**
    * Constructor for BaseRenderer
@@ -31,6 +33,9 @@ export abstract class BaseRenderer {
     const svgWidth = this.calculateSvgWidth();
     const svgHeight = this.calculateSvgHeight();
     this.svg = createSvgElement(svgWidth, svgHeight);
+
+    // Initialize connection drawer
+    this.connectionDrawer = new ConnectionDrawer(this.svg);
   }
 
   /**

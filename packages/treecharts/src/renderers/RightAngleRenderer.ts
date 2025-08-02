@@ -1,5 +1,5 @@
 import { BaseRenderer } from "./BaseRenderer";
-import { createLine, getNodeKey } from "../utils/svgHelpers";
+import { getNodeKey } from "../utils/svgHelpers";
 import { createParentChildMap as buildParentChildMap } from "../utils/treeFormatter";
 
 /**
@@ -10,7 +10,7 @@ export class RightAngleRenderer extends BaseRenderer {
    * Draw right-angle connections between parent and child nodes
    */
   protected drawConnections(): void {
-    const { lineColor, horizontalAlign, verticalGap, boxHeight } = this.options;
+    const { horizontalAlign, verticalGap } = this.options;
 
     // Build a map of parent to children
     const parentChildPair = buildParentChildMap(this.formattedTree);
@@ -45,7 +45,19 @@ export class RightAngleRenderer extends BaseRenderer {
             y2 = childNode.topY!;
           }
 
-          createLine(this.svg, x1, y1, x2, y2, lineColor);
+          this.connectionDrawer.drawConnection(
+            { x: x1, y: y1 },
+            { x: x2, y: y2 },
+            {
+              type: "direct",
+              color: this.options.lineColor,
+              width: this.options.lineWidth,
+              dasharray: this.options.lineDasharray,
+              showArrows: this.options.showArrows,
+              arrowDirection: this.options.arrowDirection,
+              arrowSize: this.options.arrowSize,
+            }
+          );
         }
       } else {
         // Multiple children - draw right angle connections
@@ -72,13 +84,15 @@ export class RightAngleRenderer extends BaseRenderer {
         }
 
         // Draw horizontal connector line
-        createLine(
-          this.svg,
-          leftmostChild.centerX!,
-          horizontalY,
-          rightmostChild.centerX!,
-          horizontalY,
-          lineColor
+        this.connectionDrawer.drawConnection(
+          { x: leftmostChild.centerX!, y: horizontalY },
+          { x: rightmostChild.centerX!, y: horizontalY },
+          {
+            type: "direct",
+            color: this.options.lineColor,
+            width: this.options.lineWidth,
+            dasharray: this.options.lineDasharray,
+          }
         );
 
         // Draw vertical line from parent to horizontal line
@@ -89,14 +103,56 @@ export class RightAngleRenderer extends BaseRenderer {
           parentY = parentNode.bottomY!;
         }
 
-        createLine(
-          this.svg,
-          parentNode.centerX!,
-          parentY,
-          parentNode.centerX!,
-          horizontalY,
-          lineColor
+        this.connectionDrawer.drawConnection(
+          { x: parentNode.centerX!, y: parentY },
+          { x: parentNode.centerX!, y: horizontalY },
+          {
+            type: "direct",
+            color: this.options.lineColor,
+            width: this.options.lineWidth,
+            dasharray: this.options.lineDasharray,
+            showArrows: this.options.showArrows,
+            arrowDirection: this.options.arrowDirection,
+            arrowSize: this.options.arrowSize,
+          }
         );
+
+        // Extend horizontal line to parent's vertical line if needed
+        const parentX = parentNode.centerX!;
+        if (
+          parentX < leftmostChild.centerX! ||
+          parentX > rightmostChild.centerX!
+        ) {
+          // Parent is outside the range of children, extend horizontal line
+          const extendToX = Math.min(parentX, leftmostChild.centerX!);
+          const extendFromX = Math.max(parentX, rightmostChild.centerX!);
+
+          if (parentX < leftmostChild.centerX!) {
+            // Extend left
+            this.connectionDrawer.drawConnection(
+              { x: parentX, y: horizontalY },
+              { x: leftmostChild.centerX!, y: horizontalY },
+              {
+                type: "direct",
+                color: this.options.lineColor,
+                width: this.options.lineWidth,
+                dasharray: this.options.lineDasharray,
+              }
+            );
+          } else if (parentX > rightmostChild.centerX!) {
+            // Extend right
+            this.connectionDrawer.drawConnection(
+              { x: rightmostChild.centerX!, y: horizontalY },
+              { x: parentX, y: horizontalY },
+              {
+                type: "direct",
+                color: this.options.lineColor,
+                width: this.options.lineWidth,
+                dasharray: this.options.lineDasharray,
+              }
+            );
+          }
+        }
 
         // Draw vertical lines from horizontal line to each child
         children.forEach((child) => {
@@ -111,13 +167,15 @@ export class RightAngleRenderer extends BaseRenderer {
               childY = childNode.topY!;
             }
 
-            createLine(
-              this.svg,
-              childNode.centerX!,
-              horizontalY,
-              childNode.centerX!,
-              childY,
-              lineColor
+            this.connectionDrawer.drawConnection(
+              { x: childNode.centerX!, y: horizontalY },
+              { x: childNode.centerX!, y: childY },
+              {
+                type: "direct",
+                color: this.options.lineColor,
+                width: this.options.lineWidth,
+                dasharray: this.options.lineDasharray,
+              }
             );
           }
         });

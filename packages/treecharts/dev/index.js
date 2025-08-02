@@ -84,6 +84,11 @@ const lineColorInput = document.getElementById("line-color");
 const boxWidthInput = document.getElementById("box-width");
 const boxHeightInput = document.getElementById("box-height");
 const borderRadiusInput = document.getElementById("border-radius");
+const lineWidthInput = document.getElementById("line-width");
+const lineStyleSelect = document.getElementById("line-style");
+const showArrowsInput = document.getElementById("show-arrows");
+const arrowDirectionSelect = document.getElementById("arrow-direction");
+const arrowSizeInput = document.getElementById("arrow-size");
 const updateButton = document.getElementById("update-chart");
 const resetButton = document.getElementById("reset-options");
 
@@ -101,6 +106,11 @@ updateButton.addEventListener("click", () => {
     boxWidth: parseInt(boxWidthInput.value),
     boxHeight: parseInt(boxHeightInput.value),
     nodeBorderRadius: parseInt(borderRadiusInput.value),
+    lineWidth: parseInt(lineWidthInput.value),
+    lineDasharray: lineStyleSelect.value,
+    showArrows: showArrowsInput.checked,
+    arrowDirection: arrowDirectionSelect.value,
+    arrowSize: parseInt(arrowSizeInput.value),
   };
 
   // Update and render the appropriate chart
@@ -133,58 +143,42 @@ resetButton.addEventListener("click", () => {
   boxWidthInput.value = "80";
   boxHeightInput.value = "40";
   borderRadiusInput.value = "0";
+  lineWidthInput.value = "1";
+  lineStyleSelect.value = "";
+  showArrowsInput.checked = false;
+  arrowDirectionSelect.value = "source-to-target";
+  arrowSizeInput.value = "6";
 
   // Re-render all charts with default options
+  const defaultOptions = {
+    verticalAlign: "center",
+    horizontalAlign: "top-to-bottom",
+    nodeColor: "#87CEEB",
+    lineColor: "#000000",
+    boxWidth: 80,
+    boxHeight: 40,
+    nodeBorderRadius: 0,
+    lineWidth: 1,
+    lineDasharray: "",
+    showArrows: false,
+    arrowDirection: "source-to-target",
+    arrowSize: 6,
+  };
+
   directChart
-    .setOptions({
-      type: "direct",
-      verticalAlign: "center",
-      horizontalAlign: "top-to-bottom",
-      nodeColor: "#87CEEB",
-      lineColor: "#000000",
-      boxWidth: 80,
-      boxHeight: 40,
-      nodeBorderRadius: 0,
-    })
+    .setOptions({ ...defaultOptions, type: "direct" })
     .render(sampleTree);
 
   rightAngleChart
-    .setOptions({
-      type: "right-angle",
-      verticalAlign: "center",
-      horizontalAlign: "top-to-bottom",
-      nodeColor: "#87CEEB",
-      lineColor: "#000000",
-      boxWidth: 80,
-      boxHeight: 40,
-      nodeBorderRadius: 0,
-    })
+    .setOptions({ ...defaultOptions, type: "right-angle" })
     .render(sampleTree);
 
   curvedChart
-    .setOptions({
-      type: "curved",
-      verticalAlign: "center",
-      horizontalAlign: "top-to-bottom",
-      nodeColor: "#87CEEB",
-      lineColor: "#000000",
-      boxWidth: 80,
-      boxHeight: 40,
-      nodeBorderRadius: 0,
-    })
+    .setOptions({ ...defaultOptions, type: "curved" })
     .render(sampleTree);
 
   allDirectionChart
-    .setOptions({
-      type: "all-direction",
-      verticalAlign: "center",
-      horizontalAlign: "top-to-bottom",
-      nodeColor: "#87CEEB",
-      lineColor: "#000000",
-      boxWidth: 80,
-      boxHeight: 40,
-      nodeBorderRadius: 0,
-    })
+    .setOptions({ ...defaultOptions, type: "all-direction" })
     .render(sampleTree);
 });
 

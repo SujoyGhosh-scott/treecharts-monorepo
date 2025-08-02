@@ -1,5 +1,5 @@
 import { BaseRenderer } from "./BaseRenderer";
-import { getNodeKey, createCurvedPath } from "../utils/svgHelpers";
+import { getNodeKey } from "../utils/svgHelpers";
 
 /**
  * CurvedRenderer creates a tree with curved connections between nodes
@@ -9,7 +9,7 @@ export class CurvedRenderer extends BaseRenderer {
    * Draw curved bezier connections between parent and child nodes
    */
   protected drawConnections(): void {
-    const { lineColor, horizontalAlign } = this.options;
+    const { horizontalAlign } = this.options;
 
     this.formattedTree.forEach((level, levelIndex) => {
       level.forEach((node, nodeIndex) => {
@@ -37,8 +37,20 @@ export class CurvedRenderer extends BaseRenderer {
               y2 = child.topY!; // top of child
             }
 
-            // Create a curved path with 0.5 curvature
-            createCurvedPath(this.svg, x1, y1, x2, y2, 0.5, lineColor);
+            this.connectionDrawer.drawConnection(
+              { x: x1, y: y1 },
+              { x: x2, y: y2 },
+              {
+                type: "curved",
+                color: this.options.lineColor,
+                width: this.options.lineWidth,
+                dasharray: this.options.lineDasharray,
+                showArrows: this.options.showArrows,
+                arrowDirection: this.options.arrowDirection,
+                arrowSize: this.options.arrowSize,
+                curveRadius: this.options.curveRadius,
+              }
+            );
           }
         }
       });

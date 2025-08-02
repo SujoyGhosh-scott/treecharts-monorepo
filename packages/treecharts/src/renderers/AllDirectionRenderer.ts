@@ -1,12 +1,8 @@
 import { BaseRenderer } from "./BaseRenderer";
-import {
-  createSvgElement,
-  createNode,
-  createLine,
-  getNodeKey,
-} from "../utils/svgHelpers";
+import { createSvgElement, createNode, getNodeKey } from "../utils/svgHelpers";
 import { createParentChildMap } from "../utils/treeFormatter";
 import { ALL_DIRECTION_DIMENSIONS, SVG_NS } from "../constants";
+import { ConnectionDrawer } from "../utils/ConnectionDrawer";
 
 /**
  * AllDirectionRenderer creates a radial tree layout where nodes spread out in all directions
@@ -36,6 +32,9 @@ export class AllDirectionRenderer extends BaseRenderer {
       svgHeight,
       `0 0 ${svgWidth} ${svgHeight}`
     );
+
+    // Reinitialize connection drawer with the new SVG
+    this.connectionDrawer = new ConnectionDrawer(this.svg);
   }
 
   /**
@@ -312,8 +311,6 @@ export class AllDirectionRenderer extends BaseRenderer {
    * Draw edges between nodes for all-direction tree with improved edge connection
    */
   protected drawConnections(): void {
-    const { lineColor } = this.options;
-
     this.formattedTree.forEach((level: any, levelIndex: number) => {
       // Skip the root level (level 0)
       if (levelIndex === 0) return;
@@ -402,14 +399,19 @@ export class AllDirectionRenderer extends BaseRenderer {
                 (normalizedVectorY < 0 ? childHalfHeight : -childHalfHeight);
             }
 
-            // Draw the connection
-            createLine(
-              this.svg,
-              parentConnectX,
-              parentConnectY,
-              childConnectX,
-              childConnectY,
-              lineColor
+            // Draw the connection using ConnectionDrawer
+            this.connectionDrawer.drawConnection(
+              { x: parentConnectX, y: parentConnectY },
+              { x: childConnectX, y: childConnectY },
+              {
+                type: "direct",
+                color: this.options.lineColor,
+                width: this.options.lineWidth,
+                dasharray: this.options.lineDasharray,
+                showArrows: this.options.showArrows,
+                arrowDirection: this.options.arrowDirection,
+                arrowSize: this.options.arrowSize,
+              }
             );
           }
         }

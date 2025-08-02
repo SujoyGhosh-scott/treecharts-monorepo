@@ -1,5 +1,5 @@
 import { BaseRenderer } from "./BaseRenderer";
-import { createLine, getNodeKey } from "../utils/svgHelpers";
+import { getNodeKey } from "../utils/svgHelpers";
 
 /**
  * DirectRenderer creates a tree with direct straight line connections between nodes
@@ -9,7 +9,7 @@ export class DirectRenderer extends BaseRenderer {
    * Draw direct straight line connections between parent and child nodes
    */
   protected drawConnections(): void {
-    const { lineColor, horizontalAlign } = this.options;
+    const { horizontalAlign } = this.options;
 
     this.formattedTree.forEach((level, levelIndex) => {
       level.forEach((node, nodeIndex) => {
@@ -37,7 +37,19 @@ export class DirectRenderer extends BaseRenderer {
               y2 = child.topY!; // top of child
             }
 
-            createLine(this.svg, x1, y1, x2, y2, lineColor);
+            this.connectionDrawer.drawConnection(
+              { x: x1, y: y1 },
+              { x: x2, y: y2 },
+              {
+                type: "direct",
+                color: this.options.lineColor,
+                width: this.options.lineWidth,
+                dasharray: this.options.lineDasharray,
+                showArrows: this.options.showArrows,
+                arrowDirection: this.options.arrowDirection,
+                arrowSize: this.options.arrowSize,
+              }
+            );
           }
         }
       });

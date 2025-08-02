@@ -115,6 +115,40 @@
       </div>
 
       <div class="control-group">
+        <label for="line-width">Line Width:</label>
+        <input type="number" id="line-width" value="1" min="1" max="5" />
+      </div>
+
+      <div class="control-group">
+        <label for="line-style">Line Style:</label>
+        <select id="line-style">
+          <option value="">Solid</option>
+          <option value="5,5">Dashed</option>
+          <option value="2,3">Dotted</option>
+          <option value="10,5,2,5">Dash-Dot</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="show-arrows">Show Arrows:</label>
+        <input type="checkbox" id="show-arrows" />
+      </div>
+
+      <div class="control-group">
+        <label for="arrow-direction">Arrow Direction:</label>
+        <select id="arrow-direction">
+          <option value="source-to-target">Parent → Child</option>
+          <option value="target-to-source">Child → Parent</option>
+          <option value="both">Both Ways</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="arrow-size">Arrow Size:</label>
+        <input type="number" id="arrow-size" value="6" min="3" max="12" />
+      </div>
+
+      <div class="control-group">
         <label for="box-width">Box Width:</label>
         <input type="number" id="box-width" value="80" min="40" max="200" />
       </div>

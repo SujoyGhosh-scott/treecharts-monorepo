@@ -45,6 +45,16 @@ export type HorizontalAlignment = "top-to-bottom" | "bottom-to-top";
 export type TreeType = "direct" | "right-angle" | "curved" | "all-direction";
 
 /**
+ * Connection type for drawing connections between nodes
+ */
+export type ConnectionType = "direct" | "right-angle" | "curved" | "custom";
+
+/**
+ * Arrow direction for connections
+ */
+export type ArrowDirection = "source-to-target" | "target-to-source" | "both";
+
+/**
  * TreeChartOptions represents configuration for the tree chart
  */
 export interface TreeChartOptions {
@@ -61,6 +71,14 @@ export interface TreeChartOptions {
   fontSize?: number;
   fontColor?: string;
   type?: TreeType;
+  // Connection styling options
+  connectionType?: ConnectionType;
+  lineWidth?: number;
+  lineDasharray?: string;
+  showArrows?: boolean;
+  arrowDirection?: ArrowDirection;
+  arrowSize?: number;
+  curveRadius?: number;
 }
 
 /**
