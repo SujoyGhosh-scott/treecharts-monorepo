@@ -199,38 +199,68 @@ export class ConnectionDrawer {
     toPoint: Point,
     options: Required<ConnectionOptions>
   ): void {
-    // Create arrowhead marker if it doesn't exist
-    const colorId = options.arrowColor
-      .replace("#", "")
-      .replace(/[^a-zA-Z0-9]/g, "");
-    const markerId = `arrowhead-${options.arrowSize}-${colorId}`;
-    let marker = this.svg.querySelector(`#${markerId}`) as SVGMarkerElement;
+    // Use edge color for arrow if arrowColor is not explicitly set
+    const arrowColor =
+      options.arrowColor === this.defaultOptions.arrowColor
+        ? options.color
+        : options.arrowColor;
 
-    if (!marker) {
-      marker = this.createArrowMarker(markerId, options);
+    const colorId = arrowColor.replace("#", "").replace(/[^a-zA-Z0-9]/g, "");
 
-      // Add defs element if it doesn't exist
-      let defs = this.svg.querySelector("defs");
-      if (!defs) {
-        defs = document.createElementNS(SVG_NS, "defs");
-        this.svg.insertBefore(defs, this.svg.firstChild);
-      }
-      defs.appendChild(marker);
-    }
-
-    // Apply marker to the path
+    // Apply markers based on direction
     if (
       options.arrowDirection === "source-to-target" ||
       options.arrowDirection === "both"
     ) {
-      pathElement.setAttribute("marker-end", `url(#${markerId})`);
+      const endMarkerId = `arrowhead-end-${options.arrowSize}-${colorId}`;
+      let endMarker = this.svg.querySelector(
+        `#${endMarkerId}`
+      ) as SVGMarkerElement;
+
+      if (!endMarker) {
+        endMarker = this.createArrowMarker(
+          endMarkerId,
+          options,
+          arrowColor,
+          "end"
+        );
+        this.addMarkerToDefs(endMarker);
+      }
+      pathElement.setAttribute("marker-end", `url(#${endMarkerId})`);
     }
+
     if (
       options.arrowDirection === "target-to-source" ||
       options.arrowDirection === "both"
     ) {
-      pathElement.setAttribute("marker-start", `url(#${markerId})`);
+      const startMarkerId = `arrowhead-start-${options.arrowSize}-${colorId}`;
+      let startMarker = this.svg.querySelector(
+        `#${startMarkerId}`
+      ) as SVGMarkerElement;
+
+      if (!startMarker) {
+        startMarker = this.createArrowMarker(
+          startMarkerId,
+          options,
+          arrowColor,
+          "start"
+        );
+        this.addMarkerToDefs(startMarker);
+      }
+      pathElement.setAttribute("marker-start", `url(#${startMarkerId})`);
     }
+  }
+
+  /**
+   * Add marker to defs element
+   */
+  private addMarkerToDefs(marker: SVGMarkerElement): void {
+    let defs = this.svg.querySelector("defs");
+    if (!defs) {
+      defs = document.createElementNS(SVG_NS, "defs");
+      this.svg.insertBefore(defs, this.svg.firstChild);
+    }
+    defs.appendChild(marker);
   }
 
   /**
@@ -238,24 +268,38 @@ export class ConnectionDrawer {
    */
   private createArrowMarker(
     markerId: string,
-    options: Required<ConnectionOptions>
+    options: Required<ConnectionOptions>,
+    arrowColor: string,
+    position: "start" | "end"
   ): SVGMarkerElement {
     const marker = document.createElementNS(SVG_NS, "marker");
     marker.setAttribute("id", markerId);
     marker.setAttribute("markerWidth", (options.arrowSize * 2).toString());
     marker.setAttribute("markerHeight", (options.arrowSize * 2).toString());
-    marker.setAttribute("refX", options.arrowSize.toString());
-    marker.setAttribute("refY", options.arrowSize.toString());
     marker.setAttribute("orient", "auto");
     marker.setAttribute("markerUnits", "strokeWidth");
 
     const arrow = document.createElementNS(SVG_NS, "polygon");
-    const points = `0,0 0,${options.arrowSize * 2} ${options.arrowSize * 2},${
-      options.arrowSize
-    }`;
-    arrow.setAttribute("points", points);
-    arrow.setAttribute("fill", options.arrowColor);
 
+    if (position === "end") {
+      // Arrow pointing right (for line endings)
+      marker.setAttribute("refX", options.arrowSize.toString());
+      marker.setAttribute("refY", options.arrowSize.toString());
+      const points = `0,0 0,${options.arrowSize * 2} ${options.arrowSize * 2},${
+        options.arrowSize
+      }`;
+      arrow.setAttribute("points", points);
+    } else {
+      // Arrow pointing left (for line starts)
+      marker.setAttribute("refX", options.arrowSize.toString());
+      marker.setAttribute("refY", options.arrowSize.toString());
+      const points = `${options.arrowSize * 2},0 ${options.arrowSize * 2},${
+        options.arrowSize * 2
+      } 0,${options.arrowSize}`;
+      arrow.setAttribute("points", points);
+    }
+
+    arrow.setAttribute("fill", arrowColor);
     marker.appendChild(arrow);
     return marker;
   }

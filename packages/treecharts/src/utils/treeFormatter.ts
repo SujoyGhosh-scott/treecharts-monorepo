@@ -55,6 +55,8 @@ export function formatTree(tree: TreeNode): FormattedTree {
     }
   }
 
+  console.log("Formatted Tree:", JSON.stringify(formattedTree, null, 2));
+
   return formattedTree;
 }
 
