@@ -1,6 +1,6 @@
 import { BaseRenderer } from "./BaseRenderer";
 import { getNodeKey } from "../utils/svgHelpers";
-import { createParentChildMap as buildParentChildMap } from "../utils/treeFormatter";
+import { createParentChildMap } from "../utils/treeFormatter";
 
 /**
  * RightAngleRenderer creates a tree with right-angle connections between nodes
@@ -13,7 +13,7 @@ export class RightAngleRenderer extends BaseRenderer {
     const { horizontalAlign, verticalGap } = this.options;
 
     // Build a map of parent to children
-    const parentChildPair = buildParentChildMap(this.formattedTree);
+    const parentChildPair = createParentChildMap(this.formattedTree);
 
     // Process each parent-child relationship
     Object.keys(parentChildPair).forEach((parentKey) => {
@@ -49,17 +49,17 @@ export class RightAngleRenderer extends BaseRenderer {
             { x: x1, y: y1 },
             { x: x2, y: y2 },
             {
-              type: "direct",
-              color: this.options.lineColor,
-              width: this.options.lineWidth,
-              dasharray: this.options.lineDasharray,
-              showArrows: this.options.showArrows,
-              arrowDirection: this.options.arrowDirection,
-              arrowSize: this.options.arrowSize,
+              type: this.options.edgeConfig!.type,
+              color: this.options.edgeConfig!.color,
+              width: this.options.edgeConfig!.width,
+              dasharray: this.options.edgeConfig!.dasharray,
+              showArrows: this.options.edgeConfig!.showArrows,
+              arrowDirection: this.options.edgeConfig!.arrowDirection,
+              arrowSize: this.options.edgeConfig!.arrowSize,
               edgeText: childNode.node?.edgeText || undefined,
-              textSize: this.options.textSize,
-              textColor: this.options.textColor,
-              textBackgroundColor: this.options.textBackgroundColor,
+              textSize: this.options.edgeConfig!.textSize,
+              textColor: this.options.edgeConfig!.textColor,
+              textBackgroundColor: this.options.edgeConfig!.textBackgroundColor,
             }
           );
         }
@@ -92,10 +92,10 @@ export class RightAngleRenderer extends BaseRenderer {
           { x: leftmostChild.centerX!, y: horizontalY },
           { x: rightmostChild.centerX!, y: horizontalY },
           {
-            type: "direct",
-            color: this.options.lineColor,
-            width: this.options.lineWidth,
-            dasharray: this.options.lineDasharray,
+            type: this.options.edgeConfig!.type,
+            color: this.options.edgeConfig!.color,
+            width: this.options.edgeConfig!.width,
+            dasharray: this.options.edgeConfig!.dasharray,
           }
         );
 
@@ -111,13 +111,13 @@ export class RightAngleRenderer extends BaseRenderer {
           { x: parentNode.centerX!, y: parentY },
           { x: parentNode.centerX!, y: horizontalY },
           {
-            type: "direct",
-            color: this.options.lineColor,
-            width: this.options.lineWidth,
-            dasharray: this.options.lineDasharray,
-            showArrows: this.options.showArrows,
-            arrowDirection: this.options.arrowDirection,
-            arrowSize: this.options.arrowSize,
+            type: this.options.edgeConfig!.type,
+            color: this.options.edgeConfig!.color,
+            width: this.options.edgeConfig!.width,
+            dasharray: this.options.edgeConfig!.dasharray,
+            showArrows: this.options.edgeConfig!.showArrows,
+            arrowDirection: this.options.edgeConfig!.arrowDirection,
+            arrowSize: this.options.edgeConfig!.arrowSize,
           }
         );
 
@@ -137,10 +137,10 @@ export class RightAngleRenderer extends BaseRenderer {
               { x: parentX, y: horizontalY },
               { x: leftmostChild.centerX!, y: horizontalY },
               {
-                type: "direct",
-                color: this.options.lineColor,
-                width: this.options.lineWidth,
-                dasharray: this.options.lineDasharray,
+                type: this.options.edgeConfig!.type,
+                color: this.options.edgeConfig!.color,
+                width: this.options.edgeConfig!.width,
+                dasharray: this.options.edgeConfig!.dasharray,
               }
             );
           } else if (parentX > rightmostChild.centerX!) {
@@ -149,10 +149,10 @@ export class RightAngleRenderer extends BaseRenderer {
               { x: rightmostChild.centerX!, y: horizontalY },
               { x: parentX, y: horizontalY },
               {
-                type: "direct",
-                color: this.options.lineColor,
-                width: this.options.lineWidth,
-                dasharray: this.options.lineDasharray,
+                type: this.options.edgeConfig!.type,
+                color: this.options.edgeConfig!.color,
+                width: this.options.edgeConfig!.width,
+                dasharray: this.options.edgeConfig!.dasharray,
               }
             );
           }
@@ -175,14 +175,15 @@ export class RightAngleRenderer extends BaseRenderer {
               { x: childNode.centerX!, y: horizontalY },
               { x: childNode.centerX!, y: childY },
               {
-                type: "direct",
-                color: this.options.lineColor,
-                width: this.options.lineWidth,
-                dasharray: this.options.lineDasharray,
+                type: this.options.edgeConfig!.type,
+                color: this.options.edgeConfig!.color,
+                width: this.options.edgeConfig!.width,
+                dasharray: this.options.edgeConfig!.dasharray,
                 edgeText: childNode.node?.edgeText || undefined,
-                textSize: this.options.textSize,
-                textColor: this.options.textColor,
-                textBackgroundColor: this.options.textBackgroundColor,
+                textSize: this.options.edgeConfig!.textSize,
+                textColor: this.options.edgeConfig!.textColor,
+                textBackgroundColor:
+                  this.options.edgeConfig!.textBackgroundColor,
               }
             );
           }

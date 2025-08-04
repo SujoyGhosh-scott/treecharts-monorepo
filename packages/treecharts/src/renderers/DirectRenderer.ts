@@ -9,7 +9,7 @@ export class DirectRenderer extends BaseRenderer {
    * Draw direct straight line connections between parent and child nodes
    */
   protected drawConnections(): void {
-    const { horizontalAlign } = this.options;
+    const { horizontalAlign, edgeConfig } = this.options;
 
     this.formattedTree.forEach((level, levelIndex) => {
       level.forEach((node, nodeIndex) => {
@@ -41,17 +41,18 @@ export class DirectRenderer extends BaseRenderer {
               { x: x1, y: y1 },
               { x: x2, y: y2 },
               {
-                type: "direct",
-                color: this.options.lineColor,
-                width: this.options.lineWidth,
-                dasharray: this.options.lineDasharray,
-                showArrows: this.options.showArrows,
-                arrowDirection: this.options.arrowDirection,
-                arrowSize: this.options.arrowSize,
+                type: edgeConfig!.type,
+                color: edgeConfig!.color,
+                width: edgeConfig!.width,
+                dasharray: edgeConfig!.dasharray,
+                showArrows: edgeConfig!.showArrows,
+                arrowDirection: edgeConfig!.arrowDirection,
+                arrowSize: edgeConfig!.arrowSize,
                 edgeText: node.edgeText || undefined,
-                textSize: this.options.textSize,
-                textColor: this.options.textColor,
-                textBackgroundColor: this.options.textBackgroundColor,
+                textSize: edgeConfig!.textSize,
+                textColor: edgeConfig!.textColor,
+                textBackgroundColor:
+                  edgeConfig!.textBackgroundColor || undefined,
               }
             );
           }

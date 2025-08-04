@@ -1,8 +1,9 @@
 import { BaseRenderer } from "./BaseRenderer";
-import { createSvgElement, createNode, getNodeKey } from "../utils/svgHelpers";
+import { createSvgElement, getNodeKey } from "../utils/svgHelpers";
 import { createParentChildMap } from "../utils/treeFormatter";
 import { ALL_DIRECTION_DIMENSIONS, SVG_NS } from "../constants";
 import { ConnectionDrawer } from "../utils/ConnectionDrawer";
+import { NodeDrawer } from "../utils/NodeDrawer";
 
 /**
  * AllDirectionRenderer creates a radial tree layout where nodes spread out in all directions
@@ -35,6 +36,9 @@ export class AllDirectionRenderer extends BaseRenderer {
 
     // Reinitialize connection drawer with the new SVG
     this.connectionDrawer = new ConnectionDrawer(this.svg);
+
+    // Reinitialize node drawer with the new SVG
+    this.nodeDrawer = new NodeDrawer(this.svg);
   }
 
   /**
@@ -45,7 +49,10 @@ export class AllDirectionRenderer extends BaseRenderer {
     svgHeight: number;
   } {
     const treeDepth = this.formattedTree.length;
-    const { horizontalGap, verticalGap, boxWidth, boxHeight } = this.options;
+    const nodeConfig = this.options.nodeConfig!;
+    const boxWidth = nodeConfig.width!;
+    const boxHeight = nodeConfig.height!;
+    const { horizontalGap, verticalGap } = this.options;
 
     // Calculate the actual maximum distances we'll use
     const firstLevelHorizontalDistance = Math.min(
@@ -97,15 +104,9 @@ export class AllDirectionRenderer extends BaseRenderer {
    * Override node creation for radial layout
    */
   protected createNodes(): void {
-    const {
-      boxWidth,
-      boxHeight,
-      nodeColor,
-      nodeBorderColor,
-      nodeBorderRadius,
-      fontSize,
-      fontColor,
-    } = this.options;
+    const nodeConfig = this.options.nodeConfig!;
+    const boxWidth = nodeConfig.width!;
+    const boxHeight = nodeConfig.height!;
 
     // Group nodes by their parent
     const parentToChildrenMap = createParentChildMap(this.formattedTree);
@@ -116,29 +117,28 @@ export class AllDirectionRenderer extends BaseRenderer {
       const rootX = this.centerX - boxWidth / 2;
       const rootY = this.centerY - boxHeight / 2;
 
-      // Create root node
-      const rect = document.createElementNS(SVG_NS, "rect");
-      rect.setAttribute("x", rootX.toString());
-      rect.setAttribute("y", rootY.toString());
-      rect.setAttribute("width", boxWidth.toString());
-      rect.setAttribute("height", boxHeight.toString());
-      rect.setAttribute("fill", nodeColor);
-      rect.setAttribute("stroke", nodeBorderColor);
-
-      if (nodeBorderRadius > 0) {
-        rect.setAttribute("rx", nodeBorderRadius.toString());
-      }
-
-      this.svg.appendChild(rect);
-
-      const text = document.createElementNS(SVG_NS, "text");
-      text.setAttribute("x", this.centerX.toString());
-      text.setAttribute("y", (this.centerY + 5).toString());
-      text.setAttribute("text-anchor", "middle");
-      text.setAttribute("font-size", fontSize.toString());
-      text.setAttribute("fill", fontColor);
-      text.textContent = rootNode.text;
-      this.svg.appendChild(text);
+      // Create root node using NodeDrawer
+      const rootNodeResult = this.nodeDrawer.drawNode({
+        type: nodeConfig.type,
+        x: rootX,
+        y: rootY,
+        width: boxWidth,
+        height: boxHeight,
+        fill: nodeConfig.color,
+        stroke: nodeConfig.borderColor,
+        strokeWidth: nodeConfig.borderWidth,
+        borderRadius: nodeConfig.borderRadius,
+        text: rootNode.text,
+        fontSize: nodeConfig.fontSize,
+        fontColor: nodeConfig.fontColor,
+        opacity: nodeConfig.opacity,
+        shadow: nodeConfig.shadow,
+        shadowColor: nodeConfig.shadowColor,
+        shadowOffset: nodeConfig.shadowOffset,
+        gradient: nodeConfig.gradient,
+        gradientStartColor: nodeConfig.gradientStartColor,
+        gradientEndColor: nodeConfig.gradientEndColor,
+      });
 
       this.nodeMap[`0-0`] = {
         centerX: this.centerX,
@@ -173,30 +173,28 @@ export class AllDirectionRenderer extends BaseRenderer {
         const nodeX = this.centerX + Math.cos(angle) * distance - boxWidth / 2;
         const nodeY = this.centerY + Math.sin(angle) * distance - boxHeight / 2;
 
-        // Create node
-        const rect = document.createElementNS(SVG_NS, "rect");
-        rect.setAttribute("x", nodeX.toString());
-        rect.setAttribute("y", nodeY.toString());
-        rect.setAttribute("width", boxWidth.toString());
-        rect.setAttribute("height", boxHeight.toString());
-        rect.setAttribute("fill", nodeColor);
-        rect.setAttribute("stroke", nodeBorderColor);
-
-        if (nodeBorderRadius > 0) {
-          rect.setAttribute("rx", nodeBorderRadius.toString());
-        }
-
-        this.svg.appendChild(rect);
-
-        const text = document.createElementNS(SVG_NS, "text");
-        text.setAttribute("x", (nodeX + boxWidth / 2).toString());
-        text.setAttribute("y", (nodeY + boxHeight / 2 + 5).toString());
-        text.setAttribute("text-anchor", "middle");
-        text.setAttribute("font-size", fontSize.toString());
-        text.setAttribute("fill", fontColor);
-        text.textContent =
-          this.formattedTree[childInfo.level][childInfo.position].text;
-        this.svg.appendChild(text);
+        // Create node using NodeDrawer
+        const nodeResult = this.nodeDrawer.drawNode({
+          type: nodeConfig.type,
+          x: nodeX,
+          y: nodeY,
+          width: boxWidth,
+          height: boxHeight,
+          fill: nodeConfig.color,
+          stroke: nodeConfig.borderColor,
+          strokeWidth: nodeConfig.borderWidth,
+          borderRadius: nodeConfig.borderRadius,
+          text: this.formattedTree[childInfo.level][childInfo.position].text,
+          fontSize: nodeConfig.fontSize,
+          fontColor: nodeConfig.fontColor,
+          opacity: nodeConfig.opacity,
+          shadow: nodeConfig.shadow,
+          shadowColor: nodeConfig.shadowColor,
+          shadowOffset: nodeConfig.shadowOffset,
+          gradient: nodeConfig.gradient,
+          gradientStartColor: nodeConfig.gradientStartColor,
+          gradientEndColor: nodeConfig.gradientEndColor,
+        });
 
         // Store node data with direction
         const dirX = Math.cos(angle);
@@ -266,29 +264,28 @@ export class AllDirectionRenderer extends BaseRenderer {
             const nodeX = parentNode.x + dirX * distance;
             const nodeY = parentNode.y + dirY * distance;
 
-            // Create node
-            const rect = document.createElementNS(SVG_NS, "rect");
-            rect.setAttribute("x", nodeX.toString());
-            rect.setAttribute("y", nodeY.toString());
-            rect.setAttribute("width", boxWidth.toString());
-            rect.setAttribute("height", boxHeight.toString());
-            rect.setAttribute("fill", nodeColor);
-            rect.setAttribute("stroke", nodeBorderColor);
-
-            if (nodeBorderRadius > 0) {
-              rect.setAttribute("rx", nodeBorderRadius.toString());
-            }
-
-            this.svg.appendChild(rect);
-
-            const text = document.createElementNS(SVG_NS, "text");
-            text.setAttribute("x", (nodeX + boxWidth / 2).toString());
-            text.setAttribute("y", (nodeY + boxHeight / 2 + 5).toString());
-            text.setAttribute("text-anchor", "middle");
-            text.setAttribute("font-size", fontSize.toString());
-            text.setAttribute("fill", fontColor);
-            text.textContent = node.text;
-            this.svg.appendChild(text);
+            // Create node using NodeDrawer
+            const nodeResult = this.nodeDrawer.drawNode({
+              type: nodeConfig.type,
+              x: nodeX,
+              y: nodeY,
+              width: boxWidth,
+              height: boxHeight,
+              fill: nodeConfig.color,
+              stroke: nodeConfig.borderColor,
+              strokeWidth: nodeConfig.borderWidth,
+              borderRadius: nodeConfig.borderRadius,
+              text: node.text,
+              fontSize: nodeConfig.fontSize,
+              fontColor: nodeConfig.fontColor,
+              opacity: nodeConfig.opacity,
+              shadow: nodeConfig.shadow,
+              shadowColor: nodeConfig.shadowColor,
+              shadowOffset: nodeConfig.shadowOffset,
+              gradient: nodeConfig.gradient,
+              gradientStartColor: nodeConfig.gradientStartColor,
+              gradientEndColor: nodeConfig.gradientEndColor,
+            });
 
             // Store node data
             this.nodeMap[getNodeKey(levelIndex, nodeIndex)] = {
@@ -340,8 +337,9 @@ export class AllDirectionRenderer extends BaseRenderer {
 
             // Find intersection points with rectangles - improved calculation
             let parentConnectX, parentConnectY, childConnectX, childConnectY;
-            const boxWidth = this.options.boxWidth;
-            const boxHeight = this.options.boxHeight;
+            const nodeConfig = this.options.nodeConfig!;
+            const boxWidth = nodeConfig.width!;
+            const boxHeight = nodeConfig.height!;
 
             // Calculate connection points on the edges of rectangles
             // For parent node - find where the line intersects the rectangle edge
@@ -404,17 +402,18 @@ export class AllDirectionRenderer extends BaseRenderer {
               { x: parentConnectX, y: parentConnectY },
               { x: childConnectX, y: childConnectY },
               {
-                type: "direct",
-                color: this.options.lineColor,
-                width: this.options.lineWidth,
-                dasharray: this.options.lineDasharray,
-                showArrows: this.options.showArrows,
-                arrowDirection: this.options.arrowDirection,
-                arrowSize: this.options.arrowSize,
+                type: this.options.edgeConfig!.type,
+                color: this.options.edgeConfig!.color,
+                width: this.options.edgeConfig!.width,
+                dasharray: this.options.edgeConfig!.dasharray,
+                showArrows: this.options.edgeConfig!.showArrows,
+                arrowDirection: this.options.edgeConfig!.arrowDirection,
+                arrowSize: this.options.edgeConfig!.arrowSize,
                 edgeText: node.edgeText || undefined,
-                textSize: this.options.textSize,
-                textColor: this.options.textColor,
-                textBackgroundColor: this.options.textBackgroundColor,
+                textSize: this.options.edgeConfig!.textSize,
+                textColor: this.options.edgeConfig!.textColor,
+                textBackgroundColor:
+                  this.options.edgeConfig!.textBackgroundColor,
               }
             );
           }

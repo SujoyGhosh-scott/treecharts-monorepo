@@ -1,3 +1,5 @@
+import { TreeChartOptions, NodeConfig, EdgeConfig } from "../types";
+
 /**
  * SVG namespace for creating SVG elements
  */
@@ -6,34 +8,57 @@ export const SVG_NS = "http://www.w3.org/2000/svg";
 /**
  * Default options for tree chart rendering
  */
-export const DEFAULT_OPTIONS = {
-  boxWidth: 80,
-  boxHeight: 40,
+export const DEFAULT_OPTIONS: Required<TreeChartOptions> = {
+  // Chart layout defaults
   horizontalGap: 30,
   verticalGap: 80,
   verticalAlign: "center",
   horizontalAlign: "top-to-bottom",
-  nodeColor: "skyblue",
-  lineColor: "black",
-  nodeBorderRadius: 0,
-  nodeBorderColor: "black",
-  fontSize: 14,
-  fontColor: "black",
   type: "direct",
-  // Connection styling defaults
-  connectionType: "direct",
-  lineWidth: 1,
-  lineDasharray: "",
-  showArrows: false,
-  arrowDirection: "source-to-target",
-  arrowSize: 6,
-  curveRadius: 20,
-  // Edge text styling defaults
-  textSize: 12,
-  textColor: "#666666",
-  textBackgroundColor: undefined,
-};
 
+  // Default node configuration
+  nodeConfig: {
+    type: "rectangle",
+    width: 80,
+    height: 40,
+    color: "skyblue",
+    borderColor: "black",
+    borderWidth: 1,
+    borderRadius: 0,
+    opacity: 1,
+    fontSize: 14,
+    fontColor: "black",
+    fontFamily: "Arial, sans-serif",
+    shadow: false,
+    shadowColor: "rgba(0,0,0,0.3)",
+    shadowOffset: { x: 2, y: 2 },
+    gradient: false,
+    gradientStartColor: "",
+    gradientEndColor: "",
+    icon: "",
+    iconSize: 16,
+    iconColor: "black",
+    customAttributes: {},
+  } as Required<NodeConfig>,
+
+  // Default edge configuration
+  edgeConfig: {
+    type: "direct",
+    color: "black",
+    width: 1,
+    opacity: 1,
+    dasharray: "",
+    showArrows: false,
+    arrowDirection: "source-to-target",
+    arrowSize: 6,
+    arrowColor: "black",
+    curveRadius: 20,
+    customPath: "",
+    textSize: 12,
+    textColor: "#666666",
+    textBackgroundColor: "",
+  } as Required<EdgeConfig>,
+};
 /**
  * Fixed dimensions for all-direction tree
  */

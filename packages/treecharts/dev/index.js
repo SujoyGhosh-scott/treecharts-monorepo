@@ -55,33 +55,53 @@ const sampleTree = {
   ],
 };
 
-// Create charts with different renderers
+// Create charts with different renderers using new structured options
 const directChart = new TreeChart("direct-container", {
   type: "direct",
-  nodeColor: "#87CEEB",
-  textColor: "#333333",
-  textSize: 11,
+  nodeConfig: {
+    color: "#87CEEB",
+    fontSize: 11,
+    fontColor: "#333333",
+  },
+  edgeConfig: {
+    textSize: 11,
+  },
 });
 
 const rightAngleChart = new TreeChart("right-angle-container", {
   type: "right-angle",
-  nodeColor: "#87CEEB",
-  textColor: "#333333",
-  textSize: 11,
+  nodeConfig: {
+    color: "#87CEEB",
+    fontSize: 11,
+    fontColor: "#333333",
+  },
+  edgeConfig: {
+    textSize: 11,
+  },
 });
 
 const curvedChart = new TreeChart("curved-container", {
   type: "curved",
-  nodeColor: "#87CEEB",
-  textColor: "#333333",
-  textSize: 11,
+  nodeConfig: {
+    color: "#87CEEB",
+    fontSize: 11,
+    fontColor: "#333333",
+  },
+  edgeConfig: {
+    textSize: 11,
+  },
 });
 
 const allDirectionChart = new TreeChart("all-direction-container", {
   type: "all-direction",
-  nodeColor: "#87CEEB",
-  textColor: "#333333",
-  textSize: 11,
+  nodeConfig: {
+    color: "#87CEEB",
+    fontSize: 11,
+    fontColor: "#333333",
+  },
+  edgeConfig: {
+    textSize: 11,
+  },
 });
 
 // Initialize all charts
@@ -113,20 +133,24 @@ updateButton.addEventListener("click", () => {
   // Get selected chart type
   const chartType = chartTypeSelect.value;
 
-  // Get all options
+  // Get all options in structured format
   const options = {
     verticalAlign: verticalAlignSelect.value,
     horizontalAlign: horizontalAlignSelect.value,
-    nodeColor: nodeColorInput.value,
-    lineColor: lineColorInput.value,
-    boxWidth: parseInt(boxWidthInput.value),
-    boxHeight: parseInt(boxHeightInput.value),
-    nodeBorderRadius: parseInt(borderRadiusInput.value),
-    lineWidth: parseInt(lineWidthInput.value),
-    lineDasharray: lineStyleSelect.value,
-    showArrows: showArrowsInput.checked,
-    arrowDirection: arrowDirectionSelect.value,
-    arrowSize: parseInt(arrowSizeInput.value),
+    nodeConfig: {
+      color: nodeColorInput.value,
+      width: parseInt(boxWidthInput.value),
+      height: parseInt(boxHeightInput.value),
+      borderRadius: parseInt(borderRadiusInput.value),
+    },
+    edgeConfig: {
+      color: lineColorInput.value,
+      width: parseInt(lineWidthInput.value),
+      dasharray: lineStyleSelect.value,
+      showArrows: showArrowsInput.checked,
+      arrowDirection: arrowDirectionSelect.value,
+      arrowSize: parseInt(arrowSizeInput.value),
+    },
   };
 
   // Update and render the appropriate chart
@@ -165,20 +189,24 @@ resetButton.addEventListener("click", () => {
   arrowDirectionSelect.value = "source-to-target";
   arrowSizeInput.value = "6";
 
-  // Re-render all charts with default options
+  // Re-render all charts with default options in structured format
   const defaultOptions = {
     verticalAlign: "center",
     horizontalAlign: "top-to-bottom",
-    nodeColor: "#87CEEB",
-    lineColor: "#000000",
-    boxWidth: 80,
-    boxHeight: 40,
-    nodeBorderRadius: 0,
-    lineWidth: 1,
-    lineDasharray: "",
-    showArrows: false,
-    arrowDirection: "source-to-target",
-    arrowSize: 6,
+    nodeConfig: {
+      color: "#87CEEB",
+      width: 80,
+      height: 40,
+      borderRadius: 0,
+    },
+    edgeConfig: {
+      color: "#000000",
+      width: 1,
+      dasharray: "",
+      showArrows: false,
+      arrowDirection: "source-to-target",
+      arrowSize: 6,
+    },
   };
 
   directChart

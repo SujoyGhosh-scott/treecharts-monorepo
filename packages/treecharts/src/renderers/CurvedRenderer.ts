@@ -41,18 +41,19 @@ export class CurvedRenderer extends BaseRenderer {
               { x: x1, y: y1 },
               { x: x2, y: y2 },
               {
-                type: "curved",
-                color: this.options.lineColor,
-                width: this.options.lineWidth,
-                dasharray: this.options.lineDasharray,
-                showArrows: this.options.showArrows,
-                arrowDirection: this.options.arrowDirection,
-                arrowSize: this.options.arrowSize,
-                curveRadius: this.options.curveRadius,
+                type: this.options.edgeConfig!.type,
+                color: this.options.edgeConfig!.color,
+                width: this.options.edgeConfig!.width,
+                dasharray: this.options.edgeConfig!.dasharray,
+                showArrows: this.options.edgeConfig!.showArrows,
+                arrowDirection: this.options.edgeConfig!.arrowDirection,
+                arrowSize: this.options.edgeConfig!.arrowSize,
+                curveRadius: this.options.edgeConfig!.curveRadius,
                 edgeText: node.edgeText || undefined,
-                textSize: this.options.textSize,
-                textColor: this.options.textColor,
-                textBackgroundColor: this.options.textBackgroundColor,
+                textSize: this.options.edgeConfig!.textSize,
+                textColor: this.options.edgeConfig!.textColor,
+                textBackgroundColor:
+                  this.options.edgeConfig!.textBackgroundColor,
               }
             );
           }

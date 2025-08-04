@@ -1,7 +1,8 @@
 import { FormattedTree, TreeChartOptions, NodeMap } from "../types";
 import { DEFAULT_OPTIONS, SVG_NS } from "../constants";
-import { createSvgElement, createNode, getNodeKey } from "../utils/svgHelpers";
+import { createSvgElement, getNodeKey } from "../utils/svgHelpers";
 import { ConnectionDrawer } from "../utils/ConnectionDrawer";
+import { NodeDrawer } from "../utils/NodeDrawer";
 
 /**
  * BaseRenderer class that all specific renderers extend
@@ -13,6 +14,7 @@ export abstract class BaseRenderer {
   protected nodeMap: NodeMap = {};
   protected svg: SVGSVGElement;
   protected connectionDrawer: ConnectionDrawer;
+  protected nodeDrawer: NodeDrawer;
 
   /**
    * Constructor for BaseRenderer
@@ -27,6 +29,14 @@ export abstract class BaseRenderer {
     this.options = {
       ...DEFAULT_OPTIONS,
       ...options,
+      nodeConfig: {
+        ...DEFAULT_OPTIONS.nodeConfig,
+        ...options.nodeConfig,
+      },
+      edgeConfig: {
+        ...DEFAULT_OPTIONS.edgeConfig,
+        ...options.edgeConfig,
+      },
     } as Required<TreeChartOptions>;
 
     // Create SVG element
@@ -36,6 +46,9 @@ export abstract class BaseRenderer {
 
     // Initialize connection drawer
     this.connectionDrawer = new ConnectionDrawer(this.svg);
+
+    // Initialize node drawer
+    this.nodeDrawer = new NodeDrawer(this.svg);
   }
 
   /**
@@ -45,7 +58,8 @@ export abstract class BaseRenderer {
     const maxNodes = Math.max(
       ...this.formattedTree.map((level) => level.length)
     );
-    const { boxWidth, horizontalGap } = this.options;
+    const boxWidth = this.options.nodeConfig!.width!;
+    const { horizontalGap } = this.options;
     return maxNodes * (boxWidth + horizontalGap);
   }
 
@@ -53,7 +67,8 @@ export abstract class BaseRenderer {
    * Calculate height needed for the SVG
    */
   protected calculateSvgHeight(): number {
-    const { boxHeight, verticalGap } = this.options;
+    const boxHeight = this.options.nodeConfig!.height!;
+    const { verticalGap } = this.options;
     return this.formattedTree.length * (boxHeight + verticalGap);
   }
 
@@ -62,14 +77,12 @@ export abstract class BaseRenderer {
    * Each renderer implementation might override this for specific positioning logic
    */
   protected createNodes(): void {
-    const {
-      verticalAlign,
-      boxWidth,
-      boxHeight,
-      horizontalGap,
-      verticalGap,
-      horizontalAlign,
-    } = this.options;
+    const { verticalAlign, horizontalGap, verticalGap, horizontalAlign } =
+      this.options;
+    const nodeConfig = this.options.nodeConfig!;
+    const boxWidth = nodeConfig.width!;
+    const boxHeight = nodeConfig.height!;
+
     const totalWidth = this.calculateSvgWidth();
     const totalHeight = this.calculateSvgHeight();
 
@@ -95,20 +108,34 @@ export abstract class BaseRenderer {
           y = levelIndex * (boxHeight + verticalGap);
         }
 
-        // Create node and store its position
-        const { centerX, centerY } = createNode(
-          this.svg,
+        // Create node and store its position using NodeDrawer
+        const nodeResult = this.nodeDrawer.drawNode({
+          type: nodeConfig.type,
           x,
           y,
-          node.text,
-          this.options
-        );
+          width: boxWidth,
+          height: boxHeight,
+          fill: nodeConfig.color,
+          stroke: nodeConfig.borderColor,
+          strokeWidth: nodeConfig.borderWidth,
+          borderRadius: nodeConfig.borderRadius,
+          text: node.text,
+          fontSize: nodeConfig.fontSize,
+          fontColor: nodeConfig.fontColor,
+          opacity: nodeConfig.opacity,
+          shadow: nodeConfig.shadow,
+          shadowColor: nodeConfig.shadowColor,
+          shadowOffset: nodeConfig.shadowOffset,
+          gradient: nodeConfig.gradient,
+          gradientStartColor: nodeConfig.gradientStartColor,
+          gradientEndColor: nodeConfig.gradientEndColor,
+        });
 
         this.nodeMap[getNodeKey(levelIndex, nodeIndex)] = {
           x,
           y,
-          centerX,
-          centerY,
+          centerX: nodeResult.centerX,
+          centerY: nodeResult.centerY,
           width: boxWidth,
           height: boxHeight,
           bottomY: y + boxHeight,

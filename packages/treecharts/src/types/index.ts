@@ -97,36 +97,89 @@ export interface ConnectionOptions {
 }
 
 /**
- * TreeChartOptions represents configuration for the tree chart
+ * NodeConfig represents configuration for node styling and behavior
  */
-export interface TreeChartOptions {
-  boxWidth?: number;
-  boxHeight?: number;
-  horizontalGap?: number;
-  verticalGap?: number;
-  verticalAlign?: VerticalAlignment;
-  horizontalAlign?: HorizontalAlignment;
-  nodeColor?: string;
-  lineColor?: string;
-  nodeBorderRadius?: number;
-  nodeBorderColor?: string;
+export interface NodeConfig {
+  // Basic node properties
+  type?: NodeType;
+  width?: number;
+  height?: number;
+
+  // Visual styling
+  color?: string;
+  borderColor?: string;
+  borderWidth?: number;
+  borderRadius?: number;
+  opacity?: number;
+
+  // Text styling
   fontSize?: number;
   fontColor?: string;
-  type?: TreeType;
-  // Connection styling options
-  connectionType?: ConnectionType;
-  lineWidth?: number;
-  lineDasharray?: string;
+  fontFamily?: string;
+
+  // Advanced styling
+  shadow?: boolean;
+  shadowColor?: string;
+  shadowOffset?: Point;
+  gradient?: boolean;
+  gradientStartColor?: string;
+  gradientEndColor?: string;
+
+  // Icon support
+  icon?: string;
+  iconSize?: number;
+  iconColor?: string;
+
+  // Custom attributes for advanced customization
+  customAttributes?: { [key: string]: string | number };
+}
+
+/**
+ * EdgeConfig represents configuration for edge/connection styling and behavior
+ */
+export interface EdgeConfig {
+  // Connection type and basic styling
+  type?: ConnectionType;
+  color?: string;
+  width?: number;
+  opacity?: number;
+  dasharray?: string;
+
+  // Arrow/direction options
   showArrows?: boolean;
   arrowDirection?: ArrowDirection;
   arrowSize?: number;
+  arrowColor?: string;
+
+  // Curve options (for curved connections)
   curveRadius?: number;
-  // Edge text styling options
+
+  // Custom path options
+  customPath?: string;
+
+  // Edge text styling
   textSize?: number;
   textColor?: string;
   textBackgroundColor?: string;
 }
 
+/**
+ * TreeChartOptions represents configuration for the tree chart
+ */
+export interface TreeChartOptions {
+  // Chart layout and positioning
+  horizontalGap?: number;
+  verticalGap?: number;
+  verticalAlign?: VerticalAlignment;
+  horizontalAlign?: HorizontalAlignment;
+  type?: TreeType;
+
+  // Node configuration
+  nodeConfig?: NodeConfig;
+
+  // Edge configuration
+  edgeConfig?: EdgeConfig;
+}
 /**
  * SvgNodeData represents the position and dimensions of a node in the SVG
  */
@@ -159,4 +212,62 @@ export interface NodeMap {
  */
 export interface ParentChildMap {
   [key: string]: NodePosition[];
+}
+
+/**
+ * NodeType represents the different types of node shapes
+ */
+export type NodeType =
+  | "rectangle"
+  | "circle"
+  | "ellipse"
+  | "diamond"
+  | "hexagon"
+  | "triangle"
+  | "pentagon"
+  | "octagon"
+  | "star"
+  | "custom";
+
+/**
+ * NodeOptions represents configuration for drawing individual nodes
+ */
+export interface NodeOptions {
+  // Node type and positioning
+  type?: NodeType;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+
+  // Basic styling
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+  borderRadius?: number;
+  opacity?: number;
+
+  // Text content and styling
+  text?: string;
+  fontSize?: number;
+  fontColor?: string;
+  fontFamily?: string;
+  textAnchor?: "start" | "middle" | "end";
+  padding?: number;
+
+  // Advanced styling
+  shadow?: boolean;
+  shadowColor?: string;
+  shadowOffset?: Point;
+  gradient?: boolean;
+  gradientStartColor?: string;
+  gradientEndColor?: string;
+
+  // Icon support
+  icon?: string;
+  iconSize?: number;
+  iconColor?: string;
+
+  // Custom attributes for advanced customization
+  customAttributes?: { [key: string]: string | number };
 }

@@ -1,6 +1,6 @@
 # TreeCharts
 
-A flexible and customizable library for creating tree visualizations.
+A flexible and customizable library for creating tree visualizations with multiple rendering types and advanced styling options.
 
 ## Installation
 
@@ -31,8 +31,21 @@ const treeData = {
   ],
 };
 
-// Create a tree chart instance
-const chart = new TreeChart("container-id");
+// Create a tree chart instance with structured options
+const chart = new TreeChart("container-id", {
+  type: "direct",
+  nodeConfig: {
+    width: 100,
+    height: 50,
+    color: "#4CAF50",
+    fontSize: 12,
+    fontColor: "white",
+  },
+  edgeConfig: {
+    color: "#666",
+    width: 2,
+  },
+});
 
 // Render the chart
 chart.render(treeData);
@@ -45,55 +58,240 @@ TreeCharts supports four different visualization types:
 ### Direct Connections
 
 ```javascript
-const chart = new TreeChart("container-id", { type: "direct" });
+const chart = new TreeChart("container-id", {
+  type: "direct",
+  nodeConfig: { color: "#4CAF50" },
+  edgeConfig: { color: "#666" },
+});
 ```
 
 ### Right Angle Connections
 
 ```javascript
-const chart = new TreeChart("container-id", { type: "right-angle" });
+const chart = new TreeChart("container-id", {
+  type: "right-angle",
+  nodeConfig: { color: "#2196F3" },
+  edgeConfig: { color: "#666" },
+});
 ```
 
 ### Curved Connections
 
 ```javascript
-const chart = new TreeChart("container-id", { type: "curved" });
+const chart = new TreeChart("container-id", {
+  type: "curved",
+  nodeConfig: { color: "#FF9800" },
+  edgeConfig: {
+    color: "#666",
+    curveRadius: 20,
+  },
+});
 ```
 
 ### All Direction (Radial)
 
 ```javascript
-const chart = new TreeChart("container-id", { type: "all-direction" });
+const chart = new TreeChart("container-id", {
+  type: "all-direction",
+  nodeConfig: { color: "#9C27B0" },
+  edgeConfig: { color: "#666" },
+});
+```
+
+## Node Types
+
+The library supports multiple node shapes:
+
+```javascript
+// Rectangle nodes (default)
+nodeConfig: {
+  type: "rectangle";
+}
+
+// Circular nodes
+nodeConfig: {
+  type: "circle";
+}
+
+// Diamond nodes
+nodeConfig: {
+  type: "diamond";
+}
+
+// Hexagon nodes
+nodeConfig: {
+  type: "hexagon";
+}
+
+// Triangle nodes
+nodeConfig: {
+  type: "triangle";
+}
+
+// Pentagon nodes
+nodeConfig: {
+  type: "pentagon";
+}
+
+// Octagon nodes
+nodeConfig: {
+  type: "octagon";
+}
+
+// Star nodes
+nodeConfig: {
+  type: "star";
+}
+```
+
+## Complete Examples
+
+### Advanced Styling Example
+
+```javascript
+const chart = new TreeChart("container-id", {
+  type: "curved",
+  horizontalGap: 50,
+  verticalGap: 80,
+
+  nodeConfig: {
+    type: "circle",
+    width: 80,
+    height: 80,
+    gradient: true,
+    gradientStartColor: "#FF6B6B",
+    gradientEndColor: "#C0392B",
+    shadow: true,
+    shadowColor: "rgba(0,0,0,0.3)",
+    shadowOffset: { x: 3, y: 3 },
+    fontSize: 12,
+    fontColor: "white",
+  },
+
+  edgeConfig: {
+    type: "curved",
+    color: "#34495E",
+    width: 3,
+    showArrows: true,
+    arrowDirection: "source-to-target",
+    arrowSize: 10,
+    curveRadius: 25,
+  },
+});
+```
+
+### Diamond Nodes with Custom Styling
+
+```javascript
+const chart = new TreeChart("container-id", {
+  type: "direct",
+
+  nodeConfig: {
+    type: "diamond",
+    width: 100,
+    height: 60,
+    color: "#3498DB",
+    borderColor: "#2980B9",
+    borderWidth: 2,
+    fontSize: 11,
+    fontColor: "white",
+  },
+
+  edgeConfig: {
+    color: "#7F8C8D",
+    width: 2,
+    dasharray: "5,5", // Dashed lines
+    showArrows: true,
+  },
+});
 ```
 
 ## Configuration Options
 
-TreeCharts can be customized with various options:
+TreeCharts uses a structured options format that organizes configuration into logical groups:
+
+### Node Configuration (`nodeConfig`)
+
+Controls all aspects related to how nodes appear:
 
 ```javascript
 const chart = new TreeChart("container-id", {
-  // Type of tree visualization
-  type: "direct", // 'direct', 'right-angle', 'curved', 'all-direction'
+  nodeConfig: {
+    // Node shape and dimensions
+    type: "rectangle", // "rectangle", "circle", "diamond", "hexagon", "triangle", etc.
+    width: 100,
+    height: 50,
 
-  // Node dimensions
-  boxWidth: 80,
-  boxHeight: 40,
+    // Visual styling
+    color: "#4CAF50",
+    borderColor: "#2E7D32",
+    borderWidth: 2,
+    borderRadius: 8,
+    opacity: 1,
+
+    // Text styling
+    fontSize: 12,
+    fontColor: "white",
+    fontFamily: "Arial",
+
+    // Advanced styling
+    shadow: true,
+    shadowColor: "rgba(0,0,0,0.3)",
+    shadowOffset: { x: 2, y: 2 },
+    gradient: true,
+    gradientStartColor: "#4CAF50",
+    gradientEndColor: "#2E7D32",
+  },
+});
+```
+
+### Edge Configuration (`edgeConfig`)
+
+Controls all aspects related to connections between nodes:
+
+```javascript
+const chart = new TreeChart("container-id", {
+  edgeConfig: {
+    // Connection styling
+    type: "direct", // "direct", "right-angle", "curved", "custom"
+    color: "#666",
+    width: 2,
+    opacity: 1,
+    dasharray: "", // "5,5" for dashed lines
+
+    // Arrow options
+    showArrows: true,
+    arrowDirection: "source-to-target", // "source-to-target", "target-to-source", "both"
+    arrowSize: 8,
+    arrowColor: "#666",
+
+    // Curve options (for curved connections)
+    curveRadius: 20,
+
+    // Edge text styling
+    textSize: 10,
+    textColor: "#333",
+    textBackgroundColor: "white",
+  },
+});
+```
+
+### Chart Layout Options
+
+General chart layout and positioning:
+
+```javascript
+const chart = new TreeChart("container-id", {
+  // Visualization type
+  type: "direct", // "direct", "right-angle", "curved", "all-direction"
 
   // Spacing
-  horizontalGap: 30,
-  verticalGap: 80,
+  horizontalGap: 40,
+  verticalGap: 60,
 
   // Alignment
-  verticalAlign: "center", // 'left', 'center', 'right'
-  horizontalAlign: "top-to-bottom", // 'top-to-bottom', 'bottom-to-top'
-
-  // Styling
-  nodeColor: "skyblue",
-  lineColor: "black",
-  nodeBorderRadius: 0,
-  nodeBorderColor: "black",
-  fontSize: 14,
-  fontColor: "black",
+  verticalAlign: "center", // "left", "center", "right"
+  horizontalAlign: "top-to-bottom", // "top-to-bottom", "bottom-to-top"
 });
 ```
 
@@ -117,12 +315,18 @@ chart.update(newTreeData);
 
 ### setOptions(options)
 
-Updates chart options.
+Updates chart options using the structured format.
 
 ```javascript
 chart.setOptions({
-  nodeColor: "lightgreen",
-  lineColor: "#333",
+  nodeConfig: {
+    color: "#E74C3C",
+    borderRadius: 10,
+  },
+  edgeConfig: {
+    color: "#34495E",
+    width: 3,
+  },
 });
 ```
 
@@ -157,6 +361,54 @@ Gets the rendered SVG element.
 ```javascript
 const svg = chart.getSvg();
 ```
+
+## Data Format
+
+TreeCharts expects data in a specific nested format:
+
+```javascript
+const treeData = {
+  value: "Root Node", // Text to display in the node
+  edgeText: "edge label", // Optional: text to display on the edge leading to this node
+  child: [
+    // Array of child nodes
+    {
+      value: "Child 1",
+      edgeText: "to child 1",
+      child: [
+        {
+          value: "Grandchild 1.1",
+          edgeText: "to grandchild",
+          child: [], // Empty array for leaf nodes
+        },
+      ],
+    },
+    {
+      value: "Child 2",
+      child: [],
+    },
+  ],
+};
+```
+
+## Backward Compatibility
+
+The library maintains full backward compatibility with the old flat options format:
+
+```javascript
+// Legacy format still works
+const chart = new TreeChart("container-id", {
+  type: "direct",
+  nodeColor: "#87CEEB",
+  lineColor: "#333",
+  boxWidth: 100,
+  boxHeight: 50,
+  showArrows: true,
+  fontSize: 12,
+});
+```
+
+However, the structured format is recommended for new projects as it provides better organization and type safety.
 
 ## Development
 
