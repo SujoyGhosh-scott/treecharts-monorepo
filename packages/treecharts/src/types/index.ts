@@ -164,6 +164,44 @@ export interface EdgeConfig {
 }
 
 /**
+ * TitlePosition represents the positioning options for chart titles
+ */
+export interface TitlePosition {
+  horizontal: "left" | "center" | "right";
+  vertical: "top" | "bottom";
+}
+
+/**
+ * TitleConfig represents configuration for chart title and description
+ */
+export interface TitleConfig {
+  // Title text
+  title: string;
+  description: string;
+
+  // Position configuration
+  position: TitlePosition;
+
+  // Title styling
+  titleStyle: {
+    fontSize: number;
+    fontColor: string;
+    fontFamily: string;
+    fontWeight: string;
+    margin: number;
+  };
+
+  // Description styling
+  descriptionStyle: {
+    fontSize: number;
+    fontColor: string;
+    fontFamily: string;
+    fontWeight: string;
+    margin: number;
+  };
+}
+
+/**
  * TreeChartOptions represents configuration for the tree chart
  */
 export interface TreeChartOptions {
@@ -179,6 +217,9 @@ export interface TreeChartOptions {
 
   // Edge configuration
   edgeConfig?: EdgeConfig;
+
+  // Title configuration
+  titleConfig?: Partial<TitleConfig>;
 }
 /**
  * SvgNodeData represents the position and dimensions of a node in the SVG

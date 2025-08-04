@@ -1,4 +1,9 @@
-import { TreeChartOptions, NodeConfig, EdgeConfig } from "../types";
+import {
+  TreeChartOptions,
+  NodeConfig,
+  EdgeConfig,
+  TitleConfig,
+} from "../types";
 
 /**
  * SVG namespace for creating SVG elements
@@ -58,6 +63,30 @@ export const DEFAULT_OPTIONS: Required<TreeChartOptions> = {
     textColor: "#666666",
     textBackgroundColor: "",
   } as Required<EdgeConfig>,
+
+  // Default title configuration
+  titleConfig: {
+    title: "",
+    description: "",
+    position: {
+      horizontal: "center",
+      vertical: "top",
+    },
+    titleStyle: {
+      fontSize: 14,
+      fontColor: "#333333",
+      fontFamily: "Arial, sans-serif",
+      fontWeight: "bold",
+      margin: 30,
+    },
+    descriptionStyle: {
+      fontSize: 12,
+      fontColor: "#666666",
+      fontFamily: "Arial, sans-serif",
+      fontWeight: "normal",
+      margin: 20,
+    },
+  } as Required<TitleConfig>,
 };
 /**
  * Fixed dimensions for all-direction tree

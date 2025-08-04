@@ -31,9 +31,17 @@ const treeData = {
   ],
 };
 
-// Create a tree chart instance with structured options
+// Create a tree chart instance with title and structured options
 const chart = new TreeChart("container-id", {
   type: "direct",
+  titleConfig: {
+    title: "My Organization Chart",
+    description: "Team structure overview",
+    position: {
+      horizontal: "center",
+      vertical: "top",
+    },
+  },
   nodeConfig: {
     width: 100,
     height: 50,
@@ -295,7 +303,43 @@ const chart = new TreeChart("container-id", {
 });
 ```
 
-## Methods
+### Title Configuration (`titleConfig`)
+
+Add titles and descriptions to your charts:
+
+````javascript
+const chart = new TreeChart("container-id", {
+  titleConfig: {
+    // Title and description text
+    title: "My Organization Chart",
+    description: "Company hierarchy as of 2025",
+
+    // Position configuration
+    position: {
+      horizontal: "center", // "left", "center", "right"
+      vertical: "top", // "top", "bottom"
+    },
+
+    // Title styling (optional)
+    titleStyle: {
+      fontSize: 20,
+      fontColor: "#333333",
+      fontFamily: "Arial, sans-serif",
+      fontWeight: "bold",
+      margin: 20,
+    },
+
+    // Description styling (optional)
+    descriptionStyle: {
+      fontSize: 14,
+      fontColor: "#666666",
+      fontFamily: "Arial, sans-serif",
+      fontWeight: "normal",
+      margin: 10,
+    },
+  }
+});
+```## Methods
 
 ### render(data)
 
@@ -303,7 +347,7 @@ Renders the tree chart with the provided data.
 
 ```javascript
 chart.render(treeData);
-```
+````
 
 ### update(data)
 

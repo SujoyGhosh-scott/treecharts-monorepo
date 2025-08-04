@@ -3,6 +3,7 @@ import { DEFAULT_OPTIONS, SVG_NS } from "../constants";
 import { createSvgElement, getNodeKey } from "../utils/svgHelpers";
 import { ConnectionDrawer } from "../utils/ConnectionDrawer";
 import { NodeDrawer } from "../utils/NodeDrawer";
+import { TitleDrawer } from "../utils/TitleDrawer";
 
 /**
  * BaseRenderer class that all specific renderers extend
@@ -15,6 +16,7 @@ export abstract class BaseRenderer {
   protected svg: SVGSVGElement;
   protected connectionDrawer: ConnectionDrawer;
   protected nodeDrawer: NodeDrawer;
+  protected titleDrawer: TitleDrawer;
 
   /**
    * Constructor for BaseRenderer
@@ -37,6 +39,10 @@ export abstract class BaseRenderer {
         ...DEFAULT_OPTIONS.edgeConfig,
         ...options.edgeConfig,
       },
+      titleConfig: {
+        ...DEFAULT_OPTIONS.titleConfig,
+        ...options.titleConfig,
+      },
     } as Required<TreeChartOptions>;
 
     // Create SVG element
@@ -49,6 +55,9 @@ export abstract class BaseRenderer {
 
     // Initialize node drawer
     this.nodeDrawer = new NodeDrawer(this.svg);
+
+    // Initialize title drawer
+    this.titleDrawer = new TitleDrawer(this.svg, options.titleConfig);
   }
 
   /**
@@ -69,7 +78,68 @@ export abstract class BaseRenderer {
   protected calculateSvgHeight(): number {
     const boxHeight = this.options.nodeConfig!.height!;
     const { verticalGap } = this.options;
-    return this.formattedTree.length * (boxHeight + verticalGap);
+    const baseHeight = this.formattedTree.length * (boxHeight + verticalGap);
+
+    // Add space for title if provided
+    const titleSpace = this.calculateTitleSpace();
+    return baseHeight + titleSpace.top + titleSpace.bottom;
+  }
+
+  /**
+   * Calculate space needed for titles
+   */
+  protected calculateTitleSpace(): { top: number; bottom: number } {
+    let topSpace = 0;
+    let bottomSpace = 0;
+
+    // Get title configuration with defaults
+    const titleConfig = {
+      ...DEFAULT_OPTIONS.titleConfig,
+      ...this.options.titleConfig,
+      position: {
+        ...DEFAULT_OPTIONS.titleConfig.position,
+        ...this.options.titleConfig?.position,
+      },
+      titleStyle: {
+        ...DEFAULT_OPTIONS.titleConfig.titleStyle,
+        ...this.options.titleConfig?.titleStyle,
+      },
+      descriptionStyle: {
+        ...DEFAULT_OPTIONS.titleConfig.descriptionStyle,
+        ...this.options.titleConfig?.descriptionStyle,
+      },
+    };
+
+    // Only calculate space if title or description is provided
+    if (!titleConfig.title && !titleConfig.description) {
+      return { top: topSpace, bottom: bottomSpace };
+    }
+
+    const { vertical } = titleConfig.position;
+
+    if (vertical === "top") {
+      if (titleConfig.title) {
+        topSpace +=
+          titleConfig.titleStyle.fontSize! + titleConfig.titleStyle.margin!;
+      }
+      if (titleConfig.description) {
+        topSpace +=
+          titleConfig.descriptionStyle.fontSize! +
+          titleConfig.descriptionStyle.margin!;
+      }
+    } else {
+      if (titleConfig.title) {
+        bottomSpace +=
+          titleConfig.titleStyle.fontSize! + titleConfig.titleStyle.margin!;
+      }
+      if (titleConfig.description) {
+        bottomSpace +=
+          titleConfig.descriptionStyle.fontSize! +
+          titleConfig.descriptionStyle.margin!;
+      }
+    }
+
+    return { top: topSpace, bottom: bottomSpace };
   }
 
   /**
@@ -86,6 +156,10 @@ export abstract class BaseRenderer {
     const totalWidth = this.calculateSvgWidth();
     const totalHeight = this.calculateSvgHeight();
 
+    // Calculate offset for title space
+    const titleSpace = this.calculateTitleSpace();
+    const yOffset = titleSpace.top;
+
     this.formattedTree.forEach((level, levelIndex) => {
       const levelWidth = level.length * (boxWidth + horizontalGap);
 
@@ -100,12 +174,15 @@ export abstract class BaseRenderer {
       level.forEach((node, nodeIndex) => {
         const x = startX + nodeIndex * (boxWidth + horizontalGap);
 
-        // Calculate Y based on horizontal alignment
+        // Calculate Y based on horizontal alignment and add title offset
         let y;
         if (horizontalAlign === "bottom-to-top") {
-          y = totalHeight - (levelIndex + 1) * (boxHeight + verticalGap);
+          y =
+            totalHeight -
+            (levelIndex + 1) * (boxHeight + verticalGap) -
+            titleSpace.bottom;
         } else {
-          y = levelIndex * (boxHeight + verticalGap);
+          y = levelIndex * (boxHeight + verticalGap) + yOffset;
         }
 
         // Create node and store its position using NodeDrawer
@@ -158,6 +235,20 @@ export abstract class BaseRenderer {
   public render(): SVGSVGElement {
     this.createNodes();
     this.drawConnections();
+
+    // Draw title and description
+    this.renderTitle();
+
     return this.svg;
+  }
+
+  /**
+   * Render chart title and description
+   */
+  protected renderTitle(): void {
+    const svgWidth = parseInt(this.svg.getAttribute("width") || "0");
+    const svgHeight = parseInt(this.svg.getAttribute("height") || "0");
+
+    this.titleDrawer.drawTitle(svgWidth, svgHeight);
   }
 }

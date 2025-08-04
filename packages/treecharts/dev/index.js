@@ -125,6 +125,10 @@ const lineStyleSelect = document.getElementById("line-style");
 const showArrowsInput = document.getElementById("show-arrows");
 const arrowDirectionSelect = document.getElementById("arrow-direction");
 const arrowSizeInput = document.getElementById("arrow-size");
+const chartTitleInput = document.getElementById("chart-title");
+const chartDescriptionInput = document.getElementById("chart-description");
+const titleHorizontalSelect = document.getElementById("title-horizontal");
+const titleVerticalSelect = document.getElementById("title-vertical");
 const updateButton = document.getElementById("update-chart");
 const resetButton = document.getElementById("reset-options");
 
@@ -150,6 +154,14 @@ updateButton.addEventListener("click", () => {
       showArrows: showArrowsInput.checked,
       arrowDirection: arrowDirectionSelect.value,
       arrowSize: parseInt(arrowSizeInput.value),
+    },
+    titleConfig: {
+      title: chartTitleInput.value,
+      description: chartDescriptionInput.value,
+      position: {
+        horizontal: titleHorizontalSelect.value,
+        vertical: titleVerticalSelect.value,
+      },
     },
   };
 
@@ -188,6 +200,10 @@ resetButton.addEventListener("click", () => {
   showArrowsInput.checked = false;
   arrowDirectionSelect.value = "source-to-target";
   arrowSizeInput.value = "6";
+  chartTitleInput.value = "";
+  chartDescriptionInput.value = "";
+  titleHorizontalSelect.value = "center";
+  titleVerticalSelect.value = "top";
 
   // Re-render all charts with default options in structured format
   const defaultOptions = {
@@ -206,6 +222,14 @@ resetButton.addEventListener("click", () => {
       showArrows: false,
       arrowDirection: "source-to-target",
       arrowSize: 6,
+    },
+    titleConfig: {
+      title: "",
+      description: "",
+      position: {
+        horizontal: "center",
+        vertical: "top",
+      },
     },
   };
 

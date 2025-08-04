@@ -1,7 +1,7 @@
 {
   "name": "treecharts",
-  "version": "0.1.0",
-  "description": "Tree chart visualization library",
+  "version": "0.2.0",
+  "description": "A flexible and customizable library for creating tree visualizations with multiple rendering types and advanced styling options",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",

@@ -163,6 +163,37 @@
         <input type="number" id="border-radius" value="0" min="0" max="20" />
       </div>
 
+      <div class="control-group">
+        <label for="chart-title">Chart Title:</label>
+        <input type="text" id="chart-title" placeholder="Enter chart title" />
+      </div>
+
+      <div class="control-group">
+        <label for="chart-description">Chart Description:</label>
+        <input
+          type="text"
+          id="chart-description"
+          placeholder="Enter chart description"
+        />
+      </div>
+
+      <div class="control-group">
+        <label for="title-horizontal">Title Position (Horizontal):</label>
+        <select id="title-horizontal">
+          <option value="left">Left</option>
+          <option value="center" selected>Center</option>
+          <option value="right">Right</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="title-vertical">Title Position (Vertical):</label>
+        <select id="title-vertical">
+          <option value="top" selected>Top</option>
+          <option value="bottom">Bottom</option>
+        </select>
+      </div>
+
       <button id="update-chart">Update Chart</button>
       <button id="reset-options">Reset Options</button>
     </div>
