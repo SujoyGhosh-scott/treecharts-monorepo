@@ -49,7 +49,7 @@ export class RightAngleRenderer extends BaseRenderer {
             { x: x1, y: y1 },
             { x: x2, y: y2 },
             {
-              type: this.options.edgeConfig!.type,
+              type: "right-angle", // Always use right-angle connections for RightAngleRenderer
               color: this.options.edgeConfig!.color,
               width: this.options.edgeConfig!.width,
               dasharray: this.options.edgeConfig!.dasharray,
@@ -92,7 +92,7 @@ export class RightAngleRenderer extends BaseRenderer {
           { x: leftmostChild.centerX!, y: horizontalY },
           { x: rightmostChild.centerX!, y: horizontalY },
           {
-            type: this.options.edgeConfig!.type,
+            type: "right-angle", // Always use right-angle connections for RightAngleRenderer
             color: this.options.edgeConfig!.color,
             width: this.options.edgeConfig!.width,
             dasharray: this.options.edgeConfig!.dasharray,
@@ -111,7 +111,7 @@ export class RightAngleRenderer extends BaseRenderer {
           { x: parentNode.centerX!, y: parentY },
           { x: parentNode.centerX!, y: horizontalY },
           {
-            type: this.options.edgeConfig!.type,
+            type: "right-angle", // Always use right-angle connections for RightAngleRenderer
             color: this.options.edgeConfig!.color,
             width: this.options.edgeConfig!.width,
             dasharray: this.options.edgeConfig!.dasharray,
@@ -137,7 +137,7 @@ export class RightAngleRenderer extends BaseRenderer {
               { x: parentX, y: horizontalY },
               { x: leftmostChild.centerX!, y: horizontalY },
               {
-                type: this.options.edgeConfig!.type,
+                type: "right-angle", // Always use right-angle connections for RightAngleRenderer
                 color: this.options.edgeConfig!.color,
                 width: this.options.edgeConfig!.width,
                 dasharray: this.options.edgeConfig!.dasharray,
@@ -149,7 +149,7 @@ export class RightAngleRenderer extends BaseRenderer {
               { x: rightmostChild.centerX!, y: horizontalY },
               { x: parentX, y: horizontalY },
               {
-                type: this.options.edgeConfig!.type,
+                type: "right-angle", // Always use right-angle connections for RightAngleRenderer
                 color: this.options.edgeConfig!.color,
                 width: this.options.edgeConfig!.width,
                 dasharray: this.options.edgeConfig!.dasharray,
@@ -175,7 +175,7 @@ export class RightAngleRenderer extends BaseRenderer {
               { x: childNode.centerX!, y: horizontalY },
               { x: childNode.centerX!, y: childY },
               {
-                type: this.options.edgeConfig!.type,
+                type: "right-angle", // Always use right-angle connections for RightAngleRenderer
                 color: this.options.edgeConfig!.color,
                 width: this.options.edgeConfig!.width,
                 dasharray: this.options.edgeConfig!.dasharray,

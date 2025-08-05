@@ -41,7 +41,7 @@ export class CurvedRenderer extends BaseRenderer {
               { x: x1, y: y1 },
               { x: x2, y: y2 },
               {
-                type: this.options.edgeConfig!.type,
+                type: "curved", // Always use curved connections for CurvedRenderer
                 color: this.options.edgeConfig!.color,
                 width: this.options.edgeConfig!.width,
                 dasharray: this.options.edgeConfig!.dasharray,

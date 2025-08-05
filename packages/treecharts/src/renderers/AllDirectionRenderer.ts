@@ -434,7 +434,7 @@ export class AllDirectionRenderer extends BaseRenderer {
               { x: parentConnectX, y: parentConnectY },
               { x: childConnectX, y: childConnectY },
               {
-                type: this.options.edgeConfig!.type,
+                type: "direct", // Always use direct connections for AllDirectionRenderer (radial layout)
                 color: this.options.edgeConfig!.color,
                 width: this.options.edgeConfig!.width,
                 dasharray: this.options.edgeConfig!.dasharray,

@@ -41,7 +41,7 @@ export class DirectRenderer extends BaseRenderer {
               { x: x1, y: y1 },
               { x: x2, y: y2 },
               {
-                type: edgeConfig!.type,
+                type: "direct", // Always use direct connections for DirectRenderer
                 color: edgeConfig!.color,
                 width: edgeConfig!.width,
                 dasharray: edgeConfig!.dasharray,
