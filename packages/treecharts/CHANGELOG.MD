@@ -48,7 +48,7 @@
 
 #### Fixed
 
-- **Right Angle Chart Alignment**: Resolved child node misalignment issues in hierarchical layouts
+- **Right Angle Tree Chart**: Fixed overlapping horizontal connector lines when multiple parents have children at the same level by implementing alternating offset positioning
 - **All Direction Chart Overflow**: Fixed scrolling and viewport overflow problems in radial layouts
 - **Text Vertical Centering**: Improved text positioning within nodes using proper SVG baseline alignment
 - **Edge Connection Points**: Enhanced connection point calculations for different node shapes

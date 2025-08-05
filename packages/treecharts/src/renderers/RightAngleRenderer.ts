@@ -15,6 +15,37 @@ export class RightAngleRenderer extends BaseRenderer {
     // Build a map of parent to children
     const parentChildPair = createParentChildMap(this.formattedTree);
 
+    // Group parents by their children's level to handle alternating offsets properly
+    const parentsByChildLevel: { [childLevel: number]: string[] } = {};
+    Object.keys(parentChildPair).forEach((parentKey) => {
+      const children = parentChildPair[parentKey];
+      if (children.length > 0) {
+        // Consider ALL parents with children
+        const childLevel = children[0].level;
+        if (!parentsByChildLevel[childLevel]) {
+          parentsByChildLevel[childLevel] = [];
+        }
+        parentsByChildLevel[childLevel].push(parentKey);
+      }
+    });
+
+    // Create alternating offset map for each child level
+    const alternatingOffsetMap: { [parentKey: string]: number } = {};
+    const offsetIncrement = 10; // 10px offset for alternating lines
+
+    Object.keys(parentsByChildLevel).forEach((childLevel) => {
+      const parents = parentsByChildLevel[parseInt(childLevel)];
+      parents.forEach((parentKey, index) => {
+        // Alternate: 0, +10, -10, +20, -20, +30, -30, etc.
+        const offsetMultiplier = Math.ceil((index + 1) / 2);
+        const isPositive = index % 2 === 1;
+        alternatingOffsetMap[parentKey] = isPositive
+          ? offsetIncrement * offsetMultiplier
+          : -offsetIncrement * offsetMultiplier;
+        if (index === 0) alternatingOffsetMap[parentKey] = 0; // First parent gets no offset
+      });
+    });
+
     // Process each parent-child relationship
     Object.keys(parentChildPair).forEach((parentKey) => {
       const parent = JSON.parse(parentKey);
@@ -25,7 +56,7 @@ export class RightAngleRenderer extends BaseRenderer {
       if (!parentNode || !children.length) return;
 
       if (children.length === 1) {
-        // Single child - draw direct connection
+        // Single child - draw direct connection with alternating offset if needed
         const child = children[0];
         const childNodeKey = getNodeKey(child.level, child.position);
         const childNode = this.nodeMap[childNodeKey];
@@ -45,23 +76,83 @@ export class RightAngleRenderer extends BaseRenderer {
             y2 = childNode.topY!;
           }
 
-          this.connectionDrawer.drawConnection(
-            { x: x1, y: y1 },
-            { x: x2, y: y2 },
-            {
-              type: "right-angle", // Always use right-angle connections for RightAngleRenderer
-              color: this.options.edgeConfig!.color,
-              width: this.options.edgeConfig!.width,
-              dasharray: this.options.edgeConfig!.dasharray,
-              showArrows: this.options.edgeConfig!.showArrows,
-              arrowDirection: this.options.edgeConfig!.arrowDirection,
-              arrowSize: this.options.edgeConfig!.arrowSize,
-              edgeText: childNode.node?.edgeText || undefined,
-              textSize: this.options.edgeConfig!.textSize,
-              textColor: this.options.edgeConfig!.textColor,
-              textBackgroundColor: this.options.edgeConfig!.textBackgroundColor,
-            }
-          );
+          // Check if we need alternating offset for single child (when other parents have children at same level)
+          const alternatingOffset = alternatingOffsetMap[parentKey] || 0;
+          if (alternatingOffset !== 0) {
+            // Create a right-angle connection with offset to avoid overlapping with other parent-child connections
+            const baseY =
+              horizontalAlign === "bottom-to-top"
+                ? y2 + verticalGap / 2
+                : y2 - verticalGap / 2;
+            const offsetY =
+              horizontalAlign === "bottom-to-top"
+                ? baseY - alternatingOffset
+                : baseY + alternatingOffset;
+
+            // Draw vertical line from parent
+            this.connectionDrawer.drawConnection(
+              { x: x1, y: y1 },
+              { x: x1, y: offsetY },
+              {
+                type: "right-angle",
+                color: this.options.edgeConfig!.color,
+                width: this.options.edgeConfig!.width,
+                dasharray: this.options.edgeConfig!.dasharray,
+                showArrows: this.options.edgeConfig!.showArrows,
+                arrowDirection: this.options.edgeConfig!.arrowDirection,
+                arrowSize: this.options.edgeConfig!.arrowSize,
+              }
+            );
+
+            // Draw horizontal line
+            this.connectionDrawer.drawConnection(
+              { x: x1, y: offsetY },
+              { x: x2, y: offsetY },
+              {
+                type: "right-angle",
+                color: this.options.edgeConfig!.color,
+                width: this.options.edgeConfig!.width,
+                dasharray: this.options.edgeConfig!.dasharray,
+              }
+            );
+
+            // Draw vertical line to child
+            this.connectionDrawer.drawConnection(
+              { x: x2, y: offsetY },
+              { x: x2, y: y2 },
+              {
+                type: "right-angle",
+                color: this.options.edgeConfig!.color,
+                width: this.options.edgeConfig!.width,
+                dasharray: this.options.edgeConfig!.dasharray,
+                edgeText: childNode.node?.edgeText || undefined,
+                textSize: this.options.edgeConfig!.textSize,
+                textColor: this.options.edgeConfig!.textColor,
+                textBackgroundColor:
+                  this.options.edgeConfig!.textBackgroundColor,
+              }
+            );
+          } else {
+            // Direct connection for first parent at this level
+            this.connectionDrawer.drawConnection(
+              { x: x1, y: y1 },
+              { x: x2, y: y2 },
+              {
+                type: "right-angle",
+                color: this.options.edgeConfig!.color,
+                width: this.options.edgeConfig!.width,
+                dasharray: this.options.edgeConfig!.dasharray,
+                showArrows: this.options.edgeConfig!.showArrows,
+                arrowDirection: this.options.edgeConfig!.arrowDirection,
+                arrowSize: this.options.edgeConfig!.arrowSize,
+                edgeText: childNode.node?.edgeText || undefined,
+                textSize: this.options.edgeConfig!.textSize,
+                textColor: this.options.edgeConfig!.textColor,
+                textBackgroundColor:
+                  this.options.edgeConfig!.textBackgroundColor,
+              }
+            );
+          }
         }
       } else {
         // Multiple children - draw right angle connections
@@ -79,13 +170,20 @@ export class RightAngleRenderer extends BaseRenderer {
         const rightmostChild =
           this.nodeMap[getNodeKey(level, rightmostPosition)];
 
-        // Calculate horizontal line Y position
-        let horizontalY: number;
+        // Calculate horizontal line Y position with alternating offset
+        let baseHorizontalY: number;
         if (horizontalAlign === "bottom-to-top") {
-          horizontalY = leftmostChild.bottomY! + verticalGap / 2;
+          baseHorizontalY = leftmostChild.bottomY! + verticalGap / 2;
         } else {
-          horizontalY = leftmostChild.topY! - verticalGap / 2;
+          baseHorizontalY = leftmostChild.topY! - verticalGap / 2;
         }
+
+        // Apply alternating offset to avoid overlapping horizontal connector lines
+        const alternatingOffset = alternatingOffsetMap[parentKey] || 0;
+        const horizontalY =
+          horizontalAlign === "bottom-to-top"
+            ? baseHorizontalY - alternatingOffset
+            : baseHorizontalY + alternatingOffset;
 
         // Draw horizontal connector line
         this.connectionDrawer.drawConnection(
