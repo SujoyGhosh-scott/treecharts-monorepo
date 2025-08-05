@@ -11,7 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Major Architecture Redesign**: Implemented class-based architecture with dedicated managers
 - **NodeDrawer Class**: Common node manager supporting multiple node shapes (rectangle, circle, diamond, hexagon, triangle, pentagon, octagon, star)
 - **ConnectionDrawer Class**: Common edge manager with advanced styling capabilities
 - **Structured Options Format**: Introduced `nodeConfig` and `edgeConfig` for better organization
@@ -28,8 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - **Right Angle Chart Alignment**: Fixed misalignment issues with child nodes in right-angle layouts
+- **Right Angle Tree Chart**: Fixed child node connector edges overlapping issue
 - **All Direction Chart Overflow**: Resolved scrolling and overflow issues in radial layouts
-- **Text Vertical Centering**: Improved text positioning within nodes
 
 ### Changed
 
@@ -42,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Initial monorepo setup with Turborepo
+- Implemented class-based architecture
 - Core TreeCharts library with TypeScript support
 - Four visualization types: direct, right-angle, curved, and all-direction
 - Development environment for the core library
