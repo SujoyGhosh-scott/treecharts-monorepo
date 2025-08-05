@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **NodeDrawer Class**: Common node manager supporting multiple node shapes (rectangle, circle, diamond, hexagon, triangle, pentagon, octagon, star)
 - **ConnectionDrawer Class**: Common edge manager with advanced styling capabilities
 - **Structured Options Format**: Introduced `nodeConfig` and `edgeConfig` for better organization
+- **Per-Node Styling**: Individual nodes can now have custom styling via node-level `nodeConfig`
+  - Override colors, shapes, sizes, fonts, and other properties per node
+  - Selective styling - only specified nodes get custom styling
+  - Works across all chart types (direct, right-angle, curved, all-direction)
 - **Advanced Node Styling**: Gradients, shadows, border radius, opacity, and custom styling options
 - **Directed Edges**: Added arrow support with configurable direction (source-to-target, target-to-source, both)
 - **Edge Labels**: Support for text labels on connections with styling options
