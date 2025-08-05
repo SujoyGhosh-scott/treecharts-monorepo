@@ -12,11 +12,21 @@ const sampleTree = {
           value: "D",
           edgeText: "to D",
           child: [
-            { value: "K", edgeText: "to K", child: [] },
+            {
+              value: "K",
+              edgeText: "to K",
+              nodeConfig: { color: "#98FB98", type: "circle" },
+              child: [],
+            },
             { value: "L", edgeText: "to L", child: [] },
           ],
         },
-        { value: "E", edgeText: "to E", child: [] },
+        {
+          value: "E",
+          edgeText: "to E",
+          nodeConfig: { color: "#FFB6C1" },
+          child: [],
+        },
       ],
     },
     {
@@ -33,7 +43,17 @@ const sampleTree = {
       value: "I",
       edgeText: "edge text 4",
       child: [
-        { value: "M", edgeText: "to M", child: [] },
+        {
+          value: "M",
+          edgeText: "to M",
+          nodeConfig: {
+            color: "#FFD700",
+            type: "diamond",
+            fontSize: 16,
+            fontColor: "#8B4513",
+          },
+          child: [],
+        },
         { value: "N", edgeText: "to N", child: [] },
       ],
     },

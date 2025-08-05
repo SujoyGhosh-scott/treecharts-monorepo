@@ -10,6 +10,12 @@
   - Rectangle (default), Circle, Diamond, Hexagon, Triangle, Pentagon, Octagon, Star, Custom
   - Advanced styling: gradients, shadows, border radius, opacity
   - Improved text positioning with proper vertical centering
+- **Per-Node Styling System**: Revolutionary node-level customization feature:
+  - Individual nodes can override default styling via node-level `nodeConfig`
+  - Supports all nodeConfig properties: color, type, size, fonts, borders, etc.
+  - Selective styling - only specified nodes get custom appearance
+  - Full compatibility across all chart types (direct, right-angle, curved, all-direction)
+  - Maintains backward compatibility with existing charts
 - **ConnectionDrawer Class**: Dedicated edge management system with:
   - Multiple connection types (direct, right-angle, curved, custom)
   - Advanced styling options (colors, widths, dash patterns)
@@ -82,6 +88,33 @@ const chart = new TreeChart("container", {
     color: "#333",
   },
 });
+```
+
+**Per-Node Styling (NEW in v0.2):**
+
+```javascript
+const treeData = {
+  value: "Root",
+  child: [
+    {
+      value: "Child1",
+      nodeConfig: {
+        color: "#FFB6C1", // Custom pink background
+        type: "circle", // Custom circle shape
+      },
+      child: [],
+    },
+    {
+      value: "Child2",
+      nodeConfig: {
+        color: "#98FB98", // Custom green background
+        fontSize: 16, // Custom font size
+        fontColor: "#8B4513", // Custom font color
+      },
+      child: [],
+    },
+  ],
+};
 ```
 
 _Note: Backward compatibility is maintained for legacy options._

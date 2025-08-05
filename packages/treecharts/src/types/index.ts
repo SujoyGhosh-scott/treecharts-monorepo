@@ -5,6 +5,7 @@ export interface TreeNode {
   value: string;
   child: TreeNode[];
   edgeText?: string; // Optional text to display on the edge leading to this node
+  nodeConfig?: Partial<NodeConfig>; // Optional node-specific styling configuration
   [key: string]: any; // Allow for additional properties
 }
 
@@ -15,6 +16,7 @@ export interface FormattedTreeNode {
   text: string;
   parent: string | null;
   edgeText?: string | null; // Edge text from parent to this node
+  nodeConfig?: Partial<NodeConfig>; // Node-specific styling configuration
   [key: string]: any; // Allow for additional properties
 }
 

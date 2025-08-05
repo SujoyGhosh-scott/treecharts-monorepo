@@ -185,27 +185,36 @@ export abstract class BaseRenderer {
           y = levelIndex * (boxHeight + verticalGap) + yOffset;
         }
 
+        // Merge default nodeConfig with node-specific config (if provided)
+        const effectiveNodeConfig = node.nodeConfig
+          ? { ...nodeConfig, ...node.nodeConfig }
+          : nodeConfig;
+
+        // Use effective width and height (might be overridden by node-specific config)
+        const effectiveWidth = effectiveNodeConfig.width || boxWidth;
+        const effectiveHeight = effectiveNodeConfig.height || boxHeight;
+
         // Create node and store its position using NodeDrawer
         const nodeResult = this.nodeDrawer.drawNode({
-          type: nodeConfig.type,
+          type: effectiveNodeConfig.type,
           x,
           y,
-          width: boxWidth,
-          height: boxHeight,
-          fill: nodeConfig.color,
-          stroke: nodeConfig.borderColor,
-          strokeWidth: nodeConfig.borderWidth,
-          borderRadius: nodeConfig.borderRadius,
+          width: effectiveWidth,
+          height: effectiveHeight,
+          fill: effectiveNodeConfig.color,
+          stroke: effectiveNodeConfig.borderColor,
+          strokeWidth: effectiveNodeConfig.borderWidth,
+          borderRadius: effectiveNodeConfig.borderRadius,
           text: node.text,
-          fontSize: nodeConfig.fontSize,
-          fontColor: nodeConfig.fontColor,
-          opacity: nodeConfig.opacity,
-          shadow: nodeConfig.shadow,
-          shadowColor: nodeConfig.shadowColor,
-          shadowOffset: nodeConfig.shadowOffset,
-          gradient: nodeConfig.gradient,
-          gradientStartColor: nodeConfig.gradientStartColor,
-          gradientEndColor: nodeConfig.gradientEndColor,
+          fontSize: effectiveNodeConfig.fontSize,
+          fontColor: effectiveNodeConfig.fontColor,
+          opacity: effectiveNodeConfig.opacity,
+          shadow: effectiveNodeConfig.shadow,
+          shadowColor: effectiveNodeConfig.shadowColor,
+          shadowOffset: effectiveNodeConfig.shadowOffset,
+          gradient: effectiveNodeConfig.gradient,
+          gradientStartColor: effectiveNodeConfig.gradientStartColor,
+          gradientEndColor: effectiveNodeConfig.gradientEndColor,
         });
 
         this.nodeMap[getNodeKey(levelIndex, nodeIndex)] = {
@@ -213,9 +222,9 @@ export abstract class BaseRenderer {
           y,
           centerX: nodeResult.centerX,
           centerY: nodeResult.centerY,
-          width: boxWidth,
-          height: boxHeight,
-          bottomY: y + boxHeight,
+          width: effectiveWidth,
+          height: effectiveHeight,
+          bottomY: y + effectiveHeight,
           topY: y,
           node,
         };

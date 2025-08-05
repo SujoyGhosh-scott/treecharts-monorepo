@@ -30,6 +30,7 @@ export function formatTree(tree: TreeNode): FormattedTree {
         text: node.tree.value,
         parent: node.parent ? JSON.stringify(node.parent) : null,
         edgeText: node.tree.edgeText || null, // Preserve edge text if present
+        nodeConfig: node.tree.nodeConfig || undefined, // Preserve node-specific config if present
       });
     } else {
       // Create a new level
@@ -38,6 +39,7 @@ export function formatTree(tree: TreeNode): FormattedTree {
           text: node.tree.value,
           parent: node.parent ? JSON.stringify(node.parent) : null,
           edgeText: node.tree.edgeText || null, // Preserve edge text if present
+          nodeConfig: node.tree.nodeConfig || undefined, // Preserve node-specific config if present
         },
       ]);
     }

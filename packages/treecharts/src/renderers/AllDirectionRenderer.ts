@@ -117,27 +117,36 @@ export class AllDirectionRenderer extends BaseRenderer {
       const rootX = this.centerX - boxWidth / 2;
       const rootY = this.centerY - boxHeight / 2;
 
+      // Merge default nodeConfig with node-specific config (if provided)
+      const effectiveNodeConfig = rootNode.nodeConfig
+        ? { ...nodeConfig, ...rootNode.nodeConfig }
+        : nodeConfig;
+
+      // Use effective width and height (might be overridden by node-specific config)
+      const effectiveWidth = effectiveNodeConfig.width || boxWidth;
+      const effectiveHeight = effectiveNodeConfig.height || boxHeight;
+
       // Create root node using NodeDrawer
       const rootNodeResult = this.nodeDrawer.drawNode({
-        type: nodeConfig.type,
+        type: effectiveNodeConfig.type,
         x: rootX,
         y: rootY,
-        width: boxWidth,
-        height: boxHeight,
-        fill: nodeConfig.color,
-        stroke: nodeConfig.borderColor,
-        strokeWidth: nodeConfig.borderWidth,
-        borderRadius: nodeConfig.borderRadius,
+        width: effectiveWidth,
+        height: effectiveHeight,
+        fill: effectiveNodeConfig.color,
+        stroke: effectiveNodeConfig.borderColor,
+        strokeWidth: effectiveNodeConfig.borderWidth,
+        borderRadius: effectiveNodeConfig.borderRadius,
         text: rootNode.text,
-        fontSize: nodeConfig.fontSize,
-        fontColor: nodeConfig.fontColor,
-        opacity: nodeConfig.opacity,
-        shadow: nodeConfig.shadow,
-        shadowColor: nodeConfig.shadowColor,
-        shadowOffset: nodeConfig.shadowOffset,
-        gradient: nodeConfig.gradient,
-        gradientStartColor: nodeConfig.gradientStartColor,
-        gradientEndColor: nodeConfig.gradientEndColor,
+        fontSize: effectiveNodeConfig.fontSize,
+        fontColor: effectiveNodeConfig.fontColor,
+        opacity: effectiveNodeConfig.opacity,
+        shadow: effectiveNodeConfig.shadow,
+        shadowColor: effectiveNodeConfig.shadowColor,
+        shadowOffset: effectiveNodeConfig.shadowOffset,
+        gradient: effectiveNodeConfig.gradient,
+        gradientStartColor: effectiveNodeConfig.gradientStartColor,
+        gradientEndColor: effectiveNodeConfig.gradientEndColor,
       });
 
       this.nodeMap[`0-0`] = {
@@ -145,8 +154,8 @@ export class AllDirectionRenderer extends BaseRenderer {
         centerY: this.centerY,
         x: rootX,
         y: rootY,
-        width: boxWidth,
-        height: boxHeight,
+        width: effectiveWidth,
+        height: effectiveHeight,
       };
     }
 
@@ -158,6 +167,18 @@ export class AllDirectionRenderer extends BaseRenderer {
 
       // Distribute first level children in a circle
       firstLevelChildren.forEach((childInfo: any, index: number) => {
+        const childNode =
+          this.formattedTree[childInfo.level][childInfo.position];
+
+        // Merge default nodeConfig with node-specific config (if provided)
+        const effectiveNodeConfig = childNode.nodeConfig
+          ? { ...nodeConfig, ...childNode.nodeConfig }
+          : nodeConfig;
+
+        // Use effective width and height (might be overridden by node-specific config)
+        const effectiveWidth = effectiveNodeConfig.width || boxWidth;
+        const effectiveHeight = effectiveNodeConfig.height || boxHeight;
+
         // Calculate angle (in radians)
         const angleStep = (2 * Math.PI) / childCount;
         const angle = index * angleStep;
@@ -170,30 +191,32 @@ export class AllDirectionRenderer extends BaseRenderer {
           : Math.min(120, ALL_DIRECTION_DIMENSIONS.verticalGap); // Increased vertical distance
 
         // Calculate position
-        const nodeX = this.centerX + Math.cos(angle) * distance - boxWidth / 2;
-        const nodeY = this.centerY + Math.sin(angle) * distance - boxHeight / 2;
+        const nodeX =
+          this.centerX + Math.cos(angle) * distance - effectiveWidth / 2;
+        const nodeY =
+          this.centerY + Math.sin(angle) * distance - effectiveHeight / 2;
 
         // Create node using NodeDrawer
         const nodeResult = this.nodeDrawer.drawNode({
-          type: nodeConfig.type,
+          type: effectiveNodeConfig.type,
           x: nodeX,
           y: nodeY,
-          width: boxWidth,
-          height: boxHeight,
-          fill: nodeConfig.color,
-          stroke: nodeConfig.borderColor,
-          strokeWidth: nodeConfig.borderWidth,
-          borderRadius: nodeConfig.borderRadius,
-          text: this.formattedTree[childInfo.level][childInfo.position].text,
-          fontSize: nodeConfig.fontSize,
-          fontColor: nodeConfig.fontColor,
-          opacity: nodeConfig.opacity,
-          shadow: nodeConfig.shadow,
-          shadowColor: nodeConfig.shadowColor,
-          shadowOffset: nodeConfig.shadowOffset,
-          gradient: nodeConfig.gradient,
-          gradientStartColor: nodeConfig.gradientStartColor,
-          gradientEndColor: nodeConfig.gradientEndColor,
+          width: effectiveWidth,
+          height: effectiveHeight,
+          fill: effectiveNodeConfig.color,
+          stroke: effectiveNodeConfig.borderColor,
+          strokeWidth: effectiveNodeConfig.borderWidth,
+          borderRadius: effectiveNodeConfig.borderRadius,
+          text: childNode.text,
+          fontSize: effectiveNodeConfig.fontSize,
+          fontColor: effectiveNodeConfig.fontColor,
+          opacity: effectiveNodeConfig.opacity,
+          shadow: effectiveNodeConfig.shadow,
+          shadowColor: effectiveNodeConfig.shadowColor,
+          shadowOffset: effectiveNodeConfig.shadowOffset,
+          gradient: effectiveNodeConfig.gradient,
+          gradientStartColor: effectiveNodeConfig.gradientStartColor,
+          gradientEndColor: effectiveNodeConfig.gradientEndColor,
         });
 
         // Store node data with direction
@@ -201,12 +224,12 @@ export class AllDirectionRenderer extends BaseRenderer {
         const dirY = Math.sin(angle);
 
         this.nodeMap[getNodeKey(childInfo.level, childInfo.position)] = {
-          centerX: nodeX + boxWidth / 2,
-          centerY: nodeY + boxHeight / 2,
+          centerX: nodeX + effectiveWidth / 2,
+          centerY: nodeY + effectiveHeight / 2,
           x: nodeX,
           y: nodeY,
-          width: boxWidth,
-          height: boxHeight,
+          width: effectiveWidth,
+          height: effectiveHeight,
           direction: { x: dirX, y: dirY },
           angle: angle,
         };
@@ -228,6 +251,15 @@ export class AllDirectionRenderer extends BaseRenderer {
           const parentNode = this.nodeMap[parentKey];
 
           if (parentNode) {
+            // Merge default nodeConfig with node-specific config (if provided)
+            const effectiveNodeConfig = node.nodeConfig
+              ? { ...nodeConfig, ...node.nodeConfig }
+              : nodeConfig;
+
+            // Use effective width and height (might be overridden by node-specific config)
+            const effectiveWidth = effectiveNodeConfig.width || boxWidth;
+            const effectiveHeight = effectiveNodeConfig.height || boxHeight;
+
             // Get parent's direction and angle
             const direction = parentNode.direction || { x: 0, y: 0 };
             const parentAngle = parentNode.angle || 0;
@@ -266,35 +298,35 @@ export class AllDirectionRenderer extends BaseRenderer {
 
             // Create node using NodeDrawer
             const nodeResult = this.nodeDrawer.drawNode({
-              type: nodeConfig.type,
+              type: effectiveNodeConfig.type,
               x: nodeX,
               y: nodeY,
-              width: boxWidth,
-              height: boxHeight,
-              fill: nodeConfig.color,
-              stroke: nodeConfig.borderColor,
-              strokeWidth: nodeConfig.borderWidth,
-              borderRadius: nodeConfig.borderRadius,
+              width: effectiveWidth,
+              height: effectiveHeight,
+              fill: effectiveNodeConfig.color,
+              stroke: effectiveNodeConfig.borderColor,
+              strokeWidth: effectiveNodeConfig.borderWidth,
+              borderRadius: effectiveNodeConfig.borderRadius,
               text: node.text,
-              fontSize: nodeConfig.fontSize,
-              fontColor: nodeConfig.fontColor,
-              opacity: nodeConfig.opacity,
-              shadow: nodeConfig.shadow,
-              shadowColor: nodeConfig.shadowColor,
-              shadowOffset: nodeConfig.shadowOffset,
-              gradient: nodeConfig.gradient,
-              gradientStartColor: nodeConfig.gradientStartColor,
-              gradientEndColor: nodeConfig.gradientEndColor,
+              fontSize: effectiveNodeConfig.fontSize,
+              fontColor: effectiveNodeConfig.fontColor,
+              opacity: effectiveNodeConfig.opacity,
+              shadow: effectiveNodeConfig.shadow,
+              shadowColor: effectiveNodeConfig.shadowColor,
+              shadowOffset: effectiveNodeConfig.shadowOffset,
+              gradient: effectiveNodeConfig.gradient,
+              gradientStartColor: effectiveNodeConfig.gradientStartColor,
+              gradientEndColor: effectiveNodeConfig.gradientEndColor,
             });
 
             // Store node data
             this.nodeMap[getNodeKey(levelIndex, nodeIndex)] = {
-              centerX: nodeX + boxWidth / 2,
-              centerY: nodeY + boxHeight / 2,
+              centerX: nodeX + effectiveWidth / 2,
+              centerY: nodeY + effectiveHeight / 2,
               x: nodeX,
               y: nodeY,
-              width: boxWidth,
-              height: boxHeight,
+              width: effectiveWidth,
+              height: effectiveHeight,
               direction: { x: dirX, y: dirY },
               angle: angle,
             };
