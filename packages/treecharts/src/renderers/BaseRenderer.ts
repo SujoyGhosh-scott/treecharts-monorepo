@@ -79,7 +79,8 @@ export abstract class BaseRenderer {
     );
     const boxWidth = this.options.nodeConfig!.width!;
     const { horizontalGap } = this.options;
-    return maxNodes * (boxWidth + horizontalGap);
+    const basePadding = 20; // Add padding around the chart
+    return maxNodes * (boxWidth + horizontalGap) + basePadding * 2;
   }
 
   /**
@@ -88,7 +89,9 @@ export abstract class BaseRenderer {
   protected calculateSvgHeight(): number {
     const boxHeight = this.options.nodeConfig!.height!;
     const { verticalGap } = this.options;
-    const baseHeight = this.formattedTree.length * (boxHeight + verticalGap);
+    const basePadding = 20; // Add padding around the chart
+    const baseHeight =
+      this.formattedTree.length * (boxHeight + verticalGap) + basePadding * 2;
 
     // Add space for title if provided
     const titleSpace = this.calculateTitleSpace();
@@ -162,35 +165,37 @@ export abstract class BaseRenderer {
     const nodeConfig = this.options.nodeConfig!;
     const boxWidth = nodeConfig.width!;
     const boxHeight = nodeConfig.height!;
+    const basePadding = 20; // Same padding value used in size calculations
 
     const totalWidth = this.calculateSvgWidth();
     const totalHeight = this.calculateSvgHeight();
 
     // Calculate offset for title space
     const titleSpace = this.calculateTitleSpace();
-    const yOffset = titleSpace.top;
+    const yOffset = titleSpace.top + basePadding;
 
     this.formattedTree.forEach((level, levelIndex) => {
       const levelWidth = level.length * (boxWidth + horizontalGap);
 
-      // Calculate starting X based on alignment
-      let startX = 0;
+      // Calculate starting X based on alignment, accounting for padding
+      let startX = basePadding;
       if (verticalAlign === "center") {
         startX = (totalWidth - levelWidth) / 2;
       } else if (verticalAlign === "right") {
-        startX = totalWidth - levelWidth;
+        startX = totalWidth - levelWidth - basePadding;
       }
 
       level.forEach((node, nodeIndex) => {
         const x = startX + nodeIndex * (boxWidth + horizontalGap);
 
-        // Calculate Y based on horizontal alignment and add title offset
+        // Calculate Y based on horizontal alignment and add title offset and padding
         let y;
         if (horizontalAlign === "bottom-to-top") {
           y =
             totalHeight -
             (levelIndex + 1) * (boxHeight + verticalGap) -
-            titleSpace.bottom;
+            titleSpace.bottom -
+            basePadding;
         } else {
           y = levelIndex * (boxHeight + verticalGap) + yOffset;
         }
