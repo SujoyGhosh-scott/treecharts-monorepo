@@ -435,25 +435,6 @@ const treeData = {
 };
 ```
 
-## Backward Compatibility
-
-The library maintains full backward compatibility with the old flat options format:
-
-```javascript
-// Legacy format still works
-const chart = new TreeChart("container-id", {
-  type: "direct",
-  nodeColor: "#87CEEB",
-  lineColor: "#333",
-  boxWidth: 100,
-  boxHeight: 50,
-  showArrows: true,
-  fontSize: 12,
-});
-```
-
-However, the structured format is recommended for new projects as it provides better organization and type safety.
-
 ## Development
 
 To set up the development environment:

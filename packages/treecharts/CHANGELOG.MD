@@ -21,7 +21,6 @@
   - Supports all nodeConfig properties: color, type, size, fonts, borders, etc.
   - Selective styling - only specified nodes get custom appearance
   - Full compatibility across all chart types (direct, right-angle, curved, all-direction)
-  - Maintains backward compatibility with existing charts
 - **ConnectionDrawer Class**: Dedicated edge management system with:
   - Multiple connection types (direct, right-angle, curved, custom)
   - Advanced styling options (colors, widths, dash patterns)
@@ -62,7 +61,7 @@
 
 #### Changed
 
-- **Breaking Change**: Migrated from flat options structure to nested `nodeConfig`/`edgeConfig` format
+- **Breaking Change**: Completely migrated to structured `nodeConfig`/`edgeConfig` format (removed legacy flat options)
 - **Class-based Architecture**: Refactored from helper functions to dedicated manager classes
 - **Improved Performance**: Optimized rendering pipeline with dedicated drawing classes
 - **Enhanced Type Definitions**: Better TypeScript support with comprehensive interface definitions
@@ -70,7 +69,7 @@
 
 #### Migration Guide
 
-**Before (v0.1):**
+**Old format (no longer supported):**
 
 ```javascript
 const chart = new TreeChart("container", {
@@ -81,7 +80,7 @@ const chart = new TreeChart("container", {
 });
 ```
 
-**After (v0.2):**
+**New format (v0.2+):**
 
 ```javascript
 const chart = new TreeChart("container", {
@@ -122,8 +121,6 @@ const treeData = {
   ],
 };
 ```
-
-_Note: Backward compatibility is maintained for legacy options._
 
 ## [0.1.0] - 2025-04-27
 

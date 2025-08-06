@@ -4,6 +4,8 @@ import { createParentChildMap } from "../utils/treeFormatter";
 import { ALL_DIRECTION_DIMENSIONS, SVG_NS } from "../constants";
 import { ConnectionDrawer } from "../utils/ConnectionDrawer";
 import { NodeDrawer } from "../utils/NodeDrawer";
+import { TitleDrawer } from "../utils/TitleDrawer";
+import { TreeChartOptions } from "../types";
 
 /**
  * AllDirectionRenderer creates a radial tree layout where nodes spread out in all directions
@@ -15,7 +17,7 @@ export class AllDirectionRenderer extends BaseRenderer {
   /**
    * Override constructor to calculate dynamic dimensions for all-direction layout
    */
-  constructor(formattedTree: any, options = {}) {
+  constructor(formattedTree: any, options: TreeChartOptions = {}) {
     super(formattedTree, {
       ...options,
       horizontalGap: ALL_DIRECTION_DIMENSIONS.horizontalGap,
@@ -24,14 +26,21 @@ export class AllDirectionRenderer extends BaseRenderer {
 
     // Calculate dynamic dimensions based on tree depth and breadth
     const { svgWidth, svgHeight } = this.calculateDynamicDimensions();
-    this.centerX = svgWidth / 2;
-    this.centerY = svgHeight / 2;
 
-    // Override SVG with calculated dimensions
+    // Calculate title space to adjust the chart positioning
+    const titleSpace = this.calculateTitleSpace();
+
+    this.centerX = svgWidth / 2;
+    // Position chart center in the available space after accounting for titles
+    this.centerY =
+      titleSpace.top + (svgHeight - titleSpace.top - titleSpace.bottom) / 2;
+
+    // Override SVG with calculated dimensions + title space
+    const totalSvgHeight = svgHeight + titleSpace.top + titleSpace.bottom;
     this.svg = createSvgElement(
       svgWidth,
-      svgHeight,
-      `0 0 ${svgWidth} ${svgHeight}`
+      totalSvgHeight,
+      `0 0 ${svgWidth} ${totalSvgHeight}`
     );
 
     // Reinitialize connection drawer with the new SVG
@@ -39,6 +48,9 @@ export class AllDirectionRenderer extends BaseRenderer {
 
     // Reinitialize node drawer with the new SVG
     this.nodeDrawer = new NodeDrawer(this.svg);
+
+    // Reinitialize title drawer with the new SVG
+    this.titleDrawer = new TitleDrawer(this.svg, options.titleConfig);
   }
 
   /**
@@ -89,7 +101,7 @@ export class AllDirectionRenderer extends BaseRenderer {
     // Add generous padding to ensure no clipping
     const padding = 50;
 
-    // Calculate required canvas size
+    // Calculate required canvas size for the chart content only
     const requiredWidth = maxHorizontalExtent * 2 + padding;
     const requiredHeight = maxVerticalExtent * 2 + padding;
 
