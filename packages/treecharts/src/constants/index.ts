@@ -3,6 +3,7 @@ import {
   NodeConfig,
   EdgeConfig,
   TitleConfig,
+  ActionConfig,
 } from "../types";
 
 /**
@@ -13,7 +14,9 @@ export const SVG_NS = "http://www.w3.org/2000/svg";
 /**
  * Default options for tree chart rendering
  */
-export const DEFAULT_OPTIONS: Required<TreeChartOptions> = {
+export const DEFAULT_OPTIONS: Required<
+  Omit<TreeChartOptions, "actionConfig">
+> & { actionConfig?: ActionConfig } = {
   // Chart layout defaults
   horizontalGap: 30,
   verticalGap: 80,

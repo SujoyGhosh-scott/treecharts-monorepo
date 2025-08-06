@@ -204,6 +204,27 @@ export interface TitleConfig {
 }
 
 /**
+ * Action button position options
+ */
+export type ActionPosition =
+  | "top-left"
+  | "top-right"
+  | "bottom-left"
+  | "bottom-right";
+
+/**
+ * ActionConfig represents configuration for action buttons
+ */
+export interface ActionConfig {
+  // Download action
+  download?: {
+    enabled: boolean;
+    position?: ActionPosition;
+    filename?: string;
+  };
+}
+
+/**
  * TreeChartOptions represents configuration for the tree chart
  */
 export interface TreeChartOptions {
@@ -222,6 +243,9 @@ export interface TreeChartOptions {
 
   // Title configuration
   titleConfig?: Partial<TitleConfig>;
+
+  // Action configuration
+  actionConfig?: ActionConfig;
 }
 /**
  * SvgNodeData represents the position and dimensions of a node in the SVG

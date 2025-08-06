@@ -6,6 +6,12 @@
 
 #### Added
 
+- **Action Button System**: Interactive chart actions with customizable positioning:
+  - Download button for exporting charts as SVG files
+  - Configurable positioning: top-left, top-right, bottom-left, bottom-right
+  - Customizable filename for downloaded files
+  - Subtle design that doesn't interfere with chart focus
+  - Easy to enable/disable via actionConfig.download.enabled
 - **NodeDrawer Class**: Dedicated node management system supporting multiple node shapes:
   - Rectangle (default), Circle, Diamond, Hexagon, Triangle, Pentagon, Octagon, Star, Custom
   - Advanced styling: gradients, shadows, border radius, opacity

@@ -98,6 +98,13 @@ const rightAngleChart = new TreeChart("right-angle-container", {
   edgeConfig: {
     textSize: 11,
   },
+  actionConfig: {
+    download: {
+      enabled: true,
+      position: "top-right",
+      filename: "right-angle-chart.svg",
+    },
+  },
 });
 
 const curvedChart = new TreeChart("curved-container", {
@@ -109,6 +116,13 @@ const curvedChart = new TreeChart("curved-container", {
   },
   edgeConfig: {
     textSize: 11,
+  },
+  actionConfig: {
+    download: {
+      enabled: true,
+      position: "bottom-left",
+      filename: "curved-chart.svg",
+    },
   },
 });
 

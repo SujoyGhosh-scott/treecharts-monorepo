@@ -4,6 +4,7 @@ import { createSvgElement, getNodeKey } from "../utils/svgHelpers";
 import { ConnectionDrawer } from "../utils/ConnectionDrawer";
 import { NodeDrawer } from "../utils/NodeDrawer";
 import { TitleDrawer } from "../utils/TitleDrawer";
+import { ActionDrawer } from "../utils/ActionDrawer";
 
 /**
  * BaseRenderer class that all specific renderers extend
@@ -11,12 +12,16 @@ import { TitleDrawer } from "../utils/TitleDrawer";
  */
 export abstract class BaseRenderer {
   protected formattedTree: FormattedTree;
-  protected options: Required<TreeChartOptions>;
+  protected options: Required<Omit<TreeChartOptions, "actionConfig">> & {
+    actionConfig?: TreeChartOptions["actionConfig"];
+  };
   protected nodeMap: NodeMap = {};
   protected svg: SVGSVGElement;
   protected connectionDrawer: ConnectionDrawer;
   protected nodeDrawer: NodeDrawer;
   protected titleDrawer: TitleDrawer;
+  protected actionDrawer?: ActionDrawer;
+  protected containerElement?: HTMLElement;
 
   /**
    * Constructor for BaseRenderer
@@ -43,7 +48,12 @@ export abstract class BaseRenderer {
         ...DEFAULT_OPTIONS.titleConfig,
         ...options.titleConfig,
       },
-    } as Required<TreeChartOptions>;
+      actionConfig: {
+        ...options.actionConfig,
+      },
+    } as Required<Omit<TreeChartOptions, "actionConfig">> & {
+      actionConfig?: TreeChartOptions["actionConfig"];
+    };
 
     // Create SVG element
     const svgWidth = this.calculateSvgWidth();
@@ -248,7 +258,31 @@ export abstract class BaseRenderer {
     // Draw title and description
     this.renderTitle();
 
+    // Draw action buttons if configured
+    this.renderActions();
+
     return this.svg;
+  }
+
+  /**
+   * Set container element for action positioning
+   */
+  public setContainer(containerElement: HTMLElement): void {
+    this.containerElement = containerElement;
+  }
+
+  /**
+   * Render action buttons
+   */
+  protected renderActions(): void {
+    if (this.options.actionConfig && this.containerElement) {
+      this.actionDrawer = new ActionDrawer(
+        this.svg,
+        this.options.actionConfig,
+        this.containerElement
+      );
+      this.actionDrawer.drawActions();
+    }
   }
 
   /**

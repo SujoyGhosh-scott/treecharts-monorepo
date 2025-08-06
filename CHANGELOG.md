@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Action Button System**: Interactive chart controls with download functionality
+  - Download button to export charts as SVG files
+  - Configurable button positioning (top-left, top-right, bottom-left, bottom-right)
+  - Custom filename support for downloads
+  - Subtle, non-intrusive design
 - **NodeDrawer Class**: Common node manager supporting multiple node shapes (rectangle, circle, diamond, hexagon, triangle, pentagon, octagon, star)
 - **ConnectionDrawer Class**: Common edge manager with advanced styling capabilities
 - **Structured Options Format**: Introduced `nodeConfig` and `edgeConfig` for better organization

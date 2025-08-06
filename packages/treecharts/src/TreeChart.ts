@@ -8,7 +8,9 @@ import { DEFAULT_OPTIONS } from "./constants";
  */
 export class TreeChart {
   private container: HTMLElement | null = null;
-  private options: Required<TreeChartOptions>;
+  private options: Required<Omit<TreeChartOptions, "actionConfig">> & {
+    actionConfig?: TreeChartOptions["actionConfig"];
+  };
   private formattedTree: FormattedTree = [];
   private svg: SVGSVGElement | null = null;
 
@@ -31,7 +33,9 @@ export class TreeChart {
     this.options = {
       ...DEFAULT_OPTIONS,
       ...options,
-    } as Required<TreeChartOptions>;
+    } as Required<Omit<TreeChartOptions, "actionConfig">> & {
+      actionConfig?: TreeChartOptions["actionConfig"];
+    };
   }
 
   /**
@@ -58,7 +62,9 @@ export class TreeChart {
     this.options = {
       ...this.options,
       ...options,
-    } as Required<TreeChartOptions>;
+    } as Required<Omit<TreeChartOptions, "actionConfig">> & {
+      actionConfig?: TreeChartOptions["actionConfig"];
+    };
     return this;
   }
 
@@ -89,6 +95,11 @@ export class TreeChart {
       this.formattedTree,
       this.options
     );
+
+    // Set container for action positioning
+    if (this.container) {
+      renderer.setContainer(this.container);
+    }
 
     // Render the tree
     this.svg = renderer.render();
