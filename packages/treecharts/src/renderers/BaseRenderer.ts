@@ -165,19 +165,31 @@ export abstract class BaseRenderer {
     const nodeConfig = this.options.nodeConfig!;
     const boxWidth = nodeConfig.width!;
     const boxHeight = nodeConfig.height!;
-    const basePadding = 20; // Same padding value used in size calculations
+    const basePadding = 20;
 
     const totalWidth = this.calculateSvgWidth();
     const totalHeight = this.calculateSvgHeight();
-
-    // Calculate offset for title space
     const titleSpace = this.calculateTitleSpace();
     const yOffset = titleSpace.top + basePadding;
 
+    // First pass: calculate actual heights for each level
+    const levelHeights: number[] = [];
+    const levelNodeData: Array<
+      Array<{
+        node: any;
+        nodeIndex: number;
+        effectiveNodeConfig: any;
+        effectiveWidth: number;
+        effectiveHeight: number;
+        x: number;
+      }>
+    > = [];
+
     this.formattedTree.forEach((level, levelIndex) => {
+      let maxHeightInLevel = boxHeight;
       const levelWidth = level.length * (boxWidth + horizontalGap);
 
-      // Calculate starting X based on alignment, accounting for padding
+      // Calculate starting X based on alignment
       let startX = basePadding;
       if (verticalAlign === "center") {
         startX = (totalWidth - levelWidth) / 2;
@@ -185,65 +197,164 @@ export abstract class BaseRenderer {
         startX = totalWidth - levelWidth - basePadding;
       }
 
-      level.forEach((node, nodeIndex) => {
+      const levelNodes: Array<{
+        node: any;
+        nodeIndex: number;
+        effectiveNodeConfig: any;
+        effectiveWidth: number;
+        effectiveHeight: number;
+        x: number;
+      }> = [];
+
+      level.forEach((node: any, nodeIndex: number) => {
         const x = startX + nodeIndex * (boxWidth + horizontalGap);
 
-        // Calculate Y based on horizontal alignment and add title offset and padding
-        let y;
-        if (horizontalAlign === "bottom-to-top") {
-          y =
-            totalHeight -
-            (levelIndex + 1) * (boxHeight + verticalGap) -
-            titleSpace.bottom -
-            basePadding;
-        } else {
-          y = levelIndex * (boxHeight + verticalGap) + yOffset;
-        }
-
-        // Merge default nodeConfig with node-specific config (if provided)
+        // Merge default nodeConfig with node-specific config
         const effectiveNodeConfig = node.nodeConfig
           ? { ...nodeConfig, ...node.nodeConfig }
           : nodeConfig;
 
-        // Use effective width and height (might be overridden by node-specific config)
         const effectiveWidth = effectiveNodeConfig.width || boxWidth;
         const effectiveHeight = effectiveNodeConfig.height || boxHeight;
 
-        // Create node and store its position using NodeDrawer
-        const nodeResult = this.nodeDrawer.drawNode({
-          type: effectiveNodeConfig.type,
-          x,
-          y,
-          width: effectiveWidth,
-          height: effectiveHeight,
-          fill: effectiveNodeConfig.color,
-          stroke: effectiveNodeConfig.borderColor,
-          strokeWidth: effectiveNodeConfig.borderWidth,
-          borderRadius: effectiveNodeConfig.borderRadius,
-          text: node.text,
-          fontSize: effectiveNodeConfig.fontSize,
-          fontColor: effectiveNodeConfig.fontColor,
-          opacity: effectiveNodeConfig.opacity,
-          shadow: effectiveNodeConfig.shadow,
-          shadowColor: effectiveNodeConfig.shadowColor,
-          shadowOffset: effectiveNodeConfig.shadowOffset,
-          gradient: effectiveNodeConfig.gradient,
-          gradientStartColor: effectiveNodeConfig.gradientStartColor,
-          gradientEndColor: effectiveNodeConfig.gradientEndColor,
-        });
+        // For node-with-description types, calculate the actual height
+        if (
+          effectiveNodeConfig.type === "node-with-description" &&
+          node.description
+        ) {
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
+          if (context) {
+            const maxNodeWidth = 200;
+            const lineHeight = 1.2;
+            const padding = 5;
+            const fontSize = effectiveNodeConfig.fontSize || 14;
+            const descriptionFontSize = 11;
+            const descriptionMarginTop = 4;
 
-        this.nodeMap[getNodeKey(levelIndex, nodeIndex)] = {
-          x,
-          y,
-          centerX: nodeResult.centerX,
-          centerY: nodeResult.centerY,
-          width: effectiveWidth,
-          height: effectiveHeight,
-          bottomY: y + effectiveHeight,
-          topY: y,
+            context.font = `${descriptionFontSize}px ${
+              effectiveNodeConfig.fontFamily || "Arial, sans-serif"
+            }`;
+            const availableWidth = maxNodeWidth - padding * 2;
+
+            const words = node.description.split(" ");
+            let lines = 1;
+            let currentLineWidth = 0;
+
+            for (const word of words) {
+              const wordWidth = context.measureText(word + " ").width;
+              if (
+                currentLineWidth + wordWidth > availableWidth &&
+                currentLineWidth > 0
+              ) {
+                lines++;
+                currentLineWidth = wordWidth;
+              } else {
+                currentLineWidth += wordWidth;
+              }
+            }
+
+            const totalTextHeight =
+              fontSize +
+              descriptionMarginTop +
+              lines * descriptionFontSize * lineHeight;
+            const calculatedHeight = Math.max(
+              effectiveHeight,
+              totalTextHeight + padding * 2
+            );
+            maxHeightInLevel = Math.max(maxHeightInLevel, calculatedHeight);
+          }
+        } else {
+          maxHeightInLevel = Math.max(maxHeightInLevel, effectiveHeight);
+        }
+
+        levelNodes.push({
           node,
-        };
+          nodeIndex,
+          effectiveNodeConfig,
+          effectiveWidth,
+          effectiveHeight,
+          x,
+        });
       });
+
+      levelHeights.push(maxHeightInLevel);
+      levelNodeData.push(levelNodes);
+    });
+
+    // Second pass: create nodes with adjusted Y positions
+    let cumulativeY = yOffset;
+
+    levelNodeData.forEach((levelNodes, levelIndex) => {
+      const levelHeight = levelHeights[levelIndex];
+
+      levelNodes.forEach(
+        ({
+          node,
+          nodeIndex,
+          effectiveNodeConfig,
+          effectiveWidth,
+          effectiveHeight,
+          x,
+        }) => {
+          // Calculate Y position using actual level heights
+          let y;
+          if (horizontalAlign === "bottom-to-top") {
+            const remainingLevels = levelHeights
+              .slice(levelIndex + 1)
+              .reduce((sum, h) => sum + h + verticalGap, 0);
+            y =
+              totalHeight -
+              remainingLevels -
+              levelHeight -
+              titleSpace.bottom -
+              basePadding;
+          } else {
+            y = cumulativeY;
+          }
+
+          // Create node using NodeDrawer
+          const nodeResult = this.nodeDrawer.drawNode({
+            type: effectiveNodeConfig.type,
+            x,
+            y,
+            width: effectiveWidth,
+            height: effectiveHeight,
+            fill: effectiveNodeConfig.color,
+            stroke: effectiveNodeConfig.borderColor,
+            strokeWidth: effectiveNodeConfig.borderWidth,
+            borderRadius: effectiveNodeConfig.borderRadius,
+            text: node.text,
+            description: node.description,
+            fontSize: effectiveNodeConfig.fontSize,
+            fontColor: effectiveNodeConfig.fontColor,
+            opacity: effectiveNodeConfig.opacity,
+            shadow: effectiveNodeConfig.shadow,
+            shadowColor: effectiveNodeConfig.shadowColor,
+            shadowOffset: effectiveNodeConfig.shadowOffset,
+            gradient: effectiveNodeConfig.gradient,
+            gradientStartColor: effectiveNodeConfig.gradientStartColor,
+            gradientEndColor: effectiveNodeConfig.gradientEndColor,
+          });
+
+          this.nodeMap[getNodeKey(levelIndex, nodeIndex)] = {
+            x: nodeResult.bounds.x,
+            y: nodeResult.bounds.y,
+            centerX: nodeResult.centerX,
+            centerY: nodeResult.centerY,
+            width: nodeResult.bounds.width,
+            height: nodeResult.bounds.height,
+            bottomY: nodeResult.bounds.y + nodeResult.bounds.height,
+            topY: nodeResult.bounds.y,
+            node,
+          };
+        }
+      );
+
+      // Move to next level (only for top-to-bottom)
+      if (horizontalAlign !== "bottom-to-top") {
+        cumulativeY += levelHeight + verticalGap;
+      }
     });
   }
 

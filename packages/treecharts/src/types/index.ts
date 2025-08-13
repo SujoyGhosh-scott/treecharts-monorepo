@@ -3,6 +3,7 @@
  */
 export interface TreeNode {
   value: string;
+  description?: string; // Optional description for node-with-description type
   child: TreeNode[];
   edgeText?: string; // Optional text to display on the edge leading to this node
   nodeConfig?: Partial<NodeConfig>; // Optional node-specific styling configuration
@@ -14,6 +15,7 @@ export interface TreeNode {
  */
 export interface FormattedTreeNode {
   text: string;
+  description?: string; // Description for node-with-description type
   parent: string | null;
   edgeText?: string | null; // Edge text from parent to this node
   nodeConfig?: Partial<NodeConfig>; // Node-specific styling configuration
@@ -294,7 +296,8 @@ export type NodeType =
   | "pentagon"
   | "octagon"
   | "star"
-  | "custom";
+  | "custom"
+  | "node-with-description";
 
 /**
  * NodeOptions represents configuration for drawing individual nodes
@@ -316,11 +319,17 @@ export interface NodeOptions {
 
   // Text content and styling
   text?: string;
+  description?: string; // For node-with-description type
   fontSize?: number;
   fontColor?: string;
   fontFamily?: string;
   textAnchor?: "start" | "middle" | "end";
   padding?: number;
+
+  // Description-specific styling
+  descriptionFontSize?: number;
+  descriptionFontColor?: string;
+  descriptionMarginTop?: number;
 
   // Advanced styling
   shadow?: boolean;
