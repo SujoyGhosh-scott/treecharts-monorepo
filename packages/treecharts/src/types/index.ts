@@ -300,6 +300,18 @@ export type NodeType =
   | "node-with-description";
 
 /**
+ * LevelNodeData represents the processed node data for a specific level during rendering
+ */
+export interface LevelNodeData {
+  node: FormattedTreeNode;
+  nodeIndex: number;
+  effectiveNodeConfig: NodeConfig;
+  effectiveWidth: number;
+  effectiveHeight: number;
+  x: number;
+}
+
+/**
  * NodeOptions represents configuration for drawing individual nodes
  */
 export interface NodeOptions {

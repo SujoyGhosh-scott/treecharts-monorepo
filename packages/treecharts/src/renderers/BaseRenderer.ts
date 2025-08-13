@@ -1,4 +1,9 @@
-import { FormattedTree, TreeChartOptions, NodeMap } from "../types";
+import {
+  FormattedTree,
+  TreeChartOptions,
+  NodeMap,
+  LevelNodeData,
+} from "../types";
 import { DEFAULT_OPTIONS, SVG_NS } from "../constants";
 import { createSvgElement, getNodeKey } from "../utils/svgHelpers";
 import { ConnectionDrawer } from "../utils/ConnectionDrawer";
@@ -174,16 +179,7 @@ export abstract class BaseRenderer {
 
     // First pass: calculate actual heights for each level
     const levelHeights: number[] = [];
-    const levelNodeData: Array<
-      Array<{
-        node: any;
-        nodeIndex: number;
-        effectiveNodeConfig: any;
-        effectiveWidth: number;
-        effectiveHeight: number;
-        x: number;
-      }>
-    > = [];
+    const levelNodeData: Array<Array<LevelNodeData>> = [];
 
     this.formattedTree.forEach((level, levelIndex) => {
       let maxHeightInLevel = boxHeight;
@@ -197,14 +193,7 @@ export abstract class BaseRenderer {
         startX = totalWidth - levelWidth - basePadding;
       }
 
-      const levelNodes: Array<{
-        node: any;
-        nodeIndex: number;
-        effectiveNodeConfig: any;
-        effectiveWidth: number;
-        effectiveHeight: number;
-        x: number;
-      }> = [];
+      const levelNodes: Array<LevelNodeData> = [];
 
       level.forEach((node: any, nodeIndex: number) => {
         const x = startX + nodeIndex * (boxWidth + horizontalGap);
