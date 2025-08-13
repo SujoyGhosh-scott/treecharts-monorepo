@@ -108,7 +108,7 @@ const chart = new TreeChart("container-id", {
 
 ## Node Types
 
-The library supports multiple node shapes:
+The library supports multiple node shapes and types:
 
 ```javascript
 // Rectangle nodes (default)
@@ -150,9 +150,128 @@ nodeConfig: {
 nodeConfig: {
   type: "star";
 }
+
+// Node with Description (NEW in v0.3.0)
+nodeConfig: {
+  type: "node-with-description";
+}
 ```
 
+### Node with Description (v0.3.0+)
+
+The `node-with-description` type allows you to display both a main value and descriptive text in a single node, perfect for organizational charts, process flows, or any scenario where additional context is valuable.
+
+```javascript
+const orgChartData = {
+  value: "Engineering",
+  description:
+    "Software development and R&D teams responsible for product innovation",
+  nodeConfig: { type: "node-with-description" },
+  child: [
+    {
+      value: "Frontend",
+      description: "User interface development",
+      nodeConfig: { type: "node-with-description" },
+      child: [],
+    },
+    {
+      value: "Backend",
+      description: "Server-side logic and APIs",
+      nodeConfig: { type: "node-with-description" },
+      child: [],
+    },
+  ],
+};
+
+const chart = new TreeChart("container-id", {
+  type: "right-angle",
+  nodeConfig: {
+    type: "node-with-description",
+    color: "#4CAF50",
+  },
+});
+
+chart.render(orgChartData);
+```
+
+**Features of Node with Description:**
+
+- **Automatic Text Wrapping**: Long descriptions wrap intelligently at word boundaries
+- **Dynamic Sizing**: Nodes resize automatically based on content length
+- **Smart Layout**: Chart layout adjusts to prevent overlapping with variable-height nodes
+- **Typography Hierarchy**: Main text is bold, description text is smaller and gray
+- **Maximum Width**: Configurable maximum width prevents overly wide nodes
+
 ## Complete Examples
+
+### Node with Description Example (v0.3.0+)
+
+```javascript
+const organizationChart = new TreeChart("container-id", {
+  type: "right-angle",
+  titleConfig: {
+    title: "Organization Structure with Descriptions",
+    description: "Detailed view of company departments and their functions",
+    position: { horizontal: "center", vertical: "top" },
+  },
+  nodeConfig: {
+    type: "node-with-description",
+    width: 120,
+    height: 60,
+    color: "#4CAF50",
+    borderRadius: 8,
+    fontSize: 14,
+    fontColor: "white",
+  },
+  edgeConfig: {
+    type: "right-angle",
+    color: "#666",
+    width: 2,
+  },
+});
+
+const orgData = {
+  value: "Company Overview",
+  description: "Global technology corporation",
+  child: [
+    {
+      value: "Engineering",
+      description:
+        "Software development and R&D teams, Software development and R&D teams",
+      child: [
+        {
+          value: "Frontend",
+          description: "User interface development",
+          child: [],
+        },
+        {
+          value: "Backend",
+          description: "Server-side logic and APIs",
+          child: [],
+        },
+      ],
+    },
+    {
+      value: "Marketing",
+      description: "Brand promotion and customer acquisition",
+      child: [
+        {
+          value: "Digital Marketing",
+          description: "Online campaigns and social media",
+          child: [],
+        },
+      ],
+    },
+    {
+      value: "Sales",
+      description: "Revenue generation and client relations",
+      child: [],
+    },
+  ],
+};
+
+organizationChart.render(orgData);
+```
 
 ### Advanced Styling Example
 

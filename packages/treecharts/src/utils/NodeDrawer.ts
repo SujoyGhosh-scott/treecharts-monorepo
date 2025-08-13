@@ -19,11 +19,15 @@ export class NodeDrawer {
     borderRadius: 0,
     opacity: 1,
     text: "",
+    description: "",
     fontSize: 14,
     fontColor: "black",
     fontFamily: "Arial, sans-serif",
     textAnchor: "middle",
     padding: 5,
+    descriptionFontSize: 11,
+    descriptionFontColor: "#666666",
+    descriptionMarginTop: 4,
     shadow: false,
     shadowColor: "rgba(0,0,0,0.3)",
     shadowOffset: { x: 2, y: 2 },
@@ -52,16 +56,24 @@ export class NodeDrawer {
     const finalOptions = { ...this.defaultOptions, ...options };
 
     let nodeElements: SVGElement[] = [];
+
+    // Create the main node shape based on type (this will set calculated dimensions for node-with-description)
+    const shapeElement = this.createNodeShape(finalOptions);
+    nodeElements.push(shapeElement);
+
+    // Calculate bounds after shape creation to get calculated dimensions
     let bounds = {
       x: finalOptions.x,
       y: finalOptions.y,
-      width: finalOptions.width,
-      height: finalOptions.height,
+      width:
+        finalOptions.type === "node-with-description"
+          ? (finalOptions as any).calculatedWidth || finalOptions.width
+          : finalOptions.width,
+      height:
+        finalOptions.type === "node-with-description"
+          ? (finalOptions as any).calculatedHeight || finalOptions.height
+          : finalOptions.height,
     };
-
-    // Create the main node shape based on type
-    const shapeElement = this.createNodeShape(finalOptions);
-    nodeElements.push(shapeElement);
 
     // Add shadow if enabled
     if (finalOptions.shadow) {
@@ -84,10 +96,15 @@ export class NodeDrawer {
     // Apply basic styling
     this.applyBasicStyling(shapeElement, finalOptions);
 
-    // Add text if provided
+    // Add text if provided - special handling for node-with-description
     if (finalOptions.text && finalOptions.text.trim()) {
-      const textElement = this.createText(finalOptions);
-      nodeElements.push(textElement);
+      if (finalOptions.type === "node-with-description") {
+        const textElements = this.createNodeWithDescriptionText(finalOptions);
+        nodeElements.push(...textElements);
+      } else {
+        const textElement = this.createText(finalOptions);
+        nodeElements.push(textElement);
+      }
     }
 
     // Add icon if provided
@@ -103,8 +120,8 @@ export class NodeDrawer {
       this.svg.appendChild(element);
     });
 
-    const centerX = finalOptions.x + finalOptions.width / 2;
-    const centerY = finalOptions.y + finalOptions.height / 2;
+    const centerX = finalOptions.x + bounds.width / 2;
+    const centerY = finalOptions.y + bounds.height / 2;
 
     return {
       elements: nodeElements,
@@ -137,6 +154,8 @@ export class NodeDrawer {
         return this.createOctagon(options);
       case "star":
         return this.createStar(options);
+      case "node-with-description":
+        return this.createNodeWithDescription(options);
       case "custom":
         return this.createCustomShape(options);
       default:
@@ -321,6 +340,114 @@ export class NodeDrawer {
   }
 
   /**
+   * Create a node with description - a rectangle that auto-sizes based on content
+   */
+  private createNodeWithDescription(
+    options: Required<NodeOptions>
+  ): SVGRectElement {
+    const maxNodeWidth = 200; // Maximum width for the node
+    const lineHeight = 1.2; // Line height multiplier
+
+    // Calculate width based on text content with wrapping
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    let finalWidth = options.width;
+    let finalHeight = options.height;
+
+    if (context) {
+      // Measure main text
+      context.font = `bold ${options.fontSize}px ${options.fontFamily}`;
+      const textWidth = context.measureText(options.text).width;
+
+      let totalRequiredHeight = options.fontSize; // Start with main text height
+      let maxRequiredWidth = textWidth;
+
+      // Handle description wrapping if present
+      let descriptionLines: string[] = [];
+      if (options.description && options.description.trim()) {
+        context.font = `${options.descriptionFontSize}px ${options.fontFamily}`;
+
+        // Calculate available width for description (max width minus padding)
+        const availableWidth = maxNodeWidth - options.padding * 2;
+
+        // Wrap description text
+        descriptionLines = this.wrapText(
+          context,
+          options.description,
+          availableWidth
+        );
+
+        // Calculate description height
+        const descriptionHeight =
+          descriptionLines.length * options.descriptionFontSize * lineHeight;
+        totalRequiredHeight += options.descriptionMarginTop + descriptionHeight;
+
+        // Calculate maximum line width for description
+        const maxDescLineWidth = Math.max(
+          ...descriptionLines.map((line) => context.measureText(line).width)
+        );
+        maxRequiredWidth = Math.max(maxRequiredWidth, maxDescLineWidth);
+      }
+
+      // Calculate final dimensions with constraints
+      const minWidthRequired = maxRequiredWidth + options.padding * 2;
+      finalWidth = Math.min(
+        Math.max(options.width, minWidthRequired),
+        maxNodeWidth
+      );
+
+      const minHeightRequired = totalRequiredHeight + options.padding * 2;
+      finalHeight = Math.max(options.height, minHeightRequired);
+
+      // Store calculated values and wrapped lines
+      (options as any).calculatedWidth = finalWidth;
+      (options as any).calculatedHeight = finalHeight;
+      (options as any).descriptionLines = descriptionLines;
+    }
+
+    const rect = document.createElementNS(SVG_NS, "rect");
+    rect.setAttribute("x", options.x.toString());
+    rect.setAttribute("y", options.y.toString());
+    rect.setAttribute("width", finalWidth.toString());
+    rect.setAttribute("height", finalHeight.toString());
+
+    if (options.borderRadius > 0) {
+      rect.setAttribute("rx", options.borderRadius.toString());
+      rect.setAttribute("ry", options.borderRadius.toString());
+    }
+
+    return rect;
+  }
+
+  /**
+   * Helper method to wrap text to fit within a given width
+   */
+  private wrapText(
+    context: CanvasRenderingContext2D,
+    text: string,
+    maxWidth: number
+  ): string[] {
+    const words = text.split(" ");
+    const lines: string[] = [];
+    let currentLine = words[0];
+
+    for (let i = 1; i < words.length; i++) {
+      const word = words[i];
+      const width = context.measureText(currentLine + " " + word).width;
+
+      if (width < maxWidth) {
+        currentLine += " " + word;
+      } else {
+        lines.push(currentLine);
+        currentLine = word;
+      }
+    }
+    lines.push(currentLine);
+
+    return lines;
+  }
+
+  /**
    * Create a custom shape node
    */
   private createCustomShape(options: Required<NodeOptions>): SVGElement {
@@ -450,6 +577,87 @@ export class NodeDrawer {
     }
 
     return text;
+  }
+
+  /**
+   * Create text elements for node with description
+   */
+  private createNodeWithDescriptionText(
+    options: Required<NodeOptions>
+  ): SVGTextElement[] {
+    const elements: SVGTextElement[] = [];
+    const lineHeight = 1.2;
+
+    // Use calculated dimensions if available
+    const nodeWidth = (options as any).calculatedWidth || options.width;
+    const nodeHeight = (options as any).calculatedHeight || options.height;
+    const centerX = options.x + nodeWidth / 2;
+    const descriptionLines = (options as any).descriptionLines || [];
+
+    // Create main text element (bold)
+    const mainText = document.createElementNS(SVG_NS, "text");
+    mainText.setAttribute("x", centerX.toString());
+    mainText.setAttribute("text-anchor", options.textAnchor);
+    mainText.setAttribute("font-size", options.fontSize.toString());
+    mainText.setAttribute("font-family", options.fontFamily);
+    mainText.setAttribute("fill", options.fontColor);
+    mainText.setAttribute("font-weight", "bold");
+    mainText.textContent = options.text;
+    elements.push(mainText);
+
+    // Create description text elements for each wrapped line
+    if (descriptionLines.length > 0) {
+      descriptionLines.forEach((line: string, index: number) => {
+        const descriptionText = document.createElementNS(SVG_NS, "text");
+        descriptionText.setAttribute("x", centerX.toString());
+        descriptionText.setAttribute("text-anchor", options.textAnchor);
+        descriptionText.setAttribute(
+          "font-size",
+          options.descriptionFontSize.toString()
+        );
+        descriptionText.setAttribute("font-family", options.fontFamily);
+        descriptionText.setAttribute("fill", options.descriptionFontColor);
+        descriptionText.textContent = line;
+        elements.push(descriptionText);
+      });
+    }
+
+    // Position all text elements
+    if (elements.length === 1) {
+      // Only main text - center it
+      const centerY = options.y + nodeHeight / 2;
+      mainText.setAttribute("y", centerY.toString());
+      mainText.setAttribute("dominant-baseline", "central");
+    } else {
+      // Main text and description lines - position them with proper spacing
+      const totalDescriptionHeight =
+        descriptionLines.length * options.descriptionFontSize * lineHeight;
+      const totalTextHeight =
+        options.fontSize +
+        options.descriptionMarginTop +
+        totalDescriptionHeight;
+
+      // Position main text
+      const mainTextY =
+        options.y + (nodeHeight - totalTextHeight) / 2 + options.fontSize;
+      mainText.setAttribute("y", mainTextY.toString());
+      mainText.setAttribute("dominant-baseline", "text-after-edge");
+
+      // Position description lines
+      descriptionLines.forEach((line: string, index: number) => {
+        const descriptionY =
+          mainTextY +
+          options.descriptionMarginTop +
+          (index + 1) * options.descriptionFontSize * lineHeight;
+        elements[index + 1].setAttribute("y", descriptionY.toString());
+        elements[index + 1].setAttribute(
+          "dominant-baseline",
+          "text-after-edge"
+        );
+      });
+    }
+
+    return elements;
   }
 
   /**

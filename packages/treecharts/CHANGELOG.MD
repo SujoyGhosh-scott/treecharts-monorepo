@@ -1,5 +1,29 @@
 # Changelog - TreeCharts Core
 
+## [0.3.0] - 2025-08-20
+
+### 🚀 Advanced Node Types & Dynamic Layouts
+
+#### Added
+
+- **Node with Description Type**: Revolutionary new node type for displaying structured information:
+
+  - **Main Text + Description**: Display both a primary value and detailed description in a single node
+  - **Smart Text Wrapping**: Automatic text wrapping for long descriptions with configurable maximum width
+  - **Dynamic Sizing**: Nodes automatically resize based on content length and description complexity
+  - **Intelligent Typography**: Bold main text with smaller, gray description text for clear hierarchy
+  - **Layout Preservation**: Maximum width constraints prevent nodes from becoming too wide and disrupting chart flow
+
+  ```javascript
+  const treeData = {
+    value: "Engineering",
+    description:
+      "Software development and R&D teams responsible for product innovation",
+    nodeConfig: { type: "node-with-description" },
+    child: [],
+  };
+  ```
+
 ## [0.2.0] - 2025-08-10
 
 ### 🚀 Major Feature Release - Architecture Redesign

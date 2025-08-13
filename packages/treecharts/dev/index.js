@@ -144,6 +144,122 @@ rightAngleChart.render(sampleTree);
 curvedChart.render(sampleTree);
 allDirectionChart.render(sampleTree);
 
+// Sample tree data for node-with-description demonstration
+const sampleTreeWithDescription = {
+  value: "Company Overview",
+  description: "Global technology corporation",
+  child: [
+    {
+      value: "Engineering",
+      description:
+        "Software development and R&D teams, Software development and R&D teams, Software development and R&D teams Software development and R&D teams Software development and R&D teams",
+      edgeText: "tech",
+      child: [
+        {
+          value: "Frontend",
+          description: "User interface development",
+          edgeText: "UI/UX",
+          child: [
+            {
+              value: "React Team",
+              description: "Component-based development",
+              edgeText: "framework",
+              child: [],
+            },
+            {
+              value: "Design System",
+              description: "Consistent UI components",
+              edgeText: "standards",
+              child: [],
+            },
+          ],
+        },
+        {
+          value: "Backend",
+          description: "Server-side logic and APIs",
+          edgeText: "services",
+          child: [
+            {
+              value: "Microservices",
+              description: "Distributed system architecture",
+              edgeText: "scalable",
+              child: [],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      value: "Marketing",
+      description: "Brand promotion and customer acquisition",
+      edgeText: "outreach",
+      child: [
+        {
+          value: "Digital Marketing",
+          description: "Online campaigns and social media",
+          edgeText: "online",
+          child: [],
+        },
+      ],
+    },
+    {
+      value: "Sales",
+      description: "Revenue generation and client relations",
+      edgeText: "revenue",
+      child: [
+        {
+          value: "Enterprise Sales",
+          description: "B2B client acquisition",
+          edgeText: "B2B",
+          child: [],
+        },
+        {
+          value: "Customer Success",
+          description: "Client retention and satisfaction",
+          edgeText: "retention",
+          child: [],
+        },
+      ],
+    },
+  ],
+};
+
+// Create a new chart for demonstrating node-with-description
+const nodeWithDescriptionChart = new TreeChart(
+  "node-with-description-container",
+  {
+    type: "right-angle",
+    nodeConfig: {
+      type: "node-with-description",
+      color: "#E8F4FD",
+      borderColor: "#2196F3",
+      borderWidth: 2,
+      borderRadius: 8,
+      fontSize: 14,
+      fontColor: "#1565C0",
+      width: 180, // Wider default width to accommodate descriptions
+      height: 60, // Taller default height
+    },
+    edgeConfig: {
+      color: "#2196F3",
+      width: 2,
+      textSize: 11,
+      textColor: "#666666",
+    },
+    titleConfig: {
+      title: "Organization Structure with Descriptions",
+      description: "Detailed view of company departments and their functions",
+      position: {
+        horizontal: "center",
+        vertical: "top",
+      },
+    },
+  }
+);
+
+// Render the node-with-description chart
+nodeWithDescriptionChart.render(sampleTreeWithDescription);
+
 // Interactive controls
 let activeChart = directChart;
 const chartTypeSelect = document.getElementById("chart-type");

@@ -28,6 +28,7 @@ export function formatTree(tree: TreeNode): FormattedTree {
       position = formattedTree[node.level].length;
       formattedTree[node.level].push({
         text: node.tree.value,
+        description: node.tree.description || undefined, // Include description if present
         parent: node.parent ? JSON.stringify(node.parent) : null,
         edgeText: node.tree.edgeText || null, // Preserve edge text if present
         nodeConfig: node.tree.nodeConfig || undefined, // Preserve node-specific config if present
@@ -37,6 +38,7 @@ export function formatTree(tree: TreeNode): FormattedTree {
       formattedTree.push([
         {
           text: node.tree.value,
+          description: node.tree.description || undefined, // Include description if present
           parent: node.parent ? JSON.stringify(node.parent) : null,
           edgeText: node.tree.edgeText || null, // Preserve edge text if present
           nodeConfig: node.tree.nodeConfig || undefined, // Preserve node-specific config if present
