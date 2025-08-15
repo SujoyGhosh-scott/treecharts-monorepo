@@ -24,6 +24,33 @@
   };
   ```
 
+- **Collapsible Node Type**: Interactive accordion-style nodes with expand/collapse functionality:
+
+  - **Click-to-Expand**: Toggle node descriptions on demand for cleaner initial layouts
+  - **Interactive Controls**: Intuitive expand/collapse buttons with arrow indicators (▼ collapsed, ▲ expanded)
+  - **Dynamic Layout**: Smart chart recalculation when nodes are expanded or collapsed
+  - **State Management**: Preserves expansion state during tree interactions
+  - **Hierarchical Detail**: Perfect for organizational charts and process flows with optional context
+
+  ```javascript
+  const treeData = {
+    value: "Company Overview",
+    description:
+      "Global technology corporation specializing in software development",
+    collapsibleState: { expanded: false },
+    nodeConfig: { type: "collapsible-node" },
+    child: [
+      {
+        value: "Engineering",
+        description: "Software development and R&D teams",
+        collapsibleState: { expanded: false },
+        nodeConfig: { type: "collapsible-node" },
+        child: [],
+      },
+    ],
+  };
+  ```
+
 ## [0.2.0] - 2025-08-10
 
 ### 🚀 Major Feature Release - Architecture Redesign

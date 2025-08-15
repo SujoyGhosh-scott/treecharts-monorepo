@@ -27,6 +27,7 @@ export abstract class BaseRenderer {
   protected titleDrawer: TitleDrawer;
   protected actionDrawer?: ActionDrawer;
   protected containerElement?: HTMLElement;
+  protected onTreeUpdate?: () => void;
 
   /**
    * Constructor for BaseRenderer
@@ -76,16 +77,52 @@ export abstract class BaseRenderer {
   }
 
   /**
+   * Set the callback for tree updates (for collapsible nodes)
+   */
+  public setTreeUpdateCallback(callback: () => void): void {
+    this.onTreeUpdate = callback;
+  }
+
+  /**
    * Calculate width needed for the SVG
    */
   protected calculateSvgWidth(): number {
-    const maxNodes = Math.max(
-      ...this.formattedTree.map((level) => level.length)
-    );
-    const boxWidth = this.options.nodeConfig!.width!;
     const { horizontalGap } = this.options;
     const basePadding = 20; // Add padding around the chart
-    return maxNodes * (boxWidth + horizontalGap) + basePadding * 2;
+    const nodeConfig = this.options.nodeConfig!;
+    const boxWidth = nodeConfig.width!;
+
+    // Calculate the maximum width needed for any level
+    let maxLevelWidth = 0;
+
+    this.formattedTree.forEach((level) => {
+      // Calculate actual node widths for this level
+      const nodeWidths: number[] = [];
+      level.forEach((node: any) => {
+        const effectiveNodeConfig = node.nodeConfig
+          ? { ...nodeConfig, ...node.nodeConfig }
+          : nodeConfig;
+
+        // Use actual node width based on type
+        let actualWidth = effectiveNodeConfig.width || boxWidth;
+        if (
+          effectiveNodeConfig.type === "node-with-description" ||
+          effectiveNodeConfig.type === "collapsible-node"
+        ) {
+          actualWidth = 200; // These nodes use fixed 200px width
+        }
+        nodeWidths.push(actualWidth);
+      });
+
+      // Calculate total level width with proper spacing
+      const totalNodesWidth = nodeWidths.reduce((sum, width) => sum + width, 0);
+      const totalGaps = (level.length - 1) * horizontalGap;
+      const levelWidth = totalNodesWidth + totalGaps;
+
+      maxLevelWidth = Math.max(maxLevelWidth, levelWidth);
+    });
+
+    return maxLevelWidth + basePadding * 2;
   }
 
   /**
@@ -183,7 +220,29 @@ export abstract class BaseRenderer {
 
     this.formattedTree.forEach((level, levelIndex) => {
       let maxHeightInLevel = boxHeight;
-      const levelWidth = level.length * (boxWidth + horizontalGap);
+
+      // Calculate actual node widths for this level
+      const nodeWidths: number[] = [];
+      level.forEach((node: any) => {
+        const effectiveNodeConfig = node.nodeConfig
+          ? { ...nodeConfig, ...node.nodeConfig }
+          : nodeConfig;
+
+        // Use actual node width based on type
+        let actualWidth = effectiveNodeConfig.width || boxWidth;
+        if (
+          effectiveNodeConfig.type === "node-with-description" ||
+          effectiveNodeConfig.type === "collapsible-node"
+        ) {
+          actualWidth = 200; // These nodes use fixed 200px width
+        }
+        nodeWidths.push(actualWidth);
+      });
+
+      // Calculate total level width with proper spacing
+      const totalNodesWidth = nodeWidths.reduce((sum, width) => sum + width, 0);
+      const totalGaps = (level.length - 1) * horizontalGap;
+      const levelWidth = totalNodesWidth + totalGaps;
 
       // Calculate starting X based on alignment
       let startX = basePadding;
@@ -196,14 +255,25 @@ export abstract class BaseRenderer {
       const levelNodes: Array<LevelNodeData> = [];
 
       level.forEach((node: any, nodeIndex: number) => {
-        const x = startX + nodeIndex * (boxWidth + horizontalGap);
+        // Calculate X position based on actual node widths
+        let x = startX;
+        for (let i = 0; i < nodeIndex; i++) {
+          x += nodeWidths[i] + horizontalGap;
+        }
 
         // Merge default nodeConfig with node-specific config
         const effectiveNodeConfig = node.nodeConfig
           ? { ...nodeConfig, ...node.nodeConfig }
           : nodeConfig;
 
-        const effectiveWidth = effectiveNodeConfig.width || boxWidth;
+        // Use actual node width based on type
+        let effectiveWidth = effectiveNodeConfig.width || boxWidth;
+        if (
+          effectiveNodeConfig.type === "node-with-description" ||
+          effectiveNodeConfig.type === "collapsible-node"
+        ) {
+          effectiveWidth = 200; // These nodes use fixed 200px width
+        }
         const effectiveHeight = effectiveNodeConfig.height || boxHeight;
 
         // For node-with-description types, calculate the actual height
@@ -211,6 +281,54 @@ export abstract class BaseRenderer {
           effectiveNodeConfig.type === "node-with-description" &&
           node.description
         ) {
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
+          if (context) {
+            const maxNodeWidth = 200;
+            const lineHeight = 1.2;
+            const padding = 5;
+            const fontSize = effectiveNodeConfig.fontSize || 14;
+            const descriptionFontSize = 11;
+            const descriptionMarginTop = 4;
+
+            context.font = `${descriptionFontSize}px ${
+              effectiveNodeConfig.fontFamily || "Arial, sans-serif"
+            }`;
+            const availableWidth = maxNodeWidth - padding * 2;
+
+            const words = node.description.split(" ");
+            let lines = 1;
+            let currentLineWidth = 0;
+
+            for (const word of words) {
+              const wordWidth = context.measureText(word + " ").width;
+              if (
+                currentLineWidth + wordWidth > availableWidth &&
+                currentLineWidth > 0
+              ) {
+                lines++;
+                currentLineWidth = wordWidth;
+              } else {
+                currentLineWidth += wordWidth;
+              }
+            }
+
+            const totalTextHeight =
+              fontSize +
+              descriptionMarginTop +
+              lines * descriptionFontSize * lineHeight;
+            const calculatedHeight = Math.max(
+              effectiveHeight,
+              totalTextHeight + padding * 2
+            );
+            maxHeightInLevel = Math.max(maxHeightInLevel, calculatedHeight);
+          }
+        } else if (
+          effectiveNodeConfig.type === "collapsible-node" &&
+          node.description &&
+          node.collapsibleState?.expanded
+        ) {
+          // For collapsible nodes, only calculate extra height if expanded
           const canvas = document.createElement("canvas");
           const context = canvas.getContext("2d");
           if (context) {
@@ -317,6 +435,7 @@ export abstract class BaseRenderer {
             description: node.description,
             fontSize: effectiveNodeConfig.fontSize,
             fontColor: effectiveNodeConfig.fontColor,
+            padding: effectiveNodeConfig.padding || 5, // Use nodeConfig padding for all node types
             opacity: effectiveNodeConfig.opacity,
             shadow: effectiveNodeConfig.shadow,
             shadowColor: effectiveNodeConfig.shadowColor,
@@ -324,6 +443,20 @@ export abstract class BaseRenderer {
             gradient: effectiveNodeConfig.gradient,
             gradientStartColor: effectiveNodeConfig.gradientStartColor,
             gradientEndColor: effectiveNodeConfig.gradientEndColor,
+            collapsible: effectiveNodeConfig.collapsible,
+            expanded: node.collapsibleState?.expanded || false,
+            onToggleExpand: (expanded: boolean) => {
+              // Update the node state
+              if (node.collapsibleState) {
+                node.collapsibleState.expanded = expanded;
+              } else {
+                node.collapsibleState = { expanded };
+              }
+              // Trigger tree re-rendering
+              if (this.onTreeUpdate) {
+                this.onTreeUpdate();
+              }
+            },
           });
 
           this.nodeMap[getNodeKey(levelIndex, nodeIndex)] = {

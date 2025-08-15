@@ -155,6 +155,11 @@ nodeConfig: {
 nodeConfig: {
   type: "node-with-description";
 }
+
+// Collapsible Node (NEW in v0.3.0)
+nodeConfig: {
+  type: "collapsible-node";
+}
 ```
 
 ### Node with Description (v0.3.0+)
@@ -201,6 +206,71 @@ chart.render(orgChartData);
 - **Smart Layout**: Chart layout adjusts to prevent overlapping with variable-height nodes
 - **Typography Hierarchy**: Main text is bold, description text is smaller and gray
 - **Maximum Width**: Configurable maximum width prevents overly wide nodes
+
+### Collapsible Nodes (v0.3.0+)
+
+The `collapsible-node` type provides interactive accordion-style functionality, allowing users to expand and collapse node descriptions on demand. This is perfect for keeping charts clean while providing detailed information when needed.
+
+```javascript
+const orgChartData = {
+  value: "Company Overview",
+  description:
+    "Global technology corporation specializing in software development and innovation",
+  collapsibleState: { expanded: false },
+  nodeConfig: { type: "collapsible-node" },
+  child: [
+    {
+      value: "Engineering",
+      description:
+        "Software development and R&D teams responsible for building and maintaining our core products",
+      collapsibleState: { expanded: false },
+      nodeConfig: { type: "collapsible-node" },
+      child: [
+        {
+          value: "Frontend",
+          description:
+            "User interface development using modern frameworks like React and Vue",
+          collapsibleState: { expanded: false },
+          nodeConfig: { type: "collapsible-node" },
+          child: [],
+        },
+        {
+          value: "Backend",
+          description:
+            "Server-side logic, APIs, databases, and cloud infrastructure management",
+          collapsibleState: { expanded: false },
+          nodeConfig: { type: "collapsible-node" },
+          child: [],
+        },
+      ],
+    },
+  ],
+};
+
+const chart = new TreeChart("container-id", {
+  type: "right-angle",
+  nodeConfig: {
+    type: "collapsible-node",
+    color: "#4CAF50",
+    padding: 12,
+  },
+  titleConfig: {
+    title: "Interactive Organization Chart",
+    description: "Click the ▼ buttons to expand descriptions",
+  },
+});
+
+chart.render(orgChartData);
+```
+
+**Features of Collapsible Nodes:**
+
+- **Interactive Controls**: Click expand/collapse buttons with intuitive arrow indicators (▼ collapsed, ▲ expanded)
+- **State Management**: Each node maintains its own expansion state via `collapsibleState.expanded`
+- **Dynamic Layout**: Chart automatically recalculates layout when nodes are expanded or collapsed
+- **Clean Initial View**: Start with collapsed descriptions for a clean overview, expand details as needed
+- **Smart Text Wrapping**: When expanded, descriptions wrap intelligently with proper spacing
+- **Preserved Functionality**: All standard node features work seamlessly with collapsible behavior
 
 ## Complete Examples
 
@@ -271,6 +341,87 @@ const orgData = {
 };
 
 organizationChart.render(orgData);
+```
+
+### Collapsible Node Example (v0.3.0+)
+
+```javascript
+const collapsibleChart = new TreeChart("container-id", {
+  type: "right-angle",
+  titleConfig: {
+    title: "Interactive Collapsible Organization Chart",
+    description: "Click the ▼ buttons to expand descriptions",
+    position: { horizontal: "center", vertical: "top" },
+  },
+  nodeConfig: {
+    type: "collapsible-node",
+    width: 120,
+    height: 60,
+    color: "#4CAF50",
+    borderRadius: 8,
+    fontSize: 11,
+    fontColor: "#333333",
+    padding: 12,
+  },
+  edgeConfig: {
+    type: "right-angle",
+    color: "#666",
+    width: 2,
+  },
+});
+
+const collapsibleData = {
+  value: "Company Overview",
+  description:
+    "Global technology corporation specializing in software development and innovation",
+  collapsibleState: { expanded: true }, // Start expanded
+  nodeConfig: { type: "collapsible-node" },
+  child: [
+    {
+      value: "Engineering",
+      description:
+        "Software development and R&D teams responsible for building and maintaining our core products",
+      collapsibleState: { expanded: false },
+      nodeConfig: { type: "collapsible-node" },
+      child: [
+        {
+          value: "Frontend",
+          description:
+            "User interface development using modern frameworks like React and Vue",
+          collapsibleState: { expanded: false },
+          nodeConfig: { type: "collapsible-node" },
+          child: [],
+        },
+        {
+          value: "Backend",
+          description:
+            "Server-side logic, APIs, databases, and cloud infrastructure management",
+          collapsibleState: { expanded: false },
+          nodeConfig: { type: "collapsible-node" },
+          child: [],
+        },
+      ],
+    },
+    {
+      value: "Marketing",
+      description:
+        "Brand promotion, customer acquisition, digital campaigns, and market research",
+      collapsibleState: { expanded: false },
+      nodeConfig: { type: "collapsible-node" },
+      child: [],
+    },
+    {
+      value: "Sales",
+      description:
+        "Revenue generation, client relations, business development, and account management",
+      collapsibleState: { expanded: false },
+      nodeConfig: { type: "collapsible-node" },
+      child: [],
+    },
+  ],
+};
+
+collapsibleChart.render(collapsibleData);
 ```
 
 ### Advanced Styling Example

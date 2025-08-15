@@ -144,6 +144,111 @@ rightAngleChart.render(sampleTree);
 curvedChart.render(sampleTree);
 allDirectionChart.render(sampleTree);
 
+// Collapsible tree demo
+const collapsibleTree = {
+  value: "Company Overview",
+  description:
+    "Global technology corporation specializing in software development and innovation",
+  collapsibleState: { expanded: true }, // Start expanded to see child nodes
+  nodeConfig: { type: "collapsible-node" },
+  child: [
+    {
+      value: "Engineering",
+      description:
+        "Software development and R&D teams responsible for building and maintaining our core products",
+      collapsibleState: { expanded: false },
+      nodeConfig: { type: "collapsible-node" },
+      child: [
+        {
+          value: "Frontend",
+          description:
+            "User interface development using modern frameworks like React and Vue",
+          collapsibleState: { expanded: false },
+          nodeConfig: { type: "collapsible-node" },
+          child: [
+            {
+              value: "React Team",
+              description: "React development specialists",
+              collapsibleState: { expanded: false },
+              nodeConfig: { type: "collapsible-node" },
+              child: [],
+            },
+          ],
+        },
+        {
+          value: "Backend",
+          description:
+            "Server-side logic, APIs, databases, and cloud infrastructure management",
+          collapsibleState: { expanded: false },
+          nodeConfig: { type: "collapsible-node" },
+          child: [
+            {
+              value: "API Team",
+              description: "REST and GraphQL API development",
+              collapsibleState: { expanded: false },
+              nodeConfig: { type: "collapsible-node" },
+              child: [],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      value: "Marketing",
+      description:
+        "Brand promotion, customer acquisition, digital campaigns, and market research",
+      collapsibleState: { expanded: false },
+      nodeConfig: { type: "collapsible-node" },
+      child: [
+        {
+          value: "Digital Marketing",
+          description: "Online campaigns and social media management",
+          collapsibleState: { expanded: false },
+          nodeConfig: { type: "collapsible-node" },
+          child: [],
+        },
+      ],
+    },
+    {
+      value: "Sales",
+      description:
+        "Revenue generation, client relations, business development, and account management",
+      collapsibleState: { expanded: false },
+      nodeConfig: { type: "collapsible-node" },
+      child: [
+        {
+          value: "Enterprise Sales",
+          description: "Large client acquisition and management",
+          collapsibleState: { expanded: false },
+          nodeConfig: { type: "collapsible-node" },
+          child: [],
+        },
+      ],
+    },
+  ],
+};
+
+const collapsibleChart = new TreeChart("collapsible-container", {
+  type: "right-angle",
+  nodeConfig: {
+    type: "collapsible-node",
+    color: "#87CEEB", // Light blue color
+    width: 60, // Reduced width from default 200px
+    fontSize: 11,
+    fontColor: "#333333",
+    padding: 12, // Increased padding for better visual spacing
+  },
+  edgeConfig: {
+    textSize: 11,
+  },
+  titleConfig: {
+    title: "Interactive Collapsible Organization Chart",
+    description: "Click the ▼ buttons to expand descriptions",
+  },
+});
+
+collapsibleChart.render(collapsibleTree);
+
 // Sample tree data for node-with-description demonstration
 const sampleTreeWithDescription = {
   value: "Company Overview",

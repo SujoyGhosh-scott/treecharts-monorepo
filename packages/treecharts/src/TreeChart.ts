@@ -96,6 +96,11 @@ export class TreeChart {
       this.options
     );
 
+    // Set up callback for collapsible nodes to trigger re-rendering
+    renderer.setTreeUpdateCallback(() => {
+      this.render(data);
+    });
+
     // Set container for action positioning
     if (this.container) {
       renderer.setContainer(this.container);
