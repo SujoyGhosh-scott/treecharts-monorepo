@@ -32,6 +32,7 @@ export const NODE_CONSTANTS = {
   BUTTON_FONT_SIZE: 10,
   DEFAULT_FONT_SIZE: 14,
   DEFAULT_TEXT_SIZE: 12,
+  MIN_WIDTH_FOR_DESCRIPTION: 100,
 
   // Collapsible node specific
   BUTTON_WIDTH: 16,

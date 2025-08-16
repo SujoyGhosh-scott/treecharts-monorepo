@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Strategy Pattern Architecture**: Complete refactoring from monolithic to pluggable renderer system
+  - BaseNodeRenderer with centralized common functionality (342 lines)
+  - Individual renderer classes with focused responsibilities
+  - 87% size reduction in main NodeDrawer (1,028 → 144 lines)
+  - Eliminated 140+ lines of code duplication across renderers
 - **Node with Description**: Revolutionary new node type that displays both a main value and descriptive text
   - Automatic text wrapping for long descriptions
   - Dynamic node sizing based on content length
@@ -27,6 +32,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Level-by-level height calculation for optimal spacing
   - Automatic vertical gap adjustment for taller nodes
   - Prevents edge overlap issues with varying node sizes
+
+### Fixed
+
+- **Architecture Maintainability**: Resolved monolithic class structure preventing easy extension
+- **Code Duplication**: Eliminated duplicated methods across node renderers
 
 ## [0.2.0] - 2025-08-10
 

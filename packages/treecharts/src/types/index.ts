@@ -313,18 +313,6 @@ export interface CollapsibleNodeState {
 }
 
 /**
- * LevelNodeData represents the processed node data for a specific level during rendering
- */
-export interface LevelNodeData {
-  node: FormattedTreeNode;
-  nodeIndex: number;
-  effectiveNodeConfig: NodeConfig;
-  effectiveWidth: number;
-  effectiveHeight: number;
-  x: number;
-}
-
-/**
  * NodeOptions represents configuration for drawing individual nodes
  */
 export interface NodeOptions {
@@ -376,4 +364,52 @@ export interface NodeOptions {
   collapsible?: boolean;
   expanded?: boolean;
   onToggleExpand?: (expanded: boolean) => void;
+}
+
+/**
+ * NodePosition for layout calculations - represents positioned node data
+ */
+export interface NodeLayoutPosition {
+  node: any;
+  nodeIndex: number;
+  effectiveNodeConfig: any;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  actualHeight: number;
+}
+
+/**
+ * LevelLayout represents layout data for a single level
+ */
+export interface LevelLayout {
+  levelIndex: number;
+  levelHeight: number;
+  nodes: NodeLayoutPosition[];
+}
+
+/**
+ * TreeLayout represents the complete calculated layout for a tree
+ */
+export interface TreeLayout {
+  levels: LevelLayout[];
+  totalWidth: number;
+  totalHeight: number;
+  yOffset: number;
+}
+
+/**
+ * NodeMapEntry represents a node's final rendered position and bounds
+ */
+export interface NodeMapEntry {
+  x: number;
+  y: number;
+  centerX: number;
+  centerY: number;
+  width: number;
+  height: number;
+  bottomY: number;
+  topY: number;
+  node: any;
 }

@@ -2,9 +2,25 @@
 
 ## [0.3.0] - 2025-08-20
 
-### 🚀 Advanced Node Types & Dynamic Layouts
+### 🚀 Advanced Node Types & Architecture Overhaul
 
 #### Added
+
+- **Strategy Pattern Architecture**: Complete refactoring from monolithic to pluggable renderer system:
+
+  - **BaseNodeRenderer**: Centralized common functionality (342 lines) with shared methods for all node types
+  - **Individual Renderer Classes**: Focused, single-responsibility renderers for each node type
+  - **NodeRenderer Interface**: Standardized contract for all node renderers ensuring consistency
+  - **Factory Pattern**: NodeDrawer acts as coordinator, delegating to appropriate renderers
+  - **87% Size Reduction**: Main NodeDrawer reduced from 1,028 lines to 144 lines
+  - **Eliminated Code Duplication**: Removed 140+ lines of duplicated code across renderers
+
+- **Specialized Node Renderers**: Clean, focused implementations:
+
+  - **RectangleNodeRenderer** (42 lines): Streamlined rectangle rendering
+  - **CircleNodeRenderer** (85 lines): Optimized circular node handling
+  - **NodeWithDescriptionRenderer** (261 lines): Auto-sizing nodes with descriptions
+  - **CollapsibleNodeRenderer** (363 lines): Interactive expandable nodes with state management
 
 - **Node with Description Type**: Revolutionary new node type for displaying structured information:
 
@@ -20,8 +36,6 @@
     description:
       "Software development and R&D teams responsible for product innovation",
     nodeConfig: { type: "node-with-description" },
-    child: [],
-  };
   ```
 
 - **Collapsible Node Type**: Interactive accordion-style nodes with expand/collapse functionality:
@@ -50,6 +64,18 @@
     ],
   };
   ```
+
+- **Code Quality Improvements**: Clean, maintainable codebase:
+  - Consistent error handling patterns across all renderers
+  - Proper TypeScript typing with interface segregation
+  - Clean separation between public API types and internal renderer types
+  - Eliminated anti-patterns and technical debt
+
+#### Fixed
+
+- **Architecture Maintainability**: Resolved monolithic class structure preventing easy extension
+- **Code Duplication**: Eliminated 140+ lines of duplicated methods across node renderers
+- **File Organization**: Cleaned up duplicate NodeDrawer files and consolidated common functionality
 
 ## [0.2.0] - 2025-08-10
 
