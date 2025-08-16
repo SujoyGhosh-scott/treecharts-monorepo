@@ -4,7 +4,7 @@ import {
   NodeMap,
   LevelNodeData,
 } from "../types";
-import { DEFAULT_OPTIONS, SVG_NS } from "../constants";
+import { DEFAULT_OPTIONS, SVG_NS, NODE_CONSTANTS } from "../constants";
 import { createSvgElement, getNodeKey } from "../utils/svgHelpers";
 import { ConnectionDrawer } from "../utils/ConnectionDrawer";
 import { NodeDrawer } from "../utils/NodeDrawer";
@@ -88,7 +88,7 @@ export abstract class BaseRenderer {
    */
   protected calculateSvgWidth(): number {
     const { horizontalGap } = this.options;
-    const basePadding = 20; // Add padding around the chart
+    const basePadding = NODE_CONSTANTS.BASE_PADDING; // Add padding around the chart
     const nodeConfig = this.options.nodeConfig!;
     const boxWidth = nodeConfig.width!;
 
@@ -105,12 +105,7 @@ export abstract class BaseRenderer {
 
         // Use actual node width based on type
         let actualWidth = effectiveNodeConfig.width || boxWidth;
-        if (
-          effectiveNodeConfig.type === "node-with-description" ||
-          effectiveNodeConfig.type === "collapsible-node"
-        ) {
-          actualWidth = 200; // These nodes use fixed 200px width
-        }
+        // All node types now use their configured width
         nodeWidths.push(actualWidth);
       });
 
@@ -131,7 +126,7 @@ export abstract class BaseRenderer {
   protected calculateSvgHeight(): number {
     const boxHeight = this.options.nodeConfig!.height!;
     const { verticalGap } = this.options;
-    const basePadding = 20; // Add padding around the chart
+    const basePadding = NODE_CONSTANTS.BASE_PADDING; // Add padding around the chart
     const baseHeight =
       this.formattedTree.length * (boxHeight + verticalGap) + basePadding * 2;
 
@@ -207,7 +202,7 @@ export abstract class BaseRenderer {
     const nodeConfig = this.options.nodeConfig!;
     const boxWidth = nodeConfig.width!;
     const boxHeight = nodeConfig.height!;
-    const basePadding = 20;
+    const basePadding = NODE_CONSTANTS.BASE_PADDING;
 
     const totalWidth = this.calculateSvgWidth();
     const totalHeight = this.calculateSvgHeight();
@@ -234,7 +229,7 @@ export abstract class BaseRenderer {
           effectiveNodeConfig.type === "node-with-description" ||
           effectiveNodeConfig.type === "collapsible-node"
         ) {
-          actualWidth = 200; // These nodes use fixed 200px width
+          actualWidth = NODE_CONSTANTS.DEFAULT_MAX_WIDTH; // These nodes use fixed width
         }
         nodeWidths.push(actualWidth);
       });
@@ -268,12 +263,7 @@ export abstract class BaseRenderer {
 
         // Use actual node width based on type
         let effectiveWidth = effectiveNodeConfig.width || boxWidth;
-        if (
-          effectiveNodeConfig.type === "node-with-description" ||
-          effectiveNodeConfig.type === "collapsible-node"
-        ) {
-          effectiveWidth = 200; // These nodes use fixed 200px width
-        }
+        // All node types now use their configured width
         const effectiveHeight = effectiveNodeConfig.height || boxHeight;
 
         // For node-with-description types, calculate the actual height
@@ -284,12 +274,13 @@ export abstract class BaseRenderer {
           const canvas = document.createElement("canvas");
           const context = canvas.getContext("2d");
           if (context) {
-            const maxNodeWidth = 200;
-            const lineHeight = 1.2;
-            const padding = 5;
-            const fontSize = effectiveNodeConfig.fontSize || 14;
-            const descriptionFontSize = 11;
-            const descriptionMarginTop = 4;
+            const maxNodeWidth = effectiveWidth; // Use the actual configured width
+            const lineHeight = NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT;
+            const padding = NODE_CONSTANTS.DEFAULT_PADDING;
+            const fontSize =
+              effectiveNodeConfig.fontSize || NODE_CONSTANTS.DEFAULT_FONT_SIZE;
+            const descriptionFontSize = NODE_CONSTANTS.DESCRIPTION_FONT_SIZE;
+            const descriptionMarginTop = NODE_CONSTANTS.DESCRIPTION_MARGIN_TOP;
 
             context.font = `${descriptionFontSize}px ${
               effectiveNodeConfig.fontFamily || "Arial, sans-serif"
@@ -332,12 +323,13 @@ export abstract class BaseRenderer {
           const canvas = document.createElement("canvas");
           const context = canvas.getContext("2d");
           if (context) {
-            const maxNodeWidth = 200;
-            const lineHeight = 1.2;
-            const padding = 5;
-            const fontSize = effectiveNodeConfig.fontSize || 14;
-            const descriptionFontSize = 11;
-            const descriptionMarginTop = 4;
+            const maxNodeWidth = effectiveWidth; // Use the actual configured width
+            const lineHeight = NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT;
+            const padding = NODE_CONSTANTS.DEFAULT_PADDING;
+            const fontSize =
+              effectiveNodeConfig.fontSize || NODE_CONSTANTS.DEFAULT_FONT_SIZE;
+            const descriptionFontSize = NODE_CONSTANTS.DESCRIPTION_FONT_SIZE;
+            const descriptionMarginTop = NODE_CONSTANTS.DESCRIPTION_MARGIN_TOP;
 
             context.font = `${descriptionFontSize}px ${
               effectiveNodeConfig.fontFamily || "Arial, sans-serif"

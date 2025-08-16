@@ -1,5 +1,5 @@
 import { TitleConfig } from "../types";
-import { SVG_NS, DEFAULT_OPTIONS } from "../constants";
+import { SVG_NS, DEFAULT_OPTIONS, NODE_CONSTANTS } from "../constants";
 
 /**
  * TitleDrawer class for rendering chart titles and descriptions
@@ -123,9 +123,9 @@ export class TitleDrawer {
   ): number {
     switch (horizontal) {
       case "left":
-        return 20; // Small margin from left
+        return NODE_CONSTANTS.SMALL_MARGIN; // Small margin from left
       case "right":
-        return svgWidth - 20; // Small margin from right
+        return svgWidth - NODE_CONSTANTS.SMALL_MARGIN; // Small margin from right
       case "center":
       default:
         return svgWidth / 2;
@@ -184,7 +184,7 @@ export class TitleDrawer {
     }
 
     const { vertical } = this.titleConfig.position;
-    const extraSpacing = 30; // Additional space between entire title section and tree
+    const extraSpacing = NODE_CONSTANTS.EXTRA_TITLE_SPACING; // Additional space between entire title section and tree
 
     if (vertical === "top") {
       // Add space for title margin (space above title)

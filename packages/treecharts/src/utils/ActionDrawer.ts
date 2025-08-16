@@ -1,4 +1,5 @@
 import { ActionConfig, ActionPosition } from "../types";
+import { NODE_CONSTANTS } from "../constants";
 
 /**
  * ActionDrawer handles drawing and managing action buttons on the chart
@@ -66,8 +67,14 @@ export class ActionDrawer {
     );
     buttonBg.setAttribute("x", x.toString());
     buttonBg.setAttribute("y", y.toString());
-    buttonBg.setAttribute("width", "24");
-    buttonBg.setAttribute("height", "24");
+    buttonBg.setAttribute(
+      "width",
+      NODE_CONSTANTS.ACTION_BUTTON_SIZE.toString()
+    );
+    buttonBg.setAttribute(
+      "height",
+      NODE_CONSTANTS.ACTION_BUTTON_SIZE.toString()
+    );
     buttonBg.setAttribute("rx", "4");
     buttonBg.setAttribute("fill", "#f8f9fa");
     buttonBg.setAttribute("stroke", "#dee2e6");
@@ -79,7 +86,12 @@ export class ActionDrawer {
       "http://www.w3.org/2000/svg",
       "g"
     );
-    iconGroup.setAttribute("transform", `translate(${x + 12}, ${y + 12})`);
+    iconGroup.setAttribute(
+      "transform",
+      `translate(${x + NODE_CONSTANTS.ACTION_BUTTON_CENTER_OFFSET}, ${
+        y + NODE_CONSTANTS.ACTION_BUTTON_CENTER_OFFSET
+      })`
+    );
 
     // Arrow shaft
     const shaft = document.createElementNS(

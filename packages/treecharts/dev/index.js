@@ -233,7 +233,7 @@ const collapsibleChart = new TreeChart("collapsible-container", {
   nodeConfig: {
     type: "collapsible-node",
     color: "#87CEEB", // Light blue color
-    width: 60, // Reduced width from default 200px
+    width: 160, // Reduced width from default 200px
     fontSize: 11,
     fontColor: "#333333",
     padding: 12, // Increased padding for better visual spacing

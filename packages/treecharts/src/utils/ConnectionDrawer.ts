@@ -1,4 +1,4 @@
-import { SVG_NS } from "../constants";
+import { SVG_NS, NODE_CONSTANTS } from "../constants";
 import { ConnectionOptions, Point } from "../types";
 
 /**
@@ -309,7 +309,10 @@ export class ConnectionDrawer {
     textElement.textContent = options.edgeText || "";
 
     // Set text styles
-    textElement.setAttribute("font-size", (options.textSize || 12).toString());
+    textElement.setAttribute(
+      "font-size",
+      (options.textSize || NODE_CONSTANTS.DEFAULT_TEXT_SIZE).toString()
+    );
     textElement.setAttribute("fill", options.textColor || "#000000");
     textElement.setAttribute("text-anchor", "middle");
     textElement.setAttribute("dominant-baseline", "central");

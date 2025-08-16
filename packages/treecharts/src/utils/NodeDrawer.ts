@@ -1,4 +1,4 @@
-import { SVG_NS } from "../constants";
+import { SVG_NS, NODE_CONSTANTS } from "../constants";
 import { NodeOptions, Point } from "../types";
 
 /**
@@ -315,8 +315,9 @@ export class NodeDrawer {
     const radius = Math.min(options.width, options.height) / 2;
 
     const points = [];
-    for (let i = 0; i < 8; i++) {
-      const angle = (i * 2 * Math.PI) / 8 - Math.PI / 2; // Start from top
+    for (let i = 0; i < NODE_CONSTANTS.STAR_POINTS; i++) {
+      const angle =
+        (i * 2 * Math.PI) / NODE_CONSTANTS.STAR_POINTS - Math.PI / 2; // Start from top
       const x = centerX + radius * Math.cos(angle);
       const y = centerY + radius * Math.sin(angle);
       points.push(`${x},${y}`);
@@ -337,7 +338,7 @@ export class NodeDrawer {
     const innerRadius = outerRadius * 0.4;
 
     const points = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < NODE_CONSTANTS.CIRCLE_POINTS; i++) {
       const angle = (i * Math.PI) / 5 - Math.PI / 2; // Start from top
       const radius = i % 2 === 0 ? outerRadius : innerRadius;
       const x = centerX + radius * Math.cos(angle);
@@ -355,8 +356,8 @@ export class NodeDrawer {
   private createNodeWithDescription(
     options: Required<NodeOptions>
   ): SVGRectElement {
-    const maxNodeWidth = 200; // Maximum width for the node
-    const lineHeight = 1.2; // Line height multiplier
+    const maxNodeWidth = options.width; // Use configured width as maximum
+    const lineHeight = NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT; // Line height multiplier
 
     // Calculate width based on text content with wrapping
     const canvas = document.createElement("canvas");
@@ -435,8 +436,8 @@ export class NodeDrawer {
   private createCollapsibleNode(
     options: Required<NodeOptions>
   ): SVGRectElement {
-    const maxNodeWidth = 200; // Maximum width for the node
-    const lineHeight = 1.2; // Line height multiplier
+    const maxNodeWidth = options.width; // Use configured width as maximum
+    const lineHeight = NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT; // Line height multiplier
 
     // Calculate width based on text content with wrapping
     const canvas = document.createElement("canvas");
@@ -450,7 +451,7 @@ export class NodeDrawer {
       const textWidth = context.measureText(options.text).width;
 
       let totalRequiredHeight = options.fontSize; // Just title height, we'll add padding later
-      let maxRequiredWidth = textWidth + 20; // Add space for arrow button
+      let maxRequiredWidth = textWidth + NODE_CONSTANTS.SPACE_FOR_ARROW_BUTTON; // Add space for arrow button
 
       // Always calculate description width for consistent node width
       let descriptionLines: string[] = [];
@@ -682,7 +683,7 @@ export class NodeDrawer {
     options: Required<NodeOptions>
   ): SVGTextElement[] {
     const elements: SVGTextElement[] = [];
-    const lineHeight = 1.2;
+    const lineHeight = NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT;
 
     // Use calculated dimensions if available
     const nodeWidth = (options as any).calculatedWidth || options.width;
@@ -767,7 +768,7 @@ export class NodeDrawer {
     // Use calculated dimensions if available
     const nodeWidth = (options as any).calculatedWidth || options.width;
     const nodeHeight = (options as any).calculatedHeight || options.height;
-    const buttonWidth = 16; // Smaller button for arrow
+    const buttonWidth = NODE_CONSTANTS.BUTTON_WIDTH; // Smaller button for arrow
     const titleHeight = options.fontSize;
 
     // Create main text element (bold) - positioned first
@@ -811,7 +812,10 @@ export class NodeDrawer {
     buttonSymbol.setAttribute("y", buttonCenterY.toString());
     buttonSymbol.setAttribute("text-anchor", "middle");
     buttonSymbol.setAttribute("dominant-baseline", "central");
-    buttonSymbol.setAttribute("font-size", "10");
+    buttonSymbol.setAttribute(
+      "font-size",
+      NODE_CONSTANTS.BUTTON_FONT_SIZE.toString()
+    );
     buttonSymbol.setAttribute("font-family", "Arial, sans-serif");
     buttonSymbol.setAttribute("fill", "#666");
     // Use down arrow when collapsed, up arrow when expanded
@@ -851,7 +855,8 @@ export class NodeDrawer {
         elements.push(descriptionText);
 
         // Move to next line
-        currentY += options.descriptionFontSize * 1.2;
+        currentY +=
+          options.descriptionFontSize * NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT;
       });
     }
 

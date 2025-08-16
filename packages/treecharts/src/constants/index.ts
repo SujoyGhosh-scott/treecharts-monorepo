@@ -12,6 +12,38 @@ import {
 export const SVG_NS = "http://www.w3.org/2000/svg";
 
 /**
+ * Node-related constants used throughout the library
+ */
+export const NODE_CONSTANTS = {
+  // Default dimensions
+  DEFAULT_MAX_WIDTH: 200,
+  DEFAULT_PADDING: 5,
+
+  // Layout constants
+  BASE_PADDING: 20,
+  SPACE_FOR_ARROW_BUTTON: 20,
+  SMALL_MARGIN: 20,
+  EXTRA_TITLE_SPACING: 30,
+
+  // Text and typography
+  DESCRIPTION_LINE_HEIGHT: 1.2,
+  DESCRIPTION_FONT_SIZE: 11,
+  DESCRIPTION_MARGIN_TOP: 4,
+  BUTTON_FONT_SIZE: 10,
+  DEFAULT_FONT_SIZE: 14,
+  DEFAULT_TEXT_SIZE: 12,
+
+  // Collapsible node specific
+  BUTTON_WIDTH: 16,
+  ACTION_BUTTON_SIZE: 24,
+  ACTION_BUTTON_CENTER_OFFSET: 12,
+
+  // Animation and visual effects
+  STAR_POINTS: 8,
+  CIRCLE_POINTS: 10,
+} as const;
+
+/**
  * Default options for tree chart rendering
  */
 export const DEFAULT_OPTIONS: Required<
