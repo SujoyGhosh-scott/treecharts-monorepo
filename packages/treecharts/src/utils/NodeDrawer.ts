@@ -48,6 +48,131 @@ export class NodeDrawer {
   }
 
   /**
+   * Calculate dynamic width for nodes that auto-size based on content
+   */
+  public calculateDynamicNodeWidth(node: any, nodeConfig: any): number {
+    const maxNodeWidth = nodeConfig.width || NODE_CONSTANTS.DEFAULT_MAX_WIDTH;
+    const lineHeight = NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT;
+    const padding = nodeConfig.padding || NODE_CONSTANTS.DEFAULT_PADDING;
+    const fontSize = nodeConfig.fontSize || NODE_CONSTANTS.DEFAULT_FONT_SIZE;
+    const descriptionFontSize =
+      nodeConfig.descriptionFontSize || NODE_CONSTANTS.DESCRIPTION_FONT_SIZE;
+
+    // Create canvas for text measurement
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+
+    if (!context) {
+      return maxNodeWidth; // Fallback to max width
+    }
+
+    // Measure main text
+    context.font = `bold ${fontSize}px ${
+      nodeConfig.fontFamily || "Arial, sans-serif"
+    }`;
+    const textWidth = context.measureText(node.value || "").width;
+    let maxRequiredWidth = textWidth;
+
+    // Handle description if present
+    if (node.description && node.description.trim()) {
+      context.font = `${descriptionFontSize}px ${
+        nodeConfig.fontFamily || "Arial, sans-serif"
+      }`;
+
+      // Calculate available width for description
+      const availableWidth = maxNodeWidth - padding * 2;
+
+      // Simple word wrapping to estimate width needed
+      const words = node.description.split(" ");
+      let currentLineWidth = 0;
+      let maxLineWidth = 0;
+
+      for (const word of words) {
+        const wordWidth = context.measureText(word + " ").width;
+        if (
+          currentLineWidth + wordWidth > availableWidth &&
+          currentLineWidth > 0
+        ) {
+          maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
+          currentLineWidth = wordWidth;
+        } else {
+          currentLineWidth += wordWidth;
+        }
+      }
+      maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
+      maxRequiredWidth = Math.max(maxRequiredWidth, maxLineWidth);
+    }
+
+    // For collapsible nodes, add space for arrow button
+    if (nodeConfig.type === "collapsible-node") {
+      maxRequiredWidth += NODE_CONSTANTS.SPACE_FOR_ARROW_BUTTON;
+    }
+
+    // Calculate final width - use the maximum of configured width or required width
+    // Don't cap at maxNodeWidth for dynamic nodes since they need to fit their content
+    const minWidthRequired = maxRequiredWidth + padding * 2;
+    const finalWidth = Math.max(nodeConfig.width || 0, minWidthRequired);
+    return finalWidth;
+  }
+
+  /**
+   * Calculate dynamic height for nodes that auto-size based on content
+   */
+  public calculateDynamicNodeHeight(node: any, nodeConfig: any): number {
+    const lineHeight = NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT;
+    const padding = nodeConfig.padding || NODE_CONSTANTS.DEFAULT_PADDING;
+    const fontSize = nodeConfig.fontSize || NODE_CONSTANTS.DEFAULT_FONT_SIZE;
+    const descriptionFontSize =
+      nodeConfig.descriptionFontSize || NODE_CONSTANTS.DESCRIPTION_FONT_SIZE;
+    const descriptionMarginTop =
+      nodeConfig.descriptionMarginTop || NODE_CONSTANTS.DESCRIPTION_MARGIN_TOP;
+
+    let totalRequiredHeight = fontSize; // Start with main text height
+
+    // Handle description if present
+    if (node.description && node.description.trim()) {
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+
+      if (context) {
+        context.font = `${descriptionFontSize}px ${
+          nodeConfig.fontFamily || "Arial, sans-serif"
+        }`;
+
+        // Calculate available width for text wrapping
+        const maxWidth = nodeConfig.width || NODE_CONSTANTS.DEFAULT_MAX_WIDTH;
+        const availableWidth = maxWidth - padding * 2;
+
+        // Count lines needed for description
+        const words = node.description.split(" ");
+        let lines = 1;
+        let currentLineWidth = 0;
+
+        for (const word of words) {
+          const wordWidth = context.measureText(word + " ").width;
+          if (
+            currentLineWidth + wordWidth > availableWidth &&
+            currentLineWidth > 0
+          ) {
+            lines++;
+            currentLineWidth = wordWidth;
+          } else {
+            currentLineWidth += wordWidth;
+          }
+        }
+
+        // Calculate description height
+        const descriptionHeight = lines * descriptionFontSize * lineHeight;
+        totalRequiredHeight += descriptionMarginTop + descriptionHeight;
+      }
+    }
+
+    // Calculate final height with padding
+    const minHeightRequired = totalRequiredHeight + padding * 2;
+    return Math.max(nodeConfig.height || 0, minHeightRequired);
+  }
+
+  /**
    * Draw a node at the specified position
    */
   public drawNode(options: Partial<NodeOptions> = {}): {
