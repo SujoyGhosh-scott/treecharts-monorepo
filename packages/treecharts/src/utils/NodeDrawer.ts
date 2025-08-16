@@ -807,19 +807,35 @@ export class NodeDrawer {
     buttonGroup.appendChild(buttonCircle);
 
     // Button symbol (arrow)
-    const buttonSymbol = document.createElementNS(SVG_NS, "text");
-    buttonSymbol.setAttribute("x", buttonCenterX.toString());
-    buttonSymbol.setAttribute("y", buttonCenterY.toString());
-    buttonSymbol.setAttribute("text-anchor", "middle");
-    buttonSymbol.setAttribute("dominant-baseline", "central");
-    buttonSymbol.setAttribute(
-      "font-size",
-      NODE_CONSTANTS.BUTTON_FONT_SIZE.toString()
-    );
-    buttonSymbol.setAttribute("font-family", "Arial, sans-serif");
+    // Create SVG chevron icon
+    const buttonSymbol = document.createElementNS(SVG_NS, "svg");
+    buttonSymbol.setAttribute("x", (buttonCenterX - 6).toString()); // Center the 12x12 icon
+    buttonSymbol.setAttribute("y", (buttonCenterY - 6).toString());
+    buttonSymbol.setAttribute("width", "12");
+    buttonSymbol.setAttribute("height", "12");
+    buttonSymbol.setAttribute("viewBox", "0 0 20 20");
     buttonSymbol.setAttribute("fill", "#666");
-    // Use down arrow when collapsed, up arrow when expanded
-    buttonSymbol.textContent = options.expanded ? "▲" : "▼";
+
+    // Create the path element for the chevron
+    const chevronPath = document.createElementNS(SVG_NS, "path");
+    chevronPath.setAttribute("fill-rule", "evenodd");
+    chevronPath.setAttribute("clip-rule", "evenodd");
+
+    if (options.expanded) {
+      // Rotate the chevron up when expanded (rotate 180 degrees)
+      buttonSymbol.setAttribute(
+        "transform",
+        `rotate(180, ${buttonCenterX}, ${buttonCenterY})`
+      );
+    }
+
+    // Use the provided chevron down path
+    chevronPath.setAttribute(
+      "d",
+      "M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+    );
+
+    buttonSymbol.appendChild(chevronPath);
     buttonGroup.appendChild(buttonSymbol);
 
     // Add click handler
