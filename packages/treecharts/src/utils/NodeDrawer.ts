@@ -1,4 +1,4 @@
-import { SVG_NS } from "../constants";
+import { SVG_NS, NODE_CONSTANTS } from "../constants";
 import { NodeOptions, Point } from "../types";
 
 /**
@@ -38,6 +38,9 @@ export class NodeDrawer {
     iconSize: 16,
     iconColor: "black",
     customAttributes: {},
+    collapsible: false,
+    expanded: false,
+    onToggleExpand: () => {},
   };
 
   constructor(svg: SVGSVGElement) {
@@ -66,11 +69,13 @@ export class NodeDrawer {
       x: finalOptions.x,
       y: finalOptions.y,
       width:
-        finalOptions.type === "node-with-description"
+        finalOptions.type === "node-with-description" ||
+        finalOptions.type === "collapsible-node"
           ? (finalOptions as any).calculatedWidth || finalOptions.width
           : finalOptions.width,
       height:
-        finalOptions.type === "node-with-description"
+        finalOptions.type === "node-with-description" ||
+        finalOptions.type === "collapsible-node"
           ? (finalOptions as any).calculatedHeight || finalOptions.height
           : finalOptions.height,
     };
@@ -96,10 +101,13 @@ export class NodeDrawer {
     // Apply basic styling
     this.applyBasicStyling(shapeElement, finalOptions);
 
-    // Add text if provided - special handling for node-with-description
+    // Add text if provided - special handling for node-with-description and collapsible-node
     if (finalOptions.text && finalOptions.text.trim()) {
       if (finalOptions.type === "node-with-description") {
         const textElements = this.createNodeWithDescriptionText(finalOptions);
+        nodeElements.push(...textElements);
+      } else if (finalOptions.type === "collapsible-node") {
+        const textElements = this.createCollapsibleNodeText(finalOptions);
         nodeElements.push(...textElements);
       } else {
         const textElement = this.createText(finalOptions);
@@ -156,6 +164,8 @@ export class NodeDrawer {
         return this.createStar(options);
       case "node-with-description":
         return this.createNodeWithDescription(options);
+      case "collapsible-node":
+        return this.createCollapsibleNode(options);
       case "custom":
         return this.createCustomShape(options);
       default:
@@ -305,8 +315,9 @@ export class NodeDrawer {
     const radius = Math.min(options.width, options.height) / 2;
 
     const points = [];
-    for (let i = 0; i < 8; i++) {
-      const angle = (i * 2 * Math.PI) / 8 - Math.PI / 2; // Start from top
+    for (let i = 0; i < NODE_CONSTANTS.STAR_POINTS; i++) {
+      const angle =
+        (i * 2 * Math.PI) / NODE_CONSTANTS.STAR_POINTS - Math.PI / 2; // Start from top
       const x = centerX + radius * Math.cos(angle);
       const y = centerY + radius * Math.sin(angle);
       points.push(`${x},${y}`);
@@ -327,7 +338,7 @@ export class NodeDrawer {
     const innerRadius = outerRadius * 0.4;
 
     const points = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < NODE_CONSTANTS.CIRCLE_POINTS; i++) {
       const angle = (i * Math.PI) / 5 - Math.PI / 2; // Start from top
       const radius = i % 2 === 0 ? outerRadius : innerRadius;
       const x = centerX + radius * Math.cos(angle);
@@ -345,8 +356,8 @@ export class NodeDrawer {
   private createNodeWithDescription(
     options: Required<NodeOptions>
   ): SVGRectElement {
-    const maxNodeWidth = 200; // Maximum width for the node
-    const lineHeight = 1.2; // Line height multiplier
+    const maxNodeWidth = options.width; // Use configured width as maximum
+    const lineHeight = NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT; // Line height multiplier
 
     // Calculate width based on text content with wrapping
     const canvas = document.createElement("canvas");
@@ -387,6 +398,92 @@ export class NodeDrawer {
           ...descriptionLines.map((line) => context.measureText(line).width)
         );
         maxRequiredWidth = Math.max(maxRequiredWidth, maxDescLineWidth);
+      }
+
+      // Calculate final dimensions with constraints
+      const minWidthRequired = maxRequiredWidth + options.padding * 2;
+      finalWidth = Math.min(
+        Math.max(options.width, minWidthRequired),
+        maxNodeWidth
+      );
+
+      const minHeightRequired = totalRequiredHeight + options.padding * 2;
+      finalHeight = Math.max(options.height, minHeightRequired);
+
+      // Store calculated values and wrapped lines
+      (options as any).calculatedWidth = finalWidth;
+      (options as any).calculatedHeight = finalHeight;
+      (options as any).descriptionLines = descriptionLines;
+    }
+
+    const rect = document.createElementNS(SVG_NS, "rect");
+    rect.setAttribute("x", options.x.toString());
+    rect.setAttribute("y", options.y.toString());
+    rect.setAttribute("width", finalWidth.toString());
+    rect.setAttribute("height", finalHeight.toString());
+
+    if (options.borderRadius > 0) {
+      rect.setAttribute("rx", options.borderRadius.toString());
+      rect.setAttribute("ry", options.borderRadius.toString());
+    }
+
+    return rect;
+  }
+
+  /**
+   * Create a collapsible node - similar to node-with-description but with expand/collapse functionality
+   */
+  private createCollapsibleNode(
+    options: Required<NodeOptions>
+  ): SVGRectElement {
+    const maxNodeWidth = options.width; // Use configured width as maximum
+    const lineHeight = NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT; // Line height multiplier
+
+    // Calculate width based on text content with wrapping
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    let finalWidth = options.width;
+    let finalHeight = options.height;
+
+    if (context) {
+      // Measure main text (title)
+      context.font = `bold ${options.fontSize}px ${options.fontFamily}`;
+      const textWidth = context.measureText(options.text).width;
+
+      let totalRequiredHeight = options.fontSize; // Just title height, we'll add padding later
+      let maxRequiredWidth = textWidth + NODE_CONSTANTS.SPACE_FOR_ARROW_BUTTON; // Add space for arrow button
+
+      // Always calculate description width for consistent node width
+      let descriptionLines: string[] = [];
+      if (options.description && options.description.trim()) {
+        context.font = `${options.descriptionFontSize}px ${options.fontFamily}`;
+
+        // Calculate available width for description (max width minus padding)
+        const availableWidth = maxNodeWidth - options.padding * 2;
+
+        // Wrap description text
+        descriptionLines = this.wrapText(
+          context,
+          options.description,
+          availableWidth
+        );
+
+        // Calculate maximum line width for description
+        const maxDescLineWidth = Math.max(
+          ...descriptionLines.map((line) => context.measureText(line).width)
+        );
+        maxRequiredWidth = Math.max(maxRequiredWidth, maxDescLineWidth);
+
+        // Only add height if expanded
+        if (options.expanded) {
+          const descriptionHeight =
+            descriptionLines.length * options.descriptionFontSize * lineHeight;
+          // Add proper spacing: gap between title and description + description height + bottom padding
+          totalRequiredHeight +=
+            options.padding + // Gap between title and description
+            descriptionHeight +
+            options.padding; // Bottom padding
+        }
       }
 
       // Calculate final dimensions with constraints
@@ -586,7 +683,7 @@ export class NodeDrawer {
     options: Required<NodeOptions>
   ): SVGTextElement[] {
     const elements: SVGTextElement[] = [];
-    const lineHeight = 1.2;
+    const lineHeight = NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT;
 
     // Use calculated dimensions if available
     const nodeWidth = (options as any).calculatedWidth || options.width;
@@ -654,6 +751,128 @@ export class NodeDrawer {
           "dominant-baseline",
           "text-after-edge"
         );
+      });
+    }
+
+    return elements;
+  }
+
+  /**
+   * Create text elements for collapsible node with expand/collapse button
+   */
+  private createCollapsibleNodeText(
+    options: Required<NodeOptions>
+  ): SVGElement[] {
+    const elements: SVGElement[] = [];
+
+    // Use calculated dimensions if available
+    const nodeWidth = (options as any).calculatedWidth || options.width;
+    const nodeHeight = (options as any).calculatedHeight || options.height;
+    const buttonWidth = NODE_CONSTANTS.BUTTON_WIDTH; // Smaller button for arrow
+    const titleHeight = options.fontSize;
+
+    // Create main text element (bold) - positioned first
+    const mainText = document.createElementNS(SVG_NS, "text");
+    const textStartX = options.x + options.padding;
+    // Keep title in fixed position with proper padding from top
+    const titleY = options.y + options.padding + titleHeight;
+    mainText.setAttribute("x", textStartX.toString());
+    mainText.setAttribute("y", titleY.toString());
+    mainText.setAttribute("text-anchor", "start");
+    mainText.setAttribute("font-size", options.fontSize.toString());
+    mainText.setAttribute("font-family", options.fontFamily);
+    mainText.setAttribute("fill", options.fontColor);
+    mainText.setAttribute("font-weight", "bold");
+    mainText.setAttribute("dominant-baseline", "alphabetic"); // Change to alphabetic for proper baseline
+    mainText.textContent = options.text;
+    elements.push(mainText);
+
+    // Create expand/collapse button on the right side, aligned with title
+    const buttonGroup = document.createElementNS(SVG_NS, "g");
+    buttonGroup.setAttribute("cursor", "pointer");
+
+    // Position button on the right side, aligned with title vertically
+    const buttonX = options.x + nodeWidth - options.padding - buttonWidth;
+    const buttonCenterY = titleY - titleHeight / 2; // Align with title center
+
+    // Button background (circular)
+    const buttonCircle = document.createElementNS(SVG_NS, "circle");
+    const buttonCenterX = buttonX + buttonWidth / 2;
+    buttonCircle.setAttribute("cx", buttonCenterX.toString());
+    buttonCircle.setAttribute("cy", buttonCenterY.toString());
+    buttonCircle.setAttribute("r", (buttonWidth / 2).toString());
+    buttonCircle.setAttribute("fill", "#f0f0f0");
+    buttonCircle.setAttribute("stroke", "#ccc");
+    buttonCircle.setAttribute("stroke-width", "1");
+    buttonGroup.appendChild(buttonCircle);
+
+    // Button symbol (arrow)
+    // Create SVG chevron icon
+    const buttonSymbol = document.createElementNS(SVG_NS, "svg");
+    buttonSymbol.setAttribute("x", (buttonCenterX - 6).toString()); // Center the 12x12 icon
+    buttonSymbol.setAttribute("y", (buttonCenterY - 6).toString());
+    buttonSymbol.setAttribute("width", "12");
+    buttonSymbol.setAttribute("height", "12");
+    buttonSymbol.setAttribute("viewBox", "0 0 20 20");
+    buttonSymbol.setAttribute("fill", "#666");
+
+    // Create the path element for the chevron
+    const chevronPath = document.createElementNS(SVG_NS, "path");
+    chevronPath.setAttribute("fill-rule", "evenodd");
+    chevronPath.setAttribute("clip-rule", "evenodd");
+
+    if (options.expanded) {
+      // Rotate the chevron up when expanded (rotate 180 degrees)
+      buttonSymbol.setAttribute(
+        "transform",
+        `rotate(180, ${buttonCenterX}, ${buttonCenterY})`
+      );
+    }
+
+    // Use the provided chevron down path
+    chevronPath.setAttribute(
+      "d",
+      "M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+    );
+
+    buttonSymbol.appendChild(chevronPath);
+    buttonGroup.appendChild(buttonSymbol);
+
+    // Add click handler
+    buttonGroup.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (options.onToggleExpand) {
+        options.onToggleExpand(!options.expanded);
+      }
+    });
+
+    elements.push(buttonGroup);
+
+    // Create description text elements if expanded and description exists
+    const descriptionLines = (options as any).descriptionLines || [];
+    if (options.expanded && descriptionLines.length > 0) {
+      // Start description with proper spacing below title
+      // Title Y position + some spacing for the gap
+      let currentY = titleY + options.padding + options.descriptionFontSize;
+
+      descriptionLines.forEach((line: string, index: number) => {
+        const descriptionText = document.createElementNS(SVG_NS, "text");
+        descriptionText.setAttribute("x", textStartX.toString());
+        descriptionText.setAttribute("y", currentY.toString());
+        descriptionText.setAttribute("text-anchor", "start");
+        descriptionText.setAttribute(
+          "font-size",
+          options.descriptionFontSize.toString()
+        );
+        descriptionText.setAttribute("font-family", options.fontFamily);
+        descriptionText.setAttribute("fill", options.descriptionFontColor);
+        descriptionText.setAttribute("dominant-baseline", "alphabetic");
+        descriptionText.textContent = line;
+        elements.push(descriptionText);
+
+        // Move to next line
+        currentY +=
+          options.descriptionFontSize * NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT;
       });
     }
 

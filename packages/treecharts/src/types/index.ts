@@ -8,6 +8,7 @@ export interface TreeNode {
   edgeText?: string; // Optional text to display on the edge leading to this node
   nodeConfig?: Partial<NodeConfig>; // Optional node-specific styling configuration
   [key: string]: any; // Allow for additional properties
+  collapsibleState?: CollapsibleNodeState; // For collapsible nodes
 }
 
 /**
@@ -20,6 +21,7 @@ export interface FormattedTreeNode {
   edgeText?: string | null; // Edge text from parent to this node
   nodeConfig?: Partial<NodeConfig>; // Node-specific styling configuration
   [key: string]: any; // Allow for additional properties
+  collapsibleState?: CollapsibleNodeState; // For collapsible nodes
 }
 
 /**
@@ -120,6 +122,7 @@ export interface NodeConfig {
   fontSize?: number;
   fontColor?: string;
   fontFamily?: string;
+  padding?: number; // Add missing padding property
 
   // Advanced styling
   shadow?: boolean;
@@ -133,6 +136,9 @@ export interface NodeConfig {
   icon?: string;
   iconSize?: number;
   iconColor?: string;
+
+  // Collapsible node support
+  collapsible?: boolean;
 
   // Custom attributes for advanced customization
   customAttributes?: { [key: string]: string | number };
@@ -297,7 +303,14 @@ export type NodeType =
   | "octagon"
   | "star"
   | "custom"
-  | "node-with-description";
+  | "node-with-description"
+  | "collapsible-node";
+/**
+ * CollapsibleNodeState for tracking expanded/collapsed state
+ */
+export interface CollapsibleNodeState {
+  expanded: boolean;
+}
 
 /**
  * LevelNodeData represents the processed node data for a specific level during rendering
@@ -358,4 +371,9 @@ export interface NodeOptions {
 
   // Custom attributes for advanced customization
   customAttributes?: { [key: string]: string | number };
+
+  // Collapsible node options
+  collapsible?: boolean;
+  expanded?: boolean;
+  onToggleExpand?: (expanded: boolean) => void;
 }

@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Intelligent layout adjustment to prevent overlapping
   - Bold main text with smaller, gray description text
   - Maximum width constraints to maintain clean layouts
+- **Collapsible Nodes**: Interactive accordion-style nodes with expand/collapse functionality
+  - Click-to-expand descriptions for cleaner initial layouts
+  - Expand/collapse buttons with intuitive arrow indicators (▼ collapsed, ▲ expanded)
+  - Smart layout recalculation when nodes are expanded or collapsed
+  - Preserves tree structure while providing on-demand detail access
+  - Ideal for organizational charts, process flows, and hierarchical data with optional details
 - **Dynamic Height Calculation**: Smart vertical spacing system that adjusts for variable node heights
   - Level-by-level height calculation for optimal spacing
   - Automatic vertical gap adjustment for taller nodes
