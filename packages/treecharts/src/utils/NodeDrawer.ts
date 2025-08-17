@@ -41,6 +41,38 @@ export class NodeDrawer {
     collapsible: false,
     expanded: false,
     onToggleExpand: () => {},
+    imageConfig: {
+      imageWidth: 60,
+      imageHeight: 60,
+      imageBorderRadius: 4,
+      imageBorderColor: "#333333",
+      imageBorderWidth: 1,
+      imageOpacity: 1,
+      backgroundColor: "transparent",
+    },
+    imageTitleConfig: {
+      fontSize: 12,
+      fontColor: "#000000",
+      fontWeight: "bold",
+      marginTop: 6,
+      alignment: "center",
+    },
+    imageSubtitleConfig: {
+      fontSize: 10,
+      fontColor: "#666666",
+      fontWeight: "normal",
+      marginTop: 2,
+      alignment: "center",
+    },
+    imageTextPositionConfig: {
+      position: "bottom",
+      padding: 8,
+      spacing: 4,
+    },
+    imageMargin: 8,
+    imageUrl: "",
+    title: "",
+    subtitle: "",
   };
 
   constructor(svg: SVGSVGElement) {
@@ -108,6 +140,11 @@ export class NodeDrawer {
       maxRequiredWidth += NODE_CONSTANTS.SPACE_FOR_ARROW_BUTTON;
     }
 
+    // For image nodes, calculate based on image and text layout
+    if (nodeConfig.type === "image") {
+      return this.calculateImageNodeWidth(node, nodeConfig);
+    }
+
     // Calculate final width - use the maximum of configured width or required width
     // Don't cap at maxNodeWidth for dynamic nodes since they need to fit their content
     const minWidthRequired = maxRequiredWidth + padding * 2;
@@ -167,9 +204,122 @@ export class NodeDrawer {
       }
     }
 
+    // For image nodes, calculate based on image and text layout
+    if (nodeConfig.type === "image") {
+      return this.calculateImageNodeHeight(node, nodeConfig);
+    }
+
     // Calculate final height with padding
     const minHeightRequired = totalRequiredHeight + padding * 2;
     return Math.max(nodeConfig.height || 0, minHeightRequired);
+  }
+
+  /**
+   * Calculate dynamic width for image nodes
+   */
+  private calculateImageNodeWidth(node: any, nodeConfig: any): number {
+    const imageConfig = nodeConfig.imageConfig || {};
+    const imageTitleConfig = nodeConfig.imageTitleConfig || {};
+    const imageSubtitleConfig = nodeConfig.imageSubtitleConfig || {};
+    const imageTextPositionConfig = nodeConfig.imageTextPositionConfig || {};
+
+    const imageWidth = imageConfig.imageWidth || 60;
+    const imageHeight = imageConfig.imageHeight || 60;
+    const textPosition = imageTextPositionConfig.position || "bottom";
+    const textPadding = imageTextPositionConfig.padding || 8;
+    const textSpacing = imageTextPositionConfig.spacing || 4;
+    const imageMargin = nodeConfig.imageMargin || 8;
+
+    const title = node.title || node.value || "";
+    const subtitle = node.subtitle || node.description || "";
+
+    // Calculate text dimensions
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    let maxTextWidth = 0;
+
+    if (context && (title || subtitle)) {
+      if (title) {
+        context.font = `${imageTitleConfig.fontSize || 12}px ${
+          nodeConfig.fontFamily || "Arial"
+        }`;
+        maxTextWidth = Math.max(maxTextWidth, context.measureText(title).width);
+      }
+      if (subtitle) {
+        context.font = `${imageSubtitleConfig.fontSize || 10}px ${
+          nodeConfig.fontFamily || "Arial"
+        }`;
+        maxTextWidth = Math.max(
+          maxTextWidth,
+          context.measureText(subtitle).width
+        );
+      }
+    }
+
+    // Calculate total width based on text position
+    switch (textPosition) {
+      case "left":
+      case "right":
+        return Math.max(
+          120,
+          imageWidth + maxTextWidth + textPadding + imageMargin * 2
+        );
+      case "bottom":
+      default:
+        return Math.max(
+          120,
+          Math.max(imageWidth, maxTextWidth) + imageMargin * 2
+        );
+    }
+  }
+
+  /**
+   * Calculate dynamic height for image nodes
+   */
+  private calculateImageNodeHeight(node: any, nodeConfig: any): number {
+    const imageConfig = nodeConfig.imageConfig || {};
+    const imageTitleConfig = nodeConfig.imageTitleConfig || {};
+    const imageSubtitleConfig = nodeConfig.imageSubtitleConfig || {};
+    const imageTextPositionConfig = nodeConfig.imageTextPositionConfig || {};
+
+    const imageWidth = imageConfig.imageWidth || 60;
+    const imageHeight = imageConfig.imageHeight || 60;
+    const textPosition = imageTextPositionConfig.position || "bottom";
+    const textPadding = imageTextPositionConfig.padding || 8;
+    const textSpacing = imageTextPositionConfig.spacing || 4;
+    const imageMargin = nodeConfig.imageMargin || 8;
+
+    const title = node.title || node.value || "";
+    const subtitle = node.subtitle || node.description || "";
+
+    // Calculate text height
+    let textHeight = 0;
+    if (title) {
+      textHeight += (imageTitleConfig.fontSize || 12) * 1.2;
+    }
+    if (subtitle) {
+      if (title) textHeight += textSpacing;
+      textHeight += (imageSubtitleConfig.fontSize || 10) * 1.2;
+    }
+
+    // Calculate total height based on text position
+    switch (textPosition) {
+      case "left":
+      case "right":
+        return Math.max(
+          60,
+          Math.max(imageHeight, textHeight) + imageMargin * 2
+        );
+      case "bottom":
+      default:
+        return Math.max(
+          60,
+          imageHeight +
+            textHeight +
+            (textHeight > 0 ? textPadding : 0) +
+            imageMargin * 2
+        );
+    }
   }
 
   /**
@@ -195,12 +345,14 @@ export class NodeDrawer {
       y: finalOptions.y,
       width:
         finalOptions.type === "node-with-description" ||
-        finalOptions.type === "collapsible-node"
+        finalOptions.type === "collapsible-node" ||
+        finalOptions.type === "image"
           ? (finalOptions as any).calculatedWidth || finalOptions.width
           : finalOptions.width,
       height:
         finalOptions.type === "node-with-description" ||
-        finalOptions.type === "collapsible-node"
+        finalOptions.type === "collapsible-node" ||
+        finalOptions.type === "image"
           ? (finalOptions as any).calculatedHeight || finalOptions.height
           : finalOptions.height,
     };
@@ -226,8 +378,12 @@ export class NodeDrawer {
     // Apply basic styling
     this.applyBasicStyling(shapeElement, finalOptions);
 
-    // Add text if provided - special handling for node-with-description and collapsible-node
-    if (finalOptions.text && finalOptions.text.trim()) {
+    // Add text if provided - special handling for node-with-description, collapsible-node, and image nodes
+    if (
+      finalOptions.text &&
+      finalOptions.text.trim() &&
+      finalOptions.type !== "image"
+    ) {
       if (finalOptions.type === "node-with-description") {
         const textElements = this.createNodeWithDescriptionText(finalOptions);
         nodeElements.push(...textElements);
@@ -291,6 +447,8 @@ export class NodeDrawer {
         return this.createNodeWithDescription(options);
       case "collapsible-node":
         return this.createCollapsibleNode(options);
+      case "image":
+        return this.createImageNode(options);
       case "custom":
         return this.createCustomShape(options);
       default:
@@ -1023,5 +1181,218 @@ export class NodeDrawer {
     icon.textContent = options.icon;
 
     return icon;
+  }
+
+  /**
+   * Create an image node with configurable text positioning
+   */
+  private createImageNode(options: Required<NodeOptions>): SVGElement {
+    const imageConfig = options.imageConfig || {};
+    const imageTitleConfig = options.imageTitleConfig || {};
+    const imageSubtitleConfig = options.imageSubtitleConfig || {};
+    const imageTextPositionConfig = options.imageTextPositionConfig || {};
+
+    // Image dimensions (from imageConfig)
+    const imageWidth = imageConfig.imageWidth || 60;
+    const imageHeight = imageConfig.imageHeight || 60;
+
+    // Text positioning (from imageTextPositionConfig)
+    const textPosition = imageTextPositionConfig.position || "bottom";
+    const textPadding = imageTextPositionConfig.padding || 8;
+    const textSpacing = imageTextPositionConfig.spacing || 4;
+
+    // Node layout (from main options)
+    const imageMargin = options.imageMargin || 8;
+
+    // Text content (from node data, not config)
+    const title = options.title || options.text || "";
+    const subtitle = options.subtitle || options.description || "";
+
+    // Calculate text metrics
+    const titleFontSize = imageTitleConfig.fontSize || 12;
+    const subtitleFontSize = imageSubtitleConfig.fontSize || 10;
+    const titleHeight = title ? titleFontSize * 1.2 : 0;
+    const subtitleHeight = subtitle ? subtitleFontSize * 1.2 : 0;
+    const textHeight =
+      titleHeight + (title && subtitle ? textSpacing : 0) + subtitleHeight;
+
+    // Estimate text width (rough approximation)
+    const titleWidth = title ? title.length * titleFontSize * 0.6 : 0;
+    const subtitleWidth = subtitle
+      ? subtitle.length * subtitleFontSize * 0.6
+      : 0;
+    const textWidth = Math.max(titleWidth, subtitleWidth);
+
+    // Calculate total dimensions based on text position
+    let totalWidth, totalHeight;
+
+    switch (textPosition) {
+      case "right":
+      case "left":
+        totalWidth = imageWidth + textPadding + textWidth + imageMargin * 2;
+        totalHeight = Math.max(imageHeight, textHeight) + imageMargin * 2;
+        break;
+      case "bottom":
+      default:
+        totalWidth = Math.max(imageWidth, textWidth) + imageMargin * 2;
+        totalHeight = imageHeight + textPadding + textHeight + imageMargin * 2;
+        break;
+    }
+
+    // Create container group
+    const group = document.createElementNS(SVG_NS, "g");
+
+    // Calculate layout positions based on text position
+    let imageX, imageY, textX, textY;
+
+    switch (textPosition) {
+      case "right":
+        imageX = options.x + imageMargin;
+        imageY = options.y + (totalHeight - imageHeight) / 2;
+        textX = options.x + imageMargin + imageWidth + textPadding;
+        textY = options.y + totalHeight / 2;
+        break;
+      case "left":
+        textX = options.x + imageMargin;
+        textY = options.y + totalHeight / 2;
+        imageX = options.x + totalWidth - imageWidth - imageMargin;
+        imageY = options.y + (totalHeight - imageHeight) / 2;
+        break;
+      case "bottom":
+      default:
+        imageX = options.x + (totalWidth - imageWidth) / 2;
+        imageY = options.y + imageMargin;
+        textX = options.x + totalWidth / 2;
+        textY = options.y + imageMargin + imageHeight + textPadding;
+        break;
+    }
+
+    // Create background rectangle
+    const background = document.createElementNS(SVG_NS, "rect");
+    background.setAttribute("x", options.x.toString());
+    background.setAttribute("y", options.y.toString());
+    background.setAttribute("width", totalWidth.toString());
+    background.setAttribute("height", totalHeight.toString());
+    background.setAttribute("fill", options.fill);
+    background.setAttribute("stroke", options.stroke);
+    background.setAttribute("stroke-width", options.strokeWidth.toString());
+    background.setAttribute("rx", options.borderRadius.toString());
+    background.setAttribute("opacity", options.opacity.toString());
+    group.appendChild(background);
+
+    // Create image element
+    if (options.imageUrl) {
+      const image = document.createElementNS(SVG_NS, "image");
+      image.setAttribute("x", imageX.toString());
+      image.setAttribute("y", imageY.toString());
+      image.setAttribute("width", imageWidth.toString());
+      image.setAttribute("height", imageHeight.toString());
+      image.setAttribute("href", options.imageUrl);
+      image.setAttribute("opacity", (imageConfig.imageOpacity || 1).toString());
+
+      if (imageConfig.imageBorderRadius && imageConfig.imageBorderRadius > 0) {
+        image.setAttribute("rx", imageConfig.imageBorderRadius.toString());
+        image.setAttribute("ry", imageConfig.imageBorderRadius.toString());
+      }
+
+      group.appendChild(image);
+    }
+
+    // Create text elements
+    if (title || subtitle) {
+      let titleStartY, subtitleStartY;
+
+      if (textPosition === "right" || textPosition === "left") {
+        // For side positioning, calculate total text height and center the text block
+        const totalTextHeight =
+          (title ? titleHeight : 0) +
+          (subtitle ? subtitleHeight : 0) +
+          (title && subtitle ? textSpacing : 0);
+
+        // Start the text block so it's vertically centered
+        const textBlockStartY = textY - totalTextHeight / 2;
+
+        titleStartY = textBlockStartY;
+        subtitleStartY =
+          textBlockStartY + (title ? titleHeight + textSpacing : 0);
+      } else {
+        // For bottom positioning, use sequential positioning
+        titleStartY = textY;
+        subtitleStartY = textY + (title ? titleHeight + textSpacing : 0);
+      }
+
+      if (title) {
+        const titleElement = document.createElementNS(SVG_NS, "text");
+        titleElement.setAttribute("x", textX.toString());
+        titleElement.setAttribute("y", titleStartY.toString());
+        titleElement.setAttribute(
+          "text-anchor",
+          textPosition === "left"
+            ? "start"
+            : textPosition === "right"
+            ? "start"
+            : "middle"
+        );
+        titleElement.setAttribute(
+          "dominant-baseline",
+          textPosition === "right" || textPosition === "left"
+            ? "middle"
+            : "hanging"
+        );
+        titleElement.setAttribute("font-size", titleFontSize.toString());
+        titleElement.setAttribute(
+          "font-weight",
+          imageTitleConfig.fontWeight || "bold"
+        );
+        titleElement.setAttribute("fill", "#000000"); // Force black color
+        titleElement.setAttribute("stroke", "none"); // Remove any stroke
+        titleElement.setAttribute(
+          "font-family",
+          options.fontFamily || "Arial, sans-serif"
+        );
+        titleElement.textContent = title;
+        group.appendChild(titleElement);
+      }
+
+      if (subtitle) {
+        const subtitleElement = document.createElementNS(SVG_NS, "text");
+        subtitleElement.setAttribute("x", textX.toString());
+        subtitleElement.setAttribute("y", subtitleStartY.toString());
+
+        subtitleElement.setAttribute(
+          "text-anchor",
+          textPosition === "left"
+            ? "start"
+            : textPosition === "right"
+            ? "start"
+            : "middle"
+        );
+        subtitleElement.setAttribute(
+          "dominant-baseline",
+          textPosition === "right" || textPosition === "left"
+            ? "middle"
+            : "hanging"
+        );
+        subtitleElement.setAttribute("font-size", subtitleFontSize.toString());
+        subtitleElement.setAttribute(
+          "font-weight",
+          imageSubtitleConfig.fontWeight || "normal"
+        );
+        subtitleElement.setAttribute("fill", "#666666"); // Force gray color
+        subtitleElement.setAttribute("stroke", "none"); // Remove any stroke
+        subtitleElement.setAttribute(
+          "font-family",
+          options.fontFamily || "Arial, sans-serif"
+        );
+        subtitleElement.textContent = subtitle;
+        group.appendChild(subtitleElement);
+      }
+    }
+
+    // Set calculated dimensions on the options object for the layout system
+    (options as any).calculatedWidth = totalWidth;
+    (options as any).calculatedHeight = totalHeight;
+
+    return group;
   }
 }

@@ -55,7 +55,8 @@ export function calculateSvgWidth(
       // For dynamic nodes, calculate their actual width
       if (
         effectiveNodeConfig.type === "node-with-description" ||
-        effectiveNodeConfig.type === "collapsible-node"
+        effectiveNodeConfig.type === "collapsible-node" ||
+        effectiveNodeConfig.type === "image"
       ) {
         actualWidth = nodeDrawer.calculateDynamicNodeWidth(
           node,
@@ -103,7 +104,8 @@ export function calculateSvgHeight(
       // Calculate dynamic height for nodes that need it
       if (
         effectiveNodeConfig.type === "node-with-description" ||
-        effectiveNodeConfig.type === "collapsible-node"
+        effectiveNodeConfig.type === "collapsible-node" ||
+        effectiveNodeConfig.type === "image"
       ) {
         const dynamicHeight = nodeDrawer.calculateDynamicNodeHeight(
           node,

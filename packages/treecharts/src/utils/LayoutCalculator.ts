@@ -139,7 +139,8 @@ export class LayoutCalculator {
       let actualWidth = effectiveNodeConfig.width || boxWidth;
       if (
         effectiveNodeConfig.type === "node-with-description" ||
-        effectiveNodeConfig.type === "collapsible-node"
+        effectiveNodeConfig.type === "collapsible-node" ||
+        effectiveNodeConfig.type === "image"
       ) {
         actualWidth = this.nodeDrawer.calculateDynamicNodeWidth(
           node,
@@ -180,7 +181,8 @@ export class LayoutCalculator {
       let effectiveWidth = effectiveNodeConfig.width || boxWidth;
       if (
         effectiveNodeConfig.type === "node-with-description" ||
-        effectiveNodeConfig.type === "collapsible-node"
+        effectiveNodeConfig.type === "collapsible-node" ||
+        effectiveNodeConfig.type === "image"
       ) {
         effectiveWidth = this.nodeDrawer.calculateDynamicNodeWidth(
           node,
@@ -193,6 +195,7 @@ export class LayoutCalculator {
       let effectiveActualHeight = effectiveHeight;
       if (
         effectiveNodeConfig.type === "node-with-description" ||
+        effectiveNodeConfig.type === "image" ||
         (effectiveNodeConfig.type === "collapsible-node" &&
           node.description &&
           node.collapsibleState?.expanded)

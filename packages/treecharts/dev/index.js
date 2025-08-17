@@ -534,3 +534,165 @@ chartTypeSelect.addEventListener("change", (e) => {
 
 // Initialize by highlighting the direct chart
 document.getElementById("direct-container").style.border = "2px solid #4CAF50";
+
+// Evolution Tree Demo with Image Nodes
+const evolutionTree = {
+  value: "Common Ancestor",
+  imageUrl:
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4w5E__f_t09cfuWsfINZh0Bd3qjjA3kLrw&s",
+  title: "Common Ancestor",
+  subtitle: "~4 billion years ago",
+  child: [
+    {
+      value: "Vertebrates",
+      imageUrl:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4w5E__f_t09cfuWsfINZh0Bd3qjjA3kLrw&s",
+      title: "Vertebrates",
+      subtitle: "~525 million years ago",
+      child: [
+        {
+          value: "Mammals",
+          imageUrl:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4w5E__f_t09cfuWsfINZh0Bd3qjjA3kLrw&s",
+          title: "Mammals",
+          subtitle: "~200 million years ago",
+          child: [
+            {
+              value: "Primates",
+              imageUrl:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4w5E__f_t09cfuWsfINZh0Bd3qjjA3kLrw&s",
+              title: "Primates",
+              subtitle: "~85 million years ago",
+              child: [
+                {
+                  value: "Humans",
+                  imageUrl:
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4w5E__f_t09cfuWsfINZh0Bd3qjjA3kLrw&s",
+                  title: "Homo sapiens",
+                  subtitle: "~300,000 years ago",
+                  child: [],
+                },
+              ],
+            },
+            {
+              value: "Cetaceans",
+              imageUrl:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4w5E__f_t09cfuWsfINZh0Bd3qjjA3kLrw&s",
+              title: "Whales & Dolphins",
+              subtitle: "~50 million years ago",
+              child: [],
+            },
+          ],
+        },
+        {
+          value: "Birds",
+          imageUrl:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4w5E__f_t09cfuWsfINZh0Bd3qjjA3kLrw&s",
+          title: "Birds",
+          subtitle: "~150 million years ago",
+          child: [],
+        },
+        {
+          value: "Reptiles",
+          imageUrl:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4w5E__f_t09cfuWsfINZh0Bd3qjjA3kLrw&s",
+          title: "Reptiles",
+          subtitle: "~320 million years ago",
+          child: [],
+        },
+      ],
+    },
+    {
+      value: "Arthropods",
+      imageUrl:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4w5E__f_t09cfuWsfINZh0Bd3qjjA3kLrw&s",
+      title: "Arthropods",
+      subtitle: "~540 million years ago",
+      child: [
+        {
+          value: "Insects",
+          imageUrl:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC4w5E__f_t09cfuWsfINZh0Bd3qjjA3kLrw&s",
+          title: "Insects",
+          subtitle: "~400 million years ago",
+          child: [],
+        },
+      ],
+    },
+  ],
+};
+
+const evolutionChart = new TreeChart("evolution-container", {
+  type: "right-angle",
+  horizontalGap: 120,
+  verticalGap: 100,
+  nodeConfig: {
+    type: "image",
+
+    // Image configuration (image properties)
+    imageConfig: {
+      imageWidth: 60,
+      imageHeight: 60,
+      imageBorderRadius: 8,
+      imageBorderColor: "#2c3e50",
+      imageBorderWidth: 2,
+      imageOpacity: 1,
+      backgroundColor: "transparent",
+    },
+
+    // Title configuration (title styling)
+    imageTitleConfig: {
+      fontSize: 12,
+      fontColor: "#2c3e50",
+      fontWeight: "bold",
+      marginTop: 6,
+      alignment: "center",
+    },
+
+    // Subtitle configuration (subtitle styling)
+    imageSubtitleConfig: {
+      fontSize: 9,
+      fontColor: "#7f8c8d",
+      fontWeight: "normal",
+      marginTop: 2,
+      alignment: "center",
+    },
+
+    // Text positioning relative to image (separate config)
+    imageTextPositionConfig: {
+      position: "left", // bottom, left, right
+      padding: 6,
+      spacing: 3,
+    },
+
+    // Node container styling (background, borders, etc.)
+    color: "#ffffff",
+    borderColor: "#dee2e6",
+    borderWidth: 1,
+    borderRadius: 6,
+    imageMargin: 8,
+  },
+  edgeConfig: {
+    color: "#6c757d",
+    width: 2,
+    textSize: 11,
+    textColor: "#495057",
+  },
+  titleConfig: {
+    title: "Evolution Tree",
+    description: "Tree of life showing evolutionary relationships",
+    titleStyle: {
+      fontSize: 18,
+      fontColor: "#2c3e50",
+      fontWeight: "bold",
+      margin: 20,
+    },
+    descriptionStyle: {
+      fontSize: 14,
+      fontColor: "#6c757d",
+      margin: 10,
+    },
+  },
+});
+
+evolutionChart.render(evolutionTree);
