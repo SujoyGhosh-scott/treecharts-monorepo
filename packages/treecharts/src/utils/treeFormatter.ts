@@ -33,6 +33,10 @@ export function formatTree(tree: TreeNode): FormattedTree {
         edgeText: node.tree.edgeText || null, // Preserve edge text if present
         nodeConfig: node.tree.nodeConfig || undefined, // Preserve node-specific config if present
         collapsibleState: node.tree.collapsibleState || undefined, // Include collapsible state if present
+        // Image node properties
+        imageUrl: node.tree.imageUrl || undefined,
+        title: node.tree.title || undefined,
+        subtitle: node.tree.subtitle || undefined,
       });
     } else {
       // Create a new level
@@ -44,6 +48,10 @@ export function formatTree(tree: TreeNode): FormattedTree {
           edgeText: node.tree.edgeText || null, // Preserve edge text if present
           nodeConfig: node.tree.nodeConfig || undefined, // Preserve node-specific config if present
           collapsibleState: node.tree.collapsibleState || undefined, // Include collapsible state if present
+          // Image node properties
+          imageUrl: node.tree.imageUrl || undefined,
+          title: node.tree.title || undefined,
+          subtitle: node.tree.subtitle || undefined,
         },
       ]);
     }

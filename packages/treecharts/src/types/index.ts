@@ -9,6 +9,10 @@ export interface TreeNode {
   nodeConfig?: Partial<NodeConfig>; // Optional node-specific styling configuration
   [key: string]: any; // Allow for additional properties
   collapsibleState?: CollapsibleNodeState; // For collapsible nodes
+  // Image node properties
+  imageUrl?: string;
+  title?: string;
+  subtitle?: string;
 }
 
 /**
@@ -22,6 +26,10 @@ export interface FormattedTreeNode {
   nodeConfig?: Partial<NodeConfig>; // Node-specific styling configuration
   [key: string]: any; // Allow for additional properties
   collapsibleState?: CollapsibleNodeState; // For collapsible nodes
+  // Image node properties
+  imageUrl?: string;
+  title?: string;
+  subtitle?: string;
 }
 
 /**
@@ -103,6 +111,50 @@ export interface ConnectionOptions {
 }
 
 /**
+ * Image configuration for image nodes
+ */
+export interface ImageConfig {
+  imageWidth?: number;
+  imageHeight?: number;
+  imageBorderRadius?: number;
+  imageBorderColor?: string;
+  imageBorderWidth?: number;
+  imageOpacity?: number;
+  backgroundColor?: string;
+}
+
+/**
+ * Image title configuration for image nodes
+ */
+export interface ImageTitleConfig {
+  fontSize?: number;
+  fontColor?: string;
+  fontWeight?: string;
+  marginTop?: number;
+  alignment?: "left" | "center" | "right";
+}
+
+/**
+ * Image subtitle configuration for image nodes
+ */
+export interface ImageSubtitleConfig {
+  fontSize?: number;
+  fontColor?: string;
+  fontWeight?: string;
+  marginTop?: number;
+  alignment?: "left" | "center" | "right";
+}
+
+/**
+ * Text positioning configuration for image nodes
+ */
+export interface ImageTextPositionConfig {
+  position?: "bottom" | "left" | "right";
+  padding?: number;
+  spacing?: number;
+}
+
+/**
  * NodeConfig represents configuration for node styling and behavior
  */
 export interface NodeConfig {
@@ -139,6 +191,13 @@ export interface NodeConfig {
 
   // Collapsible node support
   collapsible?: boolean;
+
+  // Image node support
+  imageConfig?: ImageConfig;
+  imageTitleConfig?: ImageTitleConfig;
+  imageSubtitleConfig?: ImageSubtitleConfig;
+  imageTextPositionConfig?: ImageTextPositionConfig;
+  imageMargin?: number;
 
   // Custom attributes for advanced customization
   customAttributes?: { [key: string]: string | number };
@@ -304,7 +363,8 @@ export type NodeType =
   | "star"
   | "custom"
   | "node-with-description"
-  | "collapsible-node";
+  | "collapsible-node"
+  | "image";
 /**
  * CollapsibleNodeState for tracking expanded/collapsed state
  */
@@ -364,6 +424,16 @@ export interface NodeOptions {
   collapsible?: boolean;
   expanded?: boolean;
   onToggleExpand?: (expanded: boolean) => void;
+
+  // Image node options
+  imageConfig?: ImageConfig;
+  imageTitleConfig?: ImageTitleConfig;
+  imageSubtitleConfig?: ImageSubtitleConfig;
+  imageTextPositionConfig?: ImageTextPositionConfig;
+  imageMargin?: number;
+  imageUrl?: string;
+  title?: string;
+  subtitle?: string;
 }
 
 /**

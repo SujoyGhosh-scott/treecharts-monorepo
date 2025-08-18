@@ -20,6 +20,16 @@ export {
   AllDirectionRenderer,
 } from "./renderers";
 
+// Export node renderers
+export {
+  BaseNodeRenderer,
+  RectangleNodeRenderer,
+  CircleNodeRenderer,
+  NodeWithDescriptionRenderer,
+  CollapsibleNodeRenderer,
+  ImageNodeRenderer,
+} from "./nodeRenderers";
+
 // Default export
 import { TreeChart } from "./TreeChart";
 export default TreeChart;

@@ -4,7 +4,12 @@ import { BaseNodeRenderer } from "./BaseNodeRenderer";
 import { NodeRenderResult } from "./types";
 
 /**
- * CollapsibleNodeRenderer handles rendering of collapsible nodes with expand/collapse functionality
+ * CollapsibleNodeRenderer handles rendering of collapsible nodes with expand/collapse func    // Position chevron vertically centered with the title text
+    // Calculate the actual visual center of the text for perfect alignment
+    const textY = options.y + options.padding + options.fontSize;
+    const textVisualCenter = textY - (options.fontSize * 0.1); // Adjust for text visual center
+    const chevronY = textVisualCenter;
+    const chevronSize = 8;ity
  * These nodes can show/hide description based on expanded state and include chevron icons
  */
 export class CollapsibleNodeRenderer extends BaseNodeRenderer {
@@ -78,7 +83,7 @@ export class CollapsibleNodeRenderer extends BaseNodeRenderer {
     }
 
     // Measure main text
-    context.font = `bold ${fontSize}px ${
+    context.font = `${fontSize}px ${
       nodeConfig.fontFamily || "Arial, sans-serif"
     }`;
     const textWidth = context.measureText(node.value || "").width;
@@ -241,8 +246,10 @@ export class CollapsibleNodeRenderer extends BaseNodeRenderer {
     mainText.setAttribute("dominant-baseline", "middle");
     mainText.setAttribute("font-family", options.fontFamily);
     mainText.setAttribute("font-size", options.fontSize.toString());
-    mainText.setAttribute("fill", options.fontColor);
     mainText.setAttribute("font-weight", "bold");
+    mainText.setAttribute("fill", options.fontColor);
+    mainText.setAttribute("stroke", "none");
+    mainText.setAttribute("stroke-width", "0");
     mainText.textContent = options.text;
     elements.push(mainText);
 
@@ -287,6 +294,7 @@ export class CollapsibleNodeRenderer extends BaseNodeRenderer {
 
   private createChevronIcon(options: Required<NodeOptions>): SVGGElement {
     const chevronGroup = this.createGroup();
+    chevronGroup.style.outline = "none";
 
     // Position chevron with proper padding from the edge
     const chevronPadding = 8; // More padding from the edge
@@ -294,9 +302,10 @@ export class CollapsibleNodeRenderer extends BaseNodeRenderer {
 
     // Position chevron vertically centered with the title text
     // The title text is positioned with dominant-baseline="middle" at y = options.y + options.padding + options.fontSize
-    // So the text center is at that exact y position
+    // Adjust for visual center by moving slightly up from the mathematical baseline
     const titleTextCenterY = options.y + options.padding + options.fontSize;
-    const chevronY = titleTextCenterY;
+    const textVisualCenter = titleTextCenterY - options.fontSize * 0.1;
+    const chevronY = textVisualCenter;
     const chevronSize = 8;
 
     // Create chevron path based on expanded state
@@ -338,7 +347,11 @@ export class CollapsibleNodeRenderer extends BaseNodeRenderer {
     clickArea.setAttribute("width", clickAreaSize.toString());
     clickArea.setAttribute("height", clickAreaSize.toString());
     clickArea.setAttribute("fill", "transparent");
+    clickArea.setAttribute("stroke", "none");
+    clickArea.setAttribute("outline", "none");
     clickArea.setAttribute("cursor", "pointer");
+    clickArea.style.outline = "none";
+    clickArea.style.border = "none";
 
     chevronGroup.appendChild(clickArea);
     chevronGroup.appendChild(chevronPath);

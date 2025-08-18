@@ -165,6 +165,8 @@ export class TitleDrawer {
     textElement.setAttribute("font-family", style.fontFamily);
     textElement.setAttribute("font-weight", style.fontWeight);
     textElement.setAttribute("fill", style.fontColor);
+    textElement.setAttribute("stroke", "none");
+    textElement.setAttribute("stroke-width", "0");
 
     // Set text content
     textElement.textContent = text;

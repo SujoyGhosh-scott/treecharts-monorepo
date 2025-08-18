@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Strategy Pattern Architecture**: Complete refactoring from monolithic to pluggable renderer system
   - BaseNodeRenderer with centralized common functionality (342 lines)
   - Individual renderer classes with focused responsibilities
-  - 87% size reduction in main NodeDrawer (1,028 → 144 lines)
+  - 44% size reduction in main NodeDrawer (1,217 → 677 lines)
   - Eliminated 140+ lines of code duplication across renderers
 - **Node with Description**: Revolutionary new node type that displays both a main value and descriptive text
   - Automatic text wrapping for long descriptions
@@ -28,6 +28,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Smart layout recalculation when nodes are expanded or collapsed
   - Preserves tree structure while providing on-demand detail access
   - Ideal for organizational charts, process flows, and hierarchical data with optional details
+- **Image Nodes**: Rich visual nodes with customizable images, titles, and descriptions
+  - Support for any image URL with smart loading and error handling
+  - Optional title and subtitle text with independent styling control
+  - Configurable text positioning (above, below, left, right of image)
+  - Dynamic sizing based on image dimensions and text content
+  - Image borders, opacity, and background color customization
+  - Typography control with alignment options for titles and subtitles
 - **Dynamic Height Calculation**: Smart vertical spacing system that adjusts for variable node heights
   - Level-by-level height calculation for optimal spacing
   - Automatic vertical gap adjustment for taller nodes

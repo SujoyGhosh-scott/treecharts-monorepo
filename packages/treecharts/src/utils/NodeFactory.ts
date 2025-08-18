@@ -69,6 +69,16 @@ export class NodeFactory {
       collapsible: effectiveNodeConfig.collapsible,
       expanded: node.collapsibleState?.expanded || false,
       onToggleExpand: this.createToggleHandler(node),
+      // Image node specific configurations
+      imageConfig: effectiveNodeConfig.imageConfig,
+      imageTitleConfig: effectiveNodeConfig.imageTitleConfig,
+      imageSubtitleConfig: effectiveNodeConfig.imageSubtitleConfig,
+      imageTextPositionConfig: effectiveNodeConfig.imageTextPositionConfig,
+      imageMargin: effectiveNodeConfig.imageMargin,
+      // Image node specific data
+      imageUrl: node.imageUrl,
+      title: node.title,
+      subtitle: node.subtitle,
     });
   }
 
