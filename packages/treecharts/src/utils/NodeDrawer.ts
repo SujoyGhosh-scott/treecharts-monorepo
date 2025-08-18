@@ -729,6 +729,7 @@ export class NodeDrawer {
     text.setAttribute("font-weight", "bold");
     text.setAttribute("fill", options.fontColor);
     text.setAttribute("stroke", "none");
+    text.setAttribute("stroke-width", "0");
     text.setAttribute("dominant-baseline", "central");
 
     // Handle multi-line text
@@ -740,6 +741,8 @@ export class NodeDrawer {
         const tspan = document.createElementNS(SVG_NS, "tspan");
         tspan.setAttribute("x", centerX.toString());
         tspan.setAttribute("dy", index === 0 ? "0" : "1.2em");
+        tspan.setAttribute("stroke", "none");
+        tspan.setAttribute("stroke-width", "0");
         tspan.textContent = line;
         text.appendChild(tspan);
       });
@@ -766,6 +769,7 @@ export class NodeDrawer {
     icon.setAttribute("font-weight", "normal");
     icon.setAttribute("fill", options.iconColor);
     icon.setAttribute("stroke", "none");
+    icon.setAttribute("stroke-width", "0");
     icon.textContent = options.icon;
 
     return icon;

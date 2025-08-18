@@ -249,6 +249,7 @@ export class CollapsibleNodeRenderer extends BaseNodeRenderer {
     mainText.setAttribute("font-weight", "bold");
     mainText.setAttribute("fill", options.fontColor);
     mainText.setAttribute("stroke", "none");
+    mainText.setAttribute("stroke-width", "0");
     mainText.textContent = options.text;
     elements.push(mainText);
 
