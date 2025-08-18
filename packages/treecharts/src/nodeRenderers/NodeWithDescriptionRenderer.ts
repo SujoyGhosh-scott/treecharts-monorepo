@@ -71,7 +71,7 @@ export class NodeWithDescriptionRenderer extends BaseNodeRenderer {
     }
 
     // Measure main text
-    context.font = `bold ${fontSize}px ${
+    context.font = `${fontSize}px ${
       nodeConfig.fontFamily || "Arial, sans-serif"
     }`;
     const textWidth = context.measureText(node.value || "").width;
@@ -215,8 +215,9 @@ export class NodeWithDescriptionRenderer extends BaseNodeRenderer {
     mainText.setAttribute("dominant-baseline", "middle");
     mainText.setAttribute("font-family", options.fontFamily);
     mainText.setAttribute("font-size", options.fontSize.toString());
-    mainText.setAttribute("fill", options.fontColor);
     mainText.setAttribute("font-weight", "bold");
+    mainText.setAttribute("fill", options.fontColor);
+    mainText.setAttribute("stroke", "none");
     mainText.textContent = options.text;
     elements.push(mainText);
 

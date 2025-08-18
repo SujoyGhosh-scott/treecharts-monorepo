@@ -117,7 +117,9 @@ export abstract class BaseNodeRenderer implements NodeRenderer {
     textElement.setAttribute("dominant-baseline", "middle");
     textElement.setAttribute("font-family", options.fontFamily);
     textElement.setAttribute("font-size", options.fontSize.toString());
+    textElement.setAttribute("font-weight", "bold");
     textElement.setAttribute("fill", options.fontColor);
+    textElement.setAttribute("stroke", "none");
     textElement.textContent = options.text;
 
     return textElement;
@@ -202,7 +204,9 @@ export abstract class BaseNodeRenderer implements NodeRenderer {
       textElement.setAttribute("dominant-baseline", "middle");
       textElement.setAttribute("font-family", fontFamily);
       textElement.setAttribute("font-size", fontSize.toString());
+      textElement.setAttribute("font-weight", "normal");
       textElement.setAttribute("fill", fontColor);
+      textElement.setAttribute("stroke", "none");
       textElement.textContent = line;
 
       textElements.push(textElement);
@@ -290,7 +294,9 @@ export abstract class BaseNodeRenderer implements NodeRenderer {
       descriptionText.setAttribute("y", lineY.toString());
       descriptionText.setAttribute("font-family", fontFamily);
       descriptionText.setAttribute("font-size", fontSize.toString());
+      descriptionText.setAttribute("font-weight", "normal");
       descriptionText.setAttribute("fill", fillColor);
+      descriptionText.setAttribute("stroke", "none");
       descriptionText.setAttribute("text-anchor", textAnchor);
       descriptionText.setAttribute("dominant-baseline", "alphabetic");
       descriptionText.textContent = line;

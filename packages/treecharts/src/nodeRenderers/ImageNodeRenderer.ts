@@ -430,6 +430,7 @@ export class ImageNodeRenderer extends BaseNodeRenderer {
         "fill",
         imageTitleConfig.fontColor || NODE_CONSTANTS.DEFAULT_TITLE_COLOR
       );
+      titleElement.setAttribute("stroke", "none");
       titleElement.setAttribute(
         "font-family",
         options.fontFamily || "Arial, sans-serif"
@@ -465,6 +466,7 @@ export class ImageNodeRenderer extends BaseNodeRenderer {
         "fill",
         imageSubtitleConfig.fontColor || NODE_CONSTANTS.DEFAULT_SUBTITLE_COLOR
       );
+      subtitleElement.setAttribute("stroke", "none");
       subtitleElement.setAttribute(
         "font-family",
         options.fontFamily || "Arial, sans-serif"

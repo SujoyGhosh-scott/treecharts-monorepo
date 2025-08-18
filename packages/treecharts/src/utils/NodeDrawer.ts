@@ -726,7 +726,9 @@ export class NodeDrawer {
     text.setAttribute("text-anchor", options.textAnchor);
     text.setAttribute("font-size", options.fontSize.toString());
     text.setAttribute("font-family", options.fontFamily);
+    text.setAttribute("font-weight", "bold");
     text.setAttribute("fill", options.fontColor);
+    text.setAttribute("stroke", "none");
     text.setAttribute("dominant-baseline", "central");
 
     // Handle multi-line text
@@ -761,7 +763,9 @@ export class NodeDrawer {
     icon.setAttribute("x", iconX.toString());
     icon.setAttribute("y", iconY.toString());
     icon.setAttribute("font-size", options.iconSize.toString());
+    icon.setAttribute("font-weight", "normal");
     icon.setAttribute("fill", options.iconColor);
+    icon.setAttribute("stroke", "none");
     icon.textContent = options.icon;
 
     return icon;
