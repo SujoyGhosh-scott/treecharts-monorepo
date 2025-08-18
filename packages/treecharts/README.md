@@ -160,6 +160,11 @@ nodeConfig: {
 nodeConfig: {
   type: "collapsible-node";
 }
+
+// Image Node (NEW in v0.3.0)
+nodeConfig: {
+  type: "image";
+}
 ```
 
 ### Node with Description (v0.3.0+)
@@ -271,6 +276,76 @@ chart.render(orgChartData);
 - **Clean Initial View**: Start with collapsed descriptions for a clean overview, expand details as needed
 - **Smart Text Wrapping**: When expanded, descriptions wrap intelligently with proper spacing
 - **Preserved Functionality**: All standard node features work seamlessly with collapsible behavior
+
+### Image Nodes (v0.3.0+)
+
+The `image` node type allows you to create rich visual nodes with customizable images, titles, and descriptions. Perfect for team organizational charts, product catalogs, or any scenario where visual representation enhances understanding.
+
+```javascript
+const teamChartData = {
+  value: "Leadership Team",
+  nodeConfig: { type: "rectangle" }, // Parent can be any type
+  child: [
+    {
+      value: "CEO", // This value can be overridden by title
+      nodeConfig: {
+        type: "image",
+        imageUrl: "https://example.com/ceo-photo.jpg",
+        title: "Sarah Johnson",
+        subtitle: "Chief Executive Officer",
+        imageTextPositionConfig: { position: "bottom" },
+      },
+      child: [
+        {
+          value: "CTO",
+          nodeConfig: {
+            type: "image",
+            imageUrl: "https://example.com/cto-photo.jpg",
+            title: "Mike Chen",
+            subtitle: "Chief Technology Officer",
+            imageTextPositionConfig: { position: "bottom" },
+          },
+          child: [],
+        },
+        {
+          value: "CFO",
+          nodeConfig: {
+            type: "image",
+            imageUrl: "https://example.com/cfo-photo.jpg",
+            title: "Emily Rodriguez",
+            subtitle: "Chief Financial Officer",
+            imageTextPositionConfig: { position: "bottom" },
+          },
+          child: [],
+        },
+      ],
+    },
+  ],
+};
+
+const chart = new TreeChart("container-id", {
+  type: "right-angle",
+  nodeConfig: {
+    type: "image",
+    width: 120,
+    height: 140,
+    color: "#f8f9fa",
+    borderRadius: 8,
+  },
+});
+
+chart.render(teamChartData);
+```
+
+**Features of Image Nodes:**
+
+- **Flexible Image Display**: Support for any image URL with smart loading and error handling
+- **Title and Subtitle Support**: Optional title and subtitle text with independent styling control
+- **Configurable Text Positioning**: Position text above, below, left, or right of the image
+- **Dynamic Sizing**: Automatic node sizing based on image dimensions and text content
+- **Smart Layout Adaptation**: Image margins, padding, and spacing automatically adjust for optimal appearance
+- **Border and Styling**: Customizable image borders, opacity, and background colors
+- **Typography Control**: Independent font configuration for titles and subtitles with alignment options
 
 ## Complete Examples
 
@@ -424,6 +499,109 @@ const collapsibleData = {
 collapsibleChart.render(collapsibleData);
 ```
 
+### Image Node Example (v0.3.0+)
+
+```javascript
+const teamChart = new TreeChart("container-id", {
+  type: "right-angle",
+  titleConfig: {
+    title: "Team Organization Chart with Photos",
+    description: "Visual representation of our leadership team",
+    position: { horizontal: "center", vertical: "top" },
+  },
+  nodeConfig: {
+    type: "image",
+    width: 140,
+    height: 160,
+    color: "#ffffff",
+    borderColor: "#e0e0e0",
+    borderWidth: 1,
+    borderRadius: 12,
+    imageTitleConfig: {
+      fontSize: 14,
+      fontColor: "#333333",
+      fontWeight: "bold",
+    },
+    imageSubtitleConfig: {
+      fontSize: 12,
+      fontColor: "#666666",
+      fontWeight: "normal",
+    },
+    imageTextPositionConfig: {
+      position: "bottom",
+      padding: 8,
+      spacing: 4,
+    },
+    imageConfig: {
+      width: 80,
+      height: 80,
+      borderRadius: 40, // Circular images
+      borderColor: "#cccccc",
+      borderWidth: 2,
+    },
+  },
+  edgeConfig: {
+    type: "right-angle",
+    color: "#666",
+    width: 2,
+  },
+});
+
+const teamData = {
+  value: "Leadership Team",
+  nodeConfig: {
+    type: "rectangle",
+    color: "#4CAF50",
+    fontColor: "white",
+  },
+  child: [
+    {
+      value: "CEO", // Can be overridden by title
+      nodeConfig: {
+        type: "image",
+        imageUrl: "https://example.com/photos/sarah-johnson.jpg",
+        title: "Sarah Johnson",
+        subtitle: "Chief Executive Officer",
+      },
+      child: [
+        {
+          value: "CTO",
+          nodeConfig: {
+            type: "image",
+            imageUrl: "https://example.com/photos/mike-chen.jpg",
+            title: "Mike Chen",
+            subtitle: "Chief Technology Officer",
+          },
+          child: [],
+        },
+        {
+          value: "CFO",
+          nodeConfig: {
+            type: "image",
+            imageUrl: "https://example.com/photos/emily-rodriguez.jpg",
+            title: "Emily Rodriguez",
+            subtitle: "Chief Financial Officer",
+          },
+          child: [],
+        },
+        {
+          value: "COO",
+          nodeConfig: {
+            type: "image",
+            imageUrl: "https://example.com/photos/david-kim.jpg",
+            title: "David Kim",
+            subtitle: "Chief Operating Officer",
+          },
+          child: [],
+        },
+      ],
+    },
+  ],
+};
+
+teamChart.render(teamData);
+```
+
 ### Advanced Styling Example
 
 ```javascript
@@ -519,6 +697,50 @@ const chart = new TreeChart("container-id", {
     gradient: true,
     gradientStartColor: "#4CAF50",
     gradientEndColor: "#2E7D32",
+
+    // Image node specific options (for type: "image")
+    imageUrl: "https://example.com/image.jpg",
+    title: "Node Title",
+    subtitle: "Node Subtitle",
+
+    // Image configuration
+    imageConfig: {
+      width: 60,
+      height: 60,
+      borderRadius: 30, // Circular images
+      borderColor: "#cccccc",
+      borderWidth: 1,
+      opacity: 1,
+      backgroundColor: "transparent",
+    },
+
+    // Image title styling
+    imageTitleConfig: {
+      fontSize: 14,
+      fontColor: "#333333",
+      fontWeight: "bold",
+      marginTop: 6,
+      alignment: "center",
+    },
+
+    // Image subtitle styling
+    imageSubtitleConfig: {
+      fontSize: 12,
+      fontColor: "#666666",
+      fontWeight: "normal",
+      marginTop: 2,
+      alignment: "center",
+    },
+
+    // Text positioning relative to image
+    imageTextPositionConfig: {
+      position: "bottom", // "top", "bottom", "left", "right"
+      padding: 8,
+      spacing: 4,
+    },
+
+    // Image margins
+    imageMargin: 8,
   },
 });
 ```

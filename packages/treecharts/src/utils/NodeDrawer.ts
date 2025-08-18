@@ -4,6 +4,8 @@ import {
   ImageNodeRenderer,
   NodeWithDescriptionRenderer,
   CollapsibleNodeRenderer,
+  RectangleNodeRenderer,
+  CircleNodeRenderer,
 } from "../nodeRenderers";
 
 /**
@@ -15,6 +17,8 @@ export class NodeDrawer {
   private imageNodeRenderer: ImageNodeRenderer;
   private nodeWithDescriptionRenderer: NodeWithDescriptionRenderer;
   private collapsibleNodeRenderer: CollapsibleNodeRenderer;
+  private rectangleNodeRenderer: RectangleNodeRenderer;
+  private circleNodeRenderer: CircleNodeRenderer;
   private defaultOptions: Required<NodeOptions> = {
     type: "rectangle",
     width: 80,
@@ -88,6 +92,8 @@ export class NodeDrawer {
     this.imageNodeRenderer = new ImageNodeRenderer(svg);
     this.nodeWithDescriptionRenderer = new NodeWithDescriptionRenderer(svg);
     this.collapsibleNodeRenderer = new CollapsibleNodeRenderer(svg);
+    this.rectangleNodeRenderer = new RectangleNodeRenderer(svg);
+    this.circleNodeRenderer = new CircleNodeRenderer(svg);
   }
 
   /**
@@ -376,9 +382,9 @@ export class NodeDrawer {
   private createNodeShape(options: Required<NodeOptions>): SVGElement {
     switch (options.type) {
       case "rectangle":
-        return this.createRectangle(options);
+        return this.createRectangleUsingRenderer(options);
       case "circle":
-        return this.createCircle(options);
+        return this.createCircleUsingRenderer(options);
       case "ellipse":
         return this.createEllipse(options);
       case "diamond":
@@ -402,7 +408,7 @@ export class NodeDrawer {
       case "custom":
         return this.createCustomShape(options);
       default:
-        return this.createRectangle(options);
+        return this.createRectangleUsingRenderer(options);
     }
   }
 
@@ -446,37 +452,23 @@ export class NodeDrawer {
   }
 
   /**
-   * Create a rectangle node
+   * Create a rectangle node using the dedicated RectangleNodeRenderer
    */
-  private createRectangle(options: Required<NodeOptions>): SVGRectElement {
-    const rect = document.createElementNS(SVG_NS, "rect");
-    rect.setAttribute("x", options.x.toString());
-    rect.setAttribute("y", options.y.toString());
-    rect.setAttribute("width", options.width.toString());
-    rect.setAttribute("height", options.height.toString());
-
-    if (options.borderRadius > 0) {
-      rect.setAttribute("rx", options.borderRadius.toString());
-      rect.setAttribute("ry", options.borderRadius.toString());
-    }
-
-    return rect;
+  private createRectangleUsingRenderer(
+    options: Required<NodeOptions>
+  ): SVGElement {
+    const result = this.rectangleNodeRenderer.render(options);
+    return result.element;
   }
 
   /**
-   * Create a circle node
+   * Create a circle node using the dedicated CircleNodeRenderer
    */
-  private createCircle(options: Required<NodeOptions>): SVGCircleElement {
-    const circle = document.createElementNS(SVG_NS, "circle");
-    const radius = Math.min(options.width, options.height) / 2;
-    const centerX = options.x + options.width / 2;
-    const centerY = options.y + options.height / 2;
-
-    circle.setAttribute("cx", centerX.toString());
-    circle.setAttribute("cy", centerY.toString());
-    circle.setAttribute("r", radius.toString());
-
-    return circle;
+  private createCircleUsingRenderer(
+    options: Required<NodeOptions>
+  ): SVGElement {
+    const result = this.circleNodeRenderer.render(options);
+    return result.element;
   }
 
   /**
@@ -634,7 +626,7 @@ export class NodeDrawer {
       return path;
     }
 
-    return this.createRectangle(options);
+    return this.createRectangleUsingRenderer(options);
   }
 
   /**

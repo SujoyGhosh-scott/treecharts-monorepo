@@ -12,14 +12,15 @@
   - **Individual Renderer Classes**: Focused, single-responsibility renderers for each node type
   - **NodeRenderer Interface**: Standardized contract for all node renderers ensuring consistency
   - **Factory Pattern**: NodeDrawer acts as coordinator, delegating to appropriate renderers
-  - **87% Size Reduction**: Main NodeDrawer reduced from 1,028 lines to 144 lines
+  - **44% Size Reduction**: Main NodeDrawer reduced from 1,217 lines to 677 lines through systematic refactoring
   - **Eliminated Code Duplication**: Removed 140+ lines of duplicated code across renderers
 
 - **Specialized Node Renderers**: Clean, focused implementations:
 
-  - **RectangleNodeRenderer** (42 lines): Streamlined rectangle rendering
-  - **CircleNodeRenderer** (85 lines): Optimized circular node handling
-  - **NodeWithDescriptionRenderer** (261 lines): Auto-sizing nodes with descriptions
+  - **RectangleNodeRenderer** (42 lines): Streamlined rectangle rendering with shadow and gradient support
+  - **CircleNodeRenderer** (85 lines): Optimized circular node handling with proper centering
+  - **ImageNodeRenderer** (180+ lines): Complete image node rendering with flexible positioning and styling
+  - **NodeWithDescriptionRenderer** (261 lines): Auto-sizing nodes with descriptions and smart text wrapping
   - **CollapsibleNodeRenderer** (363 lines): Interactive expandable nodes with state management
 
 - **Node with Description Type**: Revolutionary new node type for displaying structured information:
@@ -62,6 +63,30 @@
         child: [],
       },
     ],
+  };
+  ```
+
+- **Image Node Type**: Rich visual nodes with customizable images, titles, and descriptions:
+
+  - **Flexible Image Display**: Support for any image URL with smart loading and error handling
+  - **Title and Subtitle Support**: Optional title and subtitle text with independent styling control
+  - **Configurable Text Positioning**: Position text above, below, left, or right of the image
+  - **Dynamic Sizing**: Automatic node sizing based on image dimensions and text content
+  - **Smart Layout Adaptation**: Image margins, padding, and spacing automatically adjust for optimal appearance
+  - **Border and Styling**: Customizable image borders, opacity, and background colors
+  - **Typography Control**: Independent font configuration for titles and subtitles with alignment options
+
+  ```javascript
+  const treeData = {
+    value: "Team Member",
+    nodeConfig: {
+      type: "image",
+      imageUrl: "https://example.com/profile.jpg",
+      title: "John Smith",
+      subtitle: "Senior Developer",
+      imageTextPositionConfig: { position: "bottom" },
+    },
+    child: [],
   };
   ```
 
