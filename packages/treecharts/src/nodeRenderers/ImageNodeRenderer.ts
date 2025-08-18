@@ -84,36 +84,97 @@ export class ImageNodeRenderer extends BaseNodeRenderer {
     const imageSubtitleConfig = nodeConfig.imageSubtitleConfig || {};
     const imageTextPositionConfig = nodeConfig.imageTextPositionConfig || {};
 
-    const imageWidth = imageConfig.imageWidth || 100;
-    const imageHeight = imageConfig.imageHeight || 100;
+    const imageWidth =
+      imageConfig.imageWidth || NODE_CONSTANTS.DEFAULT_IMAGE_WIDTH;
+    const imageHeight =
+      imageConfig.imageHeight || NODE_CONSTANTS.DEFAULT_IMAGE_HEIGHT;
     const textPosition = imageTextPositionConfig.position || "bottom";
-    const textPadding = imageTextPositionConfig.padding || 8;
-    const textSpacing = imageTextPositionConfig.spacing || 4;
-    const imageMargin = nodeConfig.imageMargin || 8;
+    const textPadding =
+      imageTextPositionConfig.padding || NODE_CONSTANTS.DEFAULT_TEXT_PADDING;
+    const textSpacing =
+      imageTextPositionConfig.spacing || NODE_CONSTANTS.DEFAULT_TEXT_SPACING;
+    const imageMargin =
+      nodeConfig.imageMargin || NODE_CONSTANTS.DEFAULT_IMAGE_MARGIN;
 
     const title = node.title || node.value || "";
     const subtitle = node.subtitle || node.description || "";
     const titleFontSize =
       imageTitleConfig.fontSize ||
       nodeConfig.fontSize ||
-      NODE_CONSTANTS.DEFAULT_FONT_SIZE;
+      NODE_CONSTANTS.DEFAULT_TITLE_FONT_SIZE;
     const subtitleFontSize =
-      imageSubtitleConfig.fontSize || NODE_CONSTANTS.DESCRIPTION_FONT_SIZE;
-    const fontFamily = nodeConfig.fontFamily || "Arial, sans-serif";
+      imageSubtitleConfig.fontSize || NODE_CONSTANTS.DEFAULT_SUBTITLE_FONT_SIZE;
 
-    return this.calculateLayoutDimensions(
+    // Calculate text dimensions using canvas measurement
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    let maxTextWidth = 0;
+
+    if (context && (title || subtitle)) {
+      if (title) {
+        context.font = `${titleFontSize}px ${nodeConfig.fontFamily || "Arial"}`;
+        maxTextWidth = Math.max(maxTextWidth, context.measureText(title).width);
+      }
+      if (subtitle) {
+        context.font = `${subtitleFontSize}px ${
+          nodeConfig.fontFamily || "Arial"
+        }`;
+        maxTextWidth = Math.max(
+          maxTextWidth,
+          context.measureText(subtitle).width
+        );
+      }
+    }
+
+    // Calculate text height
+    let textHeight = 0;
+    if (title) {
+      textHeight += titleFontSize * 1.2;
+    }
+    if (subtitle) {
+      if (title) textHeight += textSpacing;
+      textHeight += subtitleFontSize * 1.2;
+    }
+
+    // Calculate total dimensions based on text position
+    let totalWidth, totalHeight;
+
+    switch (textPosition) {
+      case "left":
+      case "right":
+        totalWidth = Math.max(
+          NODE_CONSTANTS.MIN_IMAGE_NODE_WIDTH,
+          imageWidth + maxTextWidth + textPadding + imageMargin * 2
+        );
+        totalHeight = Math.max(
+          NODE_CONSTANTS.MIN_IMAGE_NODE_HEIGHT,
+          Math.max(imageHeight, textHeight) + imageMargin * 2
+        );
+        break;
+      case "bottom":
+      default:
+        totalWidth = Math.max(
+          NODE_CONSTANTS.MIN_IMAGE_NODE_WIDTH,
+          Math.max(imageWidth, maxTextWidth) + imageMargin * 2
+        );
+        totalHeight = Math.max(
+          NODE_CONSTANTS.MIN_IMAGE_NODE_HEIGHT,
+          imageHeight +
+            textHeight +
+            (textHeight > 0 ? textPadding : 0) +
+            imageMargin * 2
+        );
+        break;
+    }
+
+    return {
+      totalWidth,
+      totalHeight,
       imageWidth,
       imageHeight,
-      textPosition,
-      textPadding,
-      textSpacing,
-      imageMargin,
-      title,
-      subtitle,
-      titleFontSize,
-      subtitleFontSize,
-      fontFamily
-    );
+      textHeight,
+      maxTextWidth,
+    };
   }
 
   /**
@@ -125,61 +186,38 @@ export class ImageNodeRenderer extends BaseNodeRenderer {
     const imageSubtitleConfig = options.imageSubtitleConfig || {};
     const imageTextPositionConfig = options.imageTextPositionConfig || {};
 
-    const imageWidth = imageConfig.imageWidth || 100;
-    const imageHeight = imageConfig.imageHeight || 100;
+    const imageWidth =
+      imageConfig.imageWidth || NODE_CONSTANTS.DEFAULT_IMAGE_WIDTH;
+    const imageHeight =
+      imageConfig.imageHeight || NODE_CONSTANTS.DEFAULT_IMAGE_HEIGHT;
     const textPosition = imageTextPositionConfig.position || "bottom";
-    const textPadding = imageTextPositionConfig.padding || 8;
-    const textSpacing = imageTextPositionConfig.spacing || 4;
-    const imageMargin = options.imageMargin || 8;
+    const textPadding =
+      imageTextPositionConfig.padding || NODE_CONSTANTS.DEFAULT_TEXT_PADDING;
+    const textSpacing =
+      imageTextPositionConfig.spacing || NODE_CONSTANTS.DEFAULT_TEXT_SPACING;
+    const imageMargin =
+      options.imageMargin || NODE_CONSTANTS.DEFAULT_IMAGE_MARGIN;
 
     const title = options.title || options.text || "";
     const subtitle = options.subtitle || options.description || "";
-    const titleFontSize = imageTitleConfig.fontSize || options.fontSize;
+    const titleFontSize =
+      imageTitleConfig.fontSize ||
+      options.fontSize ||
+      NODE_CONSTANTS.DEFAULT_TITLE_FONT_SIZE;
     const subtitleFontSize =
-      imageSubtitleConfig.fontSize || options.descriptionFontSize;
+      imageSubtitleConfig.fontSize || NODE_CONSTANTS.DEFAULT_SUBTITLE_FONT_SIZE;
 
-    return this.calculateLayoutDimensions(
-      imageWidth,
-      imageHeight,
-      textPosition,
-      textPadding,
-      textSpacing,
-      imageMargin,
-      title,
-      subtitle,
-      titleFontSize,
-      subtitleFontSize,
-      options.fontFamily
-    );
-  }
-
-  /**
-   * Core layout calculation logic
-   */
-  private calculateLayoutDimensions(
-    imageWidth: number,
-    imageHeight: number,
-    textPosition: string,
-    textPadding: number,
-    textSpacing: number,
-    imageMargin: number,
-    title: string,
-    subtitle: string,
-    titleFontSize: number,
-    subtitleFontSize: number,
-    fontFamily: string
-  ) {
     // Measure text dimensions
     const titleWidth = title
-      ? this.measureText(title, titleFontSize, fontFamily)
+      ? this.measureText(title, titleFontSize, options.fontFamily)
       : 0;
     const subtitleWidth = subtitle
-      ? this.measureText(subtitle, subtitleFontSize, fontFamily)
+      ? this.measureText(subtitle, subtitleFontSize, options.fontFamily)
       : 0;
     const maxTextWidth = Math.max(titleWidth, subtitleWidth);
 
-    const titleHeight = title ? titleFontSize : 0;
-    const subtitleHeight = subtitle ? subtitleFontSize : 0;
+    const titleHeight = title ? titleFontSize * 1.2 : 0;
+    const subtitleHeight = subtitle ? subtitleFontSize * 1.2 : 0;
     const totalTextHeight =
       titleHeight + (title && subtitle ? textSpacing : 0) + subtitleHeight;
 
@@ -309,86 +347,32 @@ export class ImageNodeRenderer extends BaseNodeRenderer {
     imageElement.setAttribute("y", (options.y + layout.imageY).toString());
     imageElement.setAttribute(
       "width",
-      (imageConfig.imageWidth || 100).toString()
+      (imageConfig.imageWidth || NODE_CONSTANTS.DEFAULT_IMAGE_WIDTH).toString()
     );
     imageElement.setAttribute(
       "height",
-      (imageConfig.imageHeight || 100).toString()
+      (
+        imageConfig.imageHeight || NODE_CONSTANTS.DEFAULT_IMAGE_HEIGHT
+      ).toString()
     );
     imageElement.setAttribute("href", options.imageUrl || "");
     imageElement.setAttribute(
       "opacity",
-      (imageConfig.imageOpacity || 1).toString()
+      (
+        imageConfig.imageOpacity || NODE_CONSTANTS.DEFAULT_IMAGE_OPACITY
+      ).toString()
     );
 
     // Add image styling through a clipping path and background
-    const borderRadius = imageConfig.imageBorderRadius || 0;
-    const borderWidth = imageConfig.imageBorderWidth || 0;
+    const borderRadius =
+      imageConfig.imageBorderRadius ||
+      NODE_CONSTANTS.DEFAULT_IMAGE_BORDER_RADIUS;
+    const borderWidth =
+      imageConfig.imageBorderWidth || NODE_CONSTANTS.DEFAULT_IMAGE_BORDER_WIDTH;
 
-    if (borderRadius > 0 || borderWidth > 0) {
-      const clipPathId = `image-clip-${Math.random()
-        .toString(36)
-        .substr(2, 9)}`;
-
-      // Create defs if not exists
-      let defs = this.svg.querySelector("defs");
-      if (!defs) {
-        defs = document.createElementNS(SVG_NS, "defs");
-        this.svg.appendChild(defs);
-      }
-
-      // Create clip path for rounded corners
-      const clipPath = document.createElementNS(SVG_NS, "clipPath");
-      clipPath.setAttribute("id", clipPathId);
-
-      const clipRect = document.createElementNS(SVG_NS, "rect");
-      clipRect.setAttribute("x", (options.x + layout.imageX).toString());
-      clipRect.setAttribute("y", (options.y + layout.imageY).toString());
-      clipRect.setAttribute(
-        "width",
-        (imageConfig.imageWidth || 100).toString()
-      );
-      clipRect.setAttribute(
-        "height",
-        (imageConfig.imageHeight || 100).toString()
-      );
-      clipRect.setAttribute("rx", borderRadius.toString());
-      clipRect.setAttribute("ry", borderRadius.toString());
-
-      clipPath.appendChild(clipRect);
-      defs.appendChild(clipPath);
-
-      imageElement.setAttribute("clip-path", `url(#${clipPathId})`);
-
-      // Add border if specified
-      if (borderWidth > 0) {
-        const borderRect = document.createElementNS(SVG_NS, "rect");
-        borderRect.setAttribute("x", (options.x + layout.imageX).toString());
-        borderRect.setAttribute("y", (options.y + layout.imageY).toString());
-        borderRect.setAttribute(
-          "width",
-          (imageConfig.imageWidth || 100).toString()
-        );
-        borderRect.setAttribute(
-          "height",
-          (imageConfig.imageHeight || 100).toString()
-        );
-        borderRect.setAttribute("rx", borderRadius.toString());
-        borderRect.setAttribute("ry", borderRadius.toString());
-        borderRect.setAttribute("fill", "none");
-        borderRect.setAttribute(
-          "stroke",
-          imageConfig.imageBorderColor || "#333333"
-        );
-        borderRect.setAttribute("stroke-width", borderWidth.toString());
-
-        // Add border after image
-        setTimeout(() => {
-          if (imageElement.parentNode) {
-            imageElement.parentNode.appendChild(borderRect);
-          }
-        }, 0);
-      }
+    if (borderRadius > 0) {
+      imageElement.setAttribute("rx", borderRadius.toString());
+      imageElement.setAttribute("ry", borderRadius.toString());
     }
 
     return imageElement;
@@ -431,11 +415,12 @@ export class ImageNodeRenderer extends BaseNodeRenderer {
         (currentY + layout.titleHeight * 0.8).toString()
       );
       titleElement.setAttribute("text-anchor", textAnchor);
-      titleElement.setAttribute("dominant-baseline", "baseline");
-      titleElement.setAttribute("font-family", options.fontFamily);
+      titleElement.setAttribute("dominant-baseline", "text-top");
       titleElement.setAttribute(
         "font-size",
-        (imageTitleConfig.fontSize || options.fontSize).toString()
+        (
+          imageTitleConfig.fontSize || NODE_CONSTANTS.DEFAULT_TITLE_FONT_SIZE
+        ).toString()
       );
       titleElement.setAttribute(
         "font-weight",
@@ -443,7 +428,11 @@ export class ImageNodeRenderer extends BaseNodeRenderer {
       );
       titleElement.setAttribute(
         "fill",
-        imageTitleConfig.fontColor || options.fontColor
+        imageTitleConfig.fontColor || NODE_CONSTANTS.DEFAULT_TITLE_COLOR
+      );
+      titleElement.setAttribute(
+        "font-family",
+        options.fontFamily || "Arial, sans-serif"
       );
       titleElement.textContent = title;
 
@@ -457,17 +446,16 @@ export class ImageNodeRenderer extends BaseNodeRenderer {
       subtitleElement.setAttribute("x", textX.toString());
       subtitleElement.setAttribute(
         "y",
-        (
-          currentY +
-          (imageSubtitleConfig.fontSize || options.descriptionFontSize) * 0.8
-        ).toString()
+        (currentY + layout.subtitleHeight * 0.8).toString()
       );
       subtitleElement.setAttribute("text-anchor", textAnchor);
-      subtitleElement.setAttribute("dominant-baseline", "baseline");
-      subtitleElement.setAttribute("font-family", options.fontFamily);
+      subtitleElement.setAttribute("dominant-baseline", "text-top");
       subtitleElement.setAttribute(
         "font-size",
-        (imageSubtitleConfig.fontSize || options.descriptionFontSize).toString()
+        (
+          imageSubtitleConfig.fontSize ||
+          NODE_CONSTANTS.DEFAULT_SUBTITLE_FONT_SIZE
+        ).toString()
       );
       subtitleElement.setAttribute(
         "font-weight",
@@ -475,7 +463,11 @@ export class ImageNodeRenderer extends BaseNodeRenderer {
       );
       subtitleElement.setAttribute(
         "fill",
-        imageSubtitleConfig.fontColor || options.descriptionFontColor
+        imageSubtitleConfig.fontColor || NODE_CONSTANTS.DEFAULT_SUBTITLE_COLOR
+      );
+      subtitleElement.setAttribute(
+        "font-family",
+        options.fontFamily || "Arial, sans-serif"
       );
       subtitleElement.textContent = subtitle;
 
