@@ -5,22 +5,45 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "unpkg": "dist/index.global.js",
+  "jsdelivr": "dist/index.global.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "script": "./dist/index.global.js"
+    }
+  },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "CHANGELOG.MD"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts",
-    "dev": "vite dev",
-    "dev:watch": "tsup src/index.ts --format cjs,esm --watch --dts & vite dev",
+    "build": "tsup",
+    "dev": "vite serve dev",
+    "dev:watch": "tsup --watch & vite serve dev",
     "lint": "eslint src/**/*.ts",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "tree",
     "chart",
     "visualization",
-    "hierarchy"
+    "hierarchy",
+    "svg",
+    "diagram"
   ],
+  "author": "Sujoy Ghosh",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SujoyGhosh-scott/treecharts-monorepo",
+    "directory": "packages/treecharts"
+  },
+  "sideEffects": false,
   "devDependencies": {
     "tsup": "^6.7.0",
     "typescript": "^5.0.4",
