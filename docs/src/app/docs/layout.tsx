@@ -1,0 +1,33 @@
+import Sidebar from "@/components/docs/Sidebar";
+import DocsNavigation from "@/components/docs/DocsNavigation";
+import Header from "@/components/Header";
+
+export default function DocsLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="min-h-screen bg-base-100">
+      {/* Header */}
+      <Header />
+
+      <div className="flex">
+        {/* Sidebar - Desktop */}
+        <div className="hidden lg:block w-80 border-r border-base-300 bg-base-50">
+          <Sidebar />
+        </div>
+
+        {/* Main Content */}
+        <div className="flex-1 min-w-0">
+          <div className="max-w-4xl mx-auto">
+            <main className="px-6 py-8">{children}</main>
+
+            {/* Navigation */}
+            <DocsNavigation />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

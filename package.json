@@ -12,7 +12,7 @@
     "clean": "turbo run clean"
   },
   "keywords": [],
-  "author": "",
+  "author": "Sujoy Ghosh",
   "license": "MIT",
   "description": "A tree chart visualization library monorepo",
   "devDependencies": {
