@@ -2,6 +2,7 @@ import { getTopic } from "@/utils/docs";
 import { docsNavigation } from "@/data/docs";
 import MarkdownContent from "@/components/docs/MarkdownContent";
 import DocsNavigation from "@/components/docs/DocsNavigation";
+import BasicUsageWithCodeDisplay from "@/components/docs/BasicUsageWithCodeDisplay";
 import { notFound } from "next/navigation";
 
 interface PageProps {
@@ -79,6 +80,16 @@ export default function DynamicDocsPage({ params }: PageProps) {
 
     if (!topic) {
       return notFound();
+    }
+
+    // Special handling for basic-usage page with CodeDisplay component
+    if (sectionId === "core-concepts" && topicId === "basic-usage") {
+      return (
+        <div>
+          <BasicUsageWithCodeDisplay />
+          <DocsNavigation />
+        </div>
+      );
     }
 
     return (

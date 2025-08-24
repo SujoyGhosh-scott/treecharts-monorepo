@@ -114,9 +114,9 @@ TreeCharts works with a nested tree data structure where each node can have chil
 
 Create your first tree chart with minimal configuration.
 
-## Simple Family Tree Example
+## Simple Example
 
-This example shows how to create a basic family tree with just a few lines of code. The tree will display a simple hierarchical structure with parent-child relationships.
+This example shows how to create a basic family tree with just a few lines of code.
           `,
         },
       ],
