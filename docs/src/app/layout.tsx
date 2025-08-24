@@ -1,4 +1,12 @@
 import "../globals.css";
+import { Macondo } from "next/font/google";
+
+const macondo = Macondo({
+  weight: ["400"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-macondo",
+});
 
 export const metadata = {
   title: {
@@ -49,7 +57,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>{children}</body>
+      <body className={`font-br-hendrix ${macondo.variable}`}>{children}</body>
     </html>
   );
 }

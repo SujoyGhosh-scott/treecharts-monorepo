@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'br-hendrix': ['BR Hendrix', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        'macondo': ['var(--font-macondo)', 'cursive'],
+      },
       colors: {
         primary: {
           50: "#f0f9ff",
@@ -22,24 +26,34 @@ module.exports = {
     themes: [
       {
         light: {
-          primary: "#3b82f6",
-          secondary: "#f59e0b",
+          primary: "#08CB00",
+          secondary: "#253900",
           accent: "#10b981",
           neutral: "#374151",
-          "base-100": "#ffffff",
-          "base-200": "#f9fafb",
-          "base-300": "#e5e7eb",
+          "base-100": "#000000",
+          "base-200": "#111111",
+          "base-300": "#222222",
+          "base-content": "#EEEEEE",
+          info: "#08CB00",
+          success: "#08CB00",
+          warning: "#fbbd23",
+          error: "#f87272",
         },
       },
       {
         dark: {
-          primary: "#3b82f6",
-          secondary: "#f59e0b",
+          primary: "#08CB00",
+          secondary: "#253900",
           accent: "#10b981",
           neutral: "#d1d5db",
-          "base-100": "#1f2937",
-          "base-200": "#111827",
-          "base-300": "#374151",
+          "base-100": "#000000",
+          "base-200": "#111111",
+          "base-300": "#222222",
+          "base-content": "#EEEEEE",
+          info: "#08CB00",
+          success: "#08CB00",
+          warning: "#fbbd23",
+          error: "#f87272",
         },
       },
     ],

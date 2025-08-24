@@ -3,13 +3,13 @@ import Link from "next/link";
 export default function Hero() {
   return (
     <section className="min-h-[80vh] bg-gradient-to-br from-primary/10 to-secondary/10">
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-6 sm:px-8 lg:px-24 xl:px-32 py-16">
         <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[70vh]">
           {/* Left Column - Text Content */}
           <div className="text-center lg:text-left">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
               Beautiful <span className="text-primary">Tree</span>{" "}
-              <span className="text-secondary">Visualizations</span>
+              <span className="text-[#08CB00]">Visualizations</span>
               <br />
               for the Web
             </h1>
@@ -22,7 +22,7 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center mb-12">
-              <Link href="/docs" className="btn btn-primary btn-lg">
+              <Link href="/docs" className="btn btn-primary rounded-full">
                 Get Started
                 <svg
                   className="w-5 h-5 ml-2"
@@ -39,7 +39,10 @@ export default function Hero() {
                 </svg>
               </Link>
 
-              <Link href="/playground" className="btn btn-outline btn-lg">
+              <Link
+                href="/playground"
+                className="btn btn-secondary rounded-full"
+              >
                 Try Playground
                 <svg
                   className="w-5 h-5 ml-2"
@@ -59,7 +62,7 @@ export default function Hero() {
 
             {/* Framework Support */}
             <div className="text-center lg:text-left">
-              <p className="text-base font-semibold mb-4 text-base-content/70">
+              <p className="text-base font-semibold mb-4 text-base-content/70 font-macondo">
                 Works with your favorite framework
               </p>
               <div className="flex flex-wrap justify-center lg:justify-start items-center gap-6">
