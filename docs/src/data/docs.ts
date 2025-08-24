@@ -1,21 +1,4 @@
-export interface DocSection {
-  id: string;
-  title: string;
-  description: string;
-  topics: DocTopic[];
-}
-
-export interface DocTopic {
-  id: string;
-  title: string;
-  description: string;
-  content: string;
-  path: string;
-}
-
-export interface Navigation {
-  sections: DocSection[];
-}
+import { Navigation } from "@/types/docs";
 
 export const docsNavigation: Navigation = {
   sections: [
@@ -606,50 +589,3 @@ Add interactive action buttons to enhance user experience.
     },
   ],
 };
-
-// Helper functions
-export function getSection(sectionId: string): DocSection | undefined {
-  return docsNavigation.sections.find((section) => section.id === sectionId);
-}
-
-export function getTopic(
-  sectionId: string,
-  topicId: string
-): DocTopic | undefined {
-  const section = getSection(sectionId);
-  return section?.topics.find((topic) => topic.id === topicId);
-}
-
-export function getAllPaths(): string[] {
-  const paths: string[] = [];
-
-  docsNavigation.sections.forEach((section) => {
-    paths.push(`/docs/${section.id}`);
-    section.topics.forEach((topic) => {
-      paths.push(topic.path);
-    });
-  });
-
-  return paths;
-}
-
-export function getNavigationContext(currentPath: string) {
-  const allTopics: (DocTopic & { sectionId: string })[] = [];
-
-  docsNavigation.sections.forEach((section) => {
-    section.topics.forEach((topic) => {
-      allTopics.push({ ...topic, sectionId: section.id });
-    });
-  });
-
-  const currentIndex = allTopics.findIndex(
-    (topic) => topic.path === currentPath
-  );
-
-  return {
-    previous: currentIndex > 0 ? allTopics[currentIndex - 1] : null,
-    next:
-      currentIndex < allTopics.length - 1 ? allTopics[currentIndex + 1] : null,
-    current: currentIndex >= 0 ? allTopics[currentIndex] : null,
-  };
-}

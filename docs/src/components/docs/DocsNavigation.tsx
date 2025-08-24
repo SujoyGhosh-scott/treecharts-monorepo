@@ -1,6 +1,6 @@
 "use client";
 
-import { getNavigationContext } from "@/data/docs";
+import { getNavigationContext } from "@/utils/docs";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 

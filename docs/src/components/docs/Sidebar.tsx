@@ -1,12 +1,9 @@
 "use client";
 
 import { docsNavigation } from "@/data/docs";
+import { SidebarProps } from "@/types/docs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-interface SidebarProps {
-  isMobile?: boolean;
-}
 
 export default function Sidebar({ isMobile = false }: SidebarProps) {
   const pathname = usePathname();
