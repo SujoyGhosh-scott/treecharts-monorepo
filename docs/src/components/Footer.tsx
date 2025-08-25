@@ -47,7 +47,7 @@ export default function Footer() {
               className="text-xl font-bold mb-3 block font-macondo"
             >
               <span className="text-primary">tree</span>
-              <span className="text-[#08CB00]">charts</span>
+              <span className="text-base-content">charts</span>
             </Link>
             <p className="text-base-content/70 mb-4 text-sm">
               Beautiful tree visualizations for modern web applications.

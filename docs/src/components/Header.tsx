@@ -31,7 +31,7 @@ export default function Header() {
             className="btn btn-ghost text-3xl font-bold font-macondo"
           >
             <span className="text-primary">tree</span>
-            <span className="text-[#08CB00] -ml-2">charts</span>
+            <span className="text-base-content -ml-2">charts</span>
           </Link>
           <span className="mt-1 text-xs text-base-content/50 bg-base-200 px-2 py-1 rounded-full font-medium">
             v1.0.0

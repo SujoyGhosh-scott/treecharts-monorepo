@@ -1,5 +1,6 @@
 import "../globals.css";
 import { Macondo } from "next/font/google";
+import Footer from "@/components/Footer";
 
 const macondo = Macondo({
   weight: ["400"],
@@ -56,8 +57,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`font-br-hendrix ${macondo.variable}`}>{children}</body>
+    <html lang="en" data-theme="treecharts" suppressHydrationWarning>
+      <body className={`font-br-hendrix ${macondo.variable}`}>
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }

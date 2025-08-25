@@ -11,6 +11,7 @@ export default function CodeDisplay({
   const [activeTab, setActiveTab] =
     useState<keyof typeof example.codes>(defaultTab);
   const [copied, setCopied] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const availableTabs = Object.keys(example.codes).filter(
     (key) => example.codes[key as keyof typeof example.codes]
@@ -23,6 +24,13 @@ export default function CodeDisplay({
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
+  };
+
+  const handleCopyLink = async () => {
+    const url = `${window.location.origin}${window.location.pathname}#${example.id}`;
+    await navigator.clipboard.writeText(url);
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2000);
   };
 
   const getLanguageForTab = (tab: string) => {
@@ -79,13 +87,46 @@ export default function CodeDisplay({
     <div className="my-8" id={example.id}>
       {/* Section Header */}
       <div className="mb-6">
-        <h3 className="text-2xl font-semibold mb-3 scroll-mt-20">
+        <h3 className="text-2xl font-semibold mb-3 scroll-mt-20 group flex items-center gap-2">
           <a
             href={`#${example.id}`}
             className="hover:text-primary transition-colors"
           >
             {example.title}
           </a>
+          <button
+            onClick={handleCopyLink}
+            className="transition-opacity p-1 hover:bg-base-200 rounded"
+            title={linkCopied ? "Link copied!" : "Copy link to section"}
+          >
+            {linkCopied ? (
+              <svg
+                className="w-4 h-4 text-primary"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            ) : (
+              <svg
+                className="w-4 h-4 text-base-content/50 hover:text-primary transition-colors"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                />
+              </svg>
+            )}
+          </button>
         </h3>
         {example.description && (
           <p className="text-base-content/70 text-lg leading-relaxed">
@@ -109,8 +150,8 @@ export default function CodeDisplay({
                 onClick={() => setActiveTab(tab as keyof typeof example.codes)}
                 className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors capitalize ${
                   activeTab === tab
-                    ? "bg-black text-[#08CB00] border-b-2 border-[#08CB00]"
-                    : "text-primary/70 hover:text-primary hover:bg-secondary/20"
+                    ? "bg-black text-primary border-b-2 border-primary"
+                    : "text-base-content/60 hover:text-base-content hover:bg-base-200/50"
                 }`}
               >
                 {tab}
@@ -176,7 +217,7 @@ export default function CodeDisplay({
         {showOutput && (
           <div className="order-1 lg:order-2">
             <div className="sticky top-20">
-              <h4 className="text-lg font-medium mb-3 text-base-content/80">
+              <h4 className="text-lg font-medium mb-3 text-primary">
                 Expected Output
               </h4>
               <div className="bg-base-200 rounded-lg border border-base-300 p-6 min-h-[300px] flex items-center justify-center">
