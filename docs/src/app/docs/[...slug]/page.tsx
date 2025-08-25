@@ -47,27 +47,43 @@ export default function DynamicDocsPage({ params }: PageProps) {
     return (
       <div className="prose prose-lg max-w-none">
         <div className="not-prose mb-8">
-          <h1 className="text-4xl font-bold mb-4">{section.title}</h1>
+          <h1 className="text-4xl font-bold mb-4 font-macondo">
+            {section.title}
+          </h1>
           <p className="text-xl text-base-content/70">{section.description}</p>
         </div>
 
-        <div className="grid gap-4 mt-8">
-          {section.topics.map((topic) => (
-            <div
-              key={topic.id}
-              className="card bg-base-100 border border-base-300 hover:shadow-lg transition-shadow"
-            >
-              <div className="card-body">
-                <h2 className="card-title">
-                  <a href={topic.path} className="hover:text-primary">
-                    {topic.title}
-                  </a>
-                </h2>
-                <p className="text-base-content/70">{topic.description}</p>
-              </div>
+        {/* Show section content if available */}
+        {section.content && (
+          <div className="mb-8">
+            <MarkdownContent content={section.content} />
+          </div>
+        )}
+
+        {/* Show topics only if section has any */}
+        {section.topics && section.topics.length > 0 && (
+          <>
+            <h2 className="text-2xl font-bold mb-6 font-macondo">Topics</h2>
+            <div className="grid gap-4 mt-6">
+              {section.topics.map((topic) => (
+                <div
+                  key={topic.id}
+                  className="card bg-base-100 border border-base-300 hover:shadow-lg transition-shadow"
+                >
+                  <div className="card-body">
+                    <h3 className="card-title">
+                      <a href={topic.path} className="hover:text-primary">
+                        {topic.title}
+                      </a>
+                    </h3>
+                    <p className="text-base-content/70">{topic.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
+
         <DocsNavigation />
       </div>
     );

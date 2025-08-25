@@ -21,8 +21,13 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
           <div key={section.id}>
             <div className="mb-4">
               <Link
-                href={`/docs/${section.id}`}
+                href={
+                  section.id === "getting-started"
+                    ? "/docs"
+                    : `/docs/${section.id}`
+                }
                 className={`block font-semibold text-lg hover:text-primary transition-colors ${
+                  (section.id === "getting-started" && pathname === "/docs") ||
                   pathname === `/docs/${section.id}`
                     ? "text-primary"
                     : "text-base-content"

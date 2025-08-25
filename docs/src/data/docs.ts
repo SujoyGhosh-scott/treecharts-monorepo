@@ -6,19 +6,16 @@ export const docsNavigation: Navigation = {
       id: "getting-started",
       title: "Getting Started",
       description: "Learn how to install and use TreeCharts in your project",
-      topics: [
-        {
-          id: "installation",
-          title: "Installation",
-          description:
-            "Install TreeCharts for React, Angular, Vue, or vanilla JavaScript",
-          path: "/docs/getting-started/installation",
-          content: `
-# Installation
+      content: `
+# Getting Started
 
-TreeCharts provides packages for all major frontend frameworks and vanilla JavaScript.
+TreeCharts is a powerful, flexible library for creating interactive tree visualizations. It supports all major frontend frameworks and vanilla JavaScript.
 
-## React
+## Installation
+
+Choose the package that matches your framework:
+
+### React
 
 \`\`\`bash
 npm install @treecharts/react
@@ -26,7 +23,7 @@ npm install @treecharts/react
 yarn add @treecharts/react
 \`\`\`
 
-## Angular
+### Angular
 
 \`\`\`bash
 npm install @treecharts/angular
@@ -34,7 +31,7 @@ npm install @treecharts/angular
 yarn add @treecharts/angular
 \`\`\`
 
-## Vue
+### Vue
 
 \`\`\`bash
 npm install @treecharts/vue
@@ -42,36 +39,59 @@ npm install @treecharts/vue
 yarn add @treecharts/vue
 \`\`\`
 
-## CDN (Vanilla JavaScript)
+### CDN (Vanilla JavaScript)
 
 \`\`\`html
 <script src="https://cdn.jsdelivr.net/npm/@treecharts/core@latest/dist/treecharts.min.js"></script>
 \`\`\`
 
+## Quick Start
+
+Once installed, you can create your first tree chart in just a few lines:
+
+\`\`\`javascript
+// Define your data structure
+const data = {
+  name: "Root Node",
+  children: [
+    { name: "Child 1" },
+    { name: "Child 2" }
+  ]
+};
+
+// Create the tree chart
+const chart = new TreeChart(container, {
+  data: data,
+  nodeRenderer: 'circle'
+});
+
+chart.render();
+\`\`\`
+
 ## TypeScript Support
 
 All packages include TypeScript definitions out of the box.
-          `,
-        },
-      ],
+
+## What's Next?
+
+- [Basic Usage](/docs/core-concepts/basic-usage) - Learn the fundamentals
+- [Tree Options](/docs/tree-options) - Explore different layouts and connections  
+- [Node Types](/docs/node-types) - Customize how nodes are displayed
+      `,
+      topics: [],
     },
     {
       id: "core-concepts",
       title: "Core Concepts",
       description: "Understanding the fundamentals of TreeCharts",
-      topics: [
-        {
-          id: "data-structure",
-          title: "Tree Data Structure",
-          description:
-            "Learn about the nested tree structure that TreeCharts accepts",
-          path: "/docs/core-concepts/data-structure",
-          content: `
-# Tree Data Structure
+      content: `
+# Core Concepts
 
-TreeCharts works with a nested tree data structure where each node can have children.
+TreeCharts works with a simple nested data structure and provides flexible options for rendering and layout.
 
-## Basic Structure
+## Tree Data Structure
+
+TreeCharts accepts a nested object structure where each node can have children:
 
 \`\`\`json
 {
@@ -91,19 +111,46 @@ TreeCharts works with a nested tree data structure where each node can have chil
 }
 \`\`\`
 
-## Required Properties
+### Required Properties
 
 - **name**: The display text for the node
 - **children**: Array of child nodes (optional)
 
-## Optional Properties
+### Optional Properties
 
 - **id**: Unique identifier for the node
 - **description**: Additional text description
 - **image**: URL to an image for the node
 - **customData**: Any additional data you want to store
-          `,
-        },
+
+## Renderers
+
+TreeCharts supports multiple node renderers:
+
+- **Circle**: Simple circular nodes
+- **Rectangle**: Rectangular nodes with text
+- **Image**: Nodes with images
+- **Collapsible**: Nodes that can expand/collapse children
+
+## Connections
+
+Different connection types are available:
+
+- **Direct**: Straight lines between nodes
+- **Curved**: Smooth curved connections  
+- **Right Angle**: L-shaped connections
+- **All Directional**: Multi-directional layouts
+
+## Layout Directions
+
+Trees can be oriented in different directions:
+
+- **Down**: Traditional top-to-bottom layout
+- **Up**: Bottom-to-top layout
+- **Left**: Right-to-left layout
+- **Right**: Left-to-right layout
+      `,
+      topics: [
         {
           id: "basic-usage",
           title: "Basic Usage",
@@ -342,45 +389,70 @@ Control the typography and text styling of your tree nodes.
       id: "edges-customization",
       title: "Edges Customization",
       description: "Style the connections between nodes",
-      topics: [
-        {
-          id: "line-styles",
-          title: "Line Styles",
-          description: "Customize connection line appearance",
-          path: "/docs/edges-customization/line-styles",
-          content: `
-# Line Styles
+      content: `
+# Edges Customization
 
-Customize the appearance of connection lines between nodes.
+Customize the appearance and behavior of connections between nodes in your tree charts.
 
-## Styling Options
+## Line Styles
 
-- Line thickness
-- Line colors
-- Dash patterns
-- Arrow styles
-- Curved vs straight lines
-          `,
-        },
-        {
-          id: "animations",
-          title: "Animations",
-          description: "Add smooth transitions and animations",
-          path: "/docs/edges-customization/animations",
-          content: `
-# Edge Animations
+Control the visual appearance of connection lines:
 
-Add smooth animations to edge connections for enhanced user experience.
+### Basic Styling
 
-## Animation Types
+\`\`\`javascript
+const chart = new TreeChart(container, {
+  data: data,
+  edgeStyles: {
+    stroke: '#08CB00',
+    strokeWidth: 2,
+    strokeDasharray: '5,5' // Dashed lines
+  }
+});
+\`\`\`
 
-- Draw-in animations
-- Hover effects
-- Connection transitions
-- Loading animations
-          `,
-        },
-      ],
+### Styling Options
+
+- **Line thickness**: Control stroke width
+- **Line colors**: Set stroke color
+- **Dash patterns**: Create dashed or dotted lines
+- **Arrow styles**: Add directional arrows
+- **Curved vs straight**: Choose connection style
+
+## Connection Types
+
+Different connection renderers are available:
+
+- **Direct**: Simple straight lines
+- **Curved**: Smooth bezier curves  
+- **Right Angle**: L-shaped connections
+- **All Directional**: Multi-directional layouts
+
+## Animations
+
+Add smooth animations to edge connections:
+
+### Animation Types
+
+- **Draw-in animations**: Lines appear progressively
+- **Hover effects**: Interactive highlighting
+- **Connection transitions**: Smooth changes
+- **Loading animations**: Progressive tree building
+
+### Example
+
+\`\`\`javascript
+const chart = new TreeChart(container, {
+  data: data,
+  animations: {
+    enabled: true,
+    duration: 800,
+    easing: 'ease-in-out'
+  }
+});
+\`\`\`
+      `,
+      topics: [],
     },
     {
       id: "alignment-and-options",

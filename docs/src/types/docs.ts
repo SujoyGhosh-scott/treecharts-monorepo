@@ -2,6 +2,7 @@ export interface DocSection {
   id: string;
   title: string;
   description: string;
+  content?: string; // Optional content for sections that don't need subsections
   topics: DocTopic[];
 }
 

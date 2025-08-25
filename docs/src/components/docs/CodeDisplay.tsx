@@ -94,7 +94,11 @@ export default function CodeDisplay({
         )}
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div
+        className={`grid gap-6 ${
+          showOutput ? "lg:grid-cols-2" : "lg:grid-cols-1"
+        }`}
+      >
         {/* Code Section */}
         <div className="order-2 lg:order-1">
           {/* Tab Navigation */}
@@ -105,8 +109,8 @@ export default function CodeDisplay({
                 onClick={() => setActiveTab(tab as keyof typeof example.codes)}
                 className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors capitalize ${
                   activeTab === tab
-                    ? "bg-base-200 text-base-content border-b-2 border-primary"
-                    : "text-base-content/60 hover:text-base-content hover:bg-base-200/50"
+                    ? "bg-black text-[#08CB00] border-b-2 border-[#08CB00]"
+                    : "text-primary/70 hover:text-primary hover:bg-secondary/20"
                 }`}
               >
                 {tab}
@@ -158,7 +162,7 @@ export default function CodeDisplay({
               </div>
 
               {/* Code Content */}
-              <div className="p-4 font-mono text-sm bg-base-100 rounded-b-lg overflow-x-auto">
+              <div className="p-4 font-mono text-sm bg-secondary text-white rounded-b-lg overflow-x-auto">
                 {renderHighlightedCode(
                   example.codes[activeTab] || "",
                   example.highlightLines?.[activeTab]
