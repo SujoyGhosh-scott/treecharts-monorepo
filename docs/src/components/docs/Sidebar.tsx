@@ -11,9 +11,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
   return (
     <div
       className={`h-full ${
-        isMobile
-          ? "p-4"
-          : "sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto custom-scrollbar p-6"
+        isMobile ? "p-4" : "h-full overflow-y-auto custom-scrollbar p-6"
       }`}
     >
       <div className="space-y-8">

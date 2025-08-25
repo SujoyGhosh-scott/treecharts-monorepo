@@ -5,6 +5,7 @@ import DocsNavigation from "@/components/docs/DocsNavigation";
 import BasicUsageWithCodeDisplay from "@/components/docs/BasicUsageWithCodeDisplay";
 import Breadcrumb from "@/components/docs/Breadcrumb";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
 interface PageProps {
   params: {
@@ -78,16 +79,16 @@ export default function DynamicDocsPage({ params }: PageProps) {
                   <div className="card-body">
                     <div className="flex items-start justify-between mb-2">
                       <h3 className="card-title flex-1">
-                        <a href={topic.path} className="hover:text-primary">
+                        <Link href={topic.path} className="hover:text-primary">
                           {topic.title}
-                        </a>
+                        </Link>
                       </h3>
-                      <a
+                      <Link
                         href={topic.path}
                         className="btn btn-primary btn-xs rounded-full px-4 ml-3 flex-shrink-0"
                       >
                         Read
-                      </a>
+                      </Link>
                     </div>
                     <p className="text-base-content/70">{topic.description}</p>
                   </div>

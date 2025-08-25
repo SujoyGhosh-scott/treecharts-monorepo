@@ -1,6 +1,7 @@
 import "../globals.css";
 import { Macondo } from "next/font/google";
 import Footer from "@/components/Footer";
+import MobileBottomNavigation from "@/components/MobileBottomNavigation";
 
 const macondo = Macondo({
   weight: ["400"],
@@ -60,6 +61,7 @@ export default function RootLayout({
     <html lang="en" data-theme="treecharts" suppressHydrationWarning>
       <body className={`font-br-hendrix ${macondo.variable}`}>
         {children}
+        <MobileBottomNavigation />
         <Footer />
       </body>
     </html>

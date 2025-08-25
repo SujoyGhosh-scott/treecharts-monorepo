@@ -13,14 +13,14 @@ export default function DocsLayout({
       {/* Header */}
       <Header />
 
-      <div className="flex">
+      <div className="flex h-[calc(100vh-4rem)]">
         {/* Sidebar - Desktop */}
-        <div className="hidden lg:block w-80 border-r border-base-300 bg-base-50">
+        <div className="hidden lg:block w-80 border-r border-base-300 bg-base-50 overflow-hidden">
           <Sidebar />
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 overflow-y-auto">
           {/* Mobile Navigation Component */}
           <MobileNavigation />
 

@@ -1,25 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import {
-  Github,
-  Menu,
-  X,
-  BookOpen,
-  MessageCircle,
-  FileText,
-} from "lucide-react";
+import { Github, BookOpen, FileText, Play } from "lucide-react";
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const navigation = [
     { name: "Docs", href: "/docs", icon: BookOpen },
-    // { name: "Playground", href: "/playground", icon: Play },
     { name: "Examples", href: "/examples", icon: FileText },
-    { name: "Blog", href: "/blog", icon: MessageCircle },
-    // { name: "Changelog", href: "/changelog", icon: FileText },
+    { name: "Playground", href: "/playground", icon: Play },
   ];
 
   return (
@@ -56,8 +44,8 @@ export default function Header() {
       </div>
 
       <div className="navbar-end gap-2">
-        {/* GitHub Link */}
-        <div className="hidden md:flex items-center gap-2">
+        {/* GitHub and Discord Links - Now visible on mobile too */}
+        <div className="flex items-center gap-2">
           <a
             href="https://github.com/SujoyGhosh-scott/treecharts-monorepo"
             target="_blank"
@@ -78,42 +66,7 @@ export default function Header() {
             </svg>
           </a>
         </div>
-
-        {/* Mobile Menu */}
-        <div className="lg:hidden">
-          <button
-            className="btn btn-ghost btn-sm"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
       </div>
-
-      {/* Mobile Menu Overlay */}
-      {isMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 w-full bg-base-100 border-b border-base-300 shadow-lg">
-          <div className="p-4">
-            <ul className="menu gap-2">
-              {navigation.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <li key={item.name}>
-                    <Link
-                      href={item.href}
-                      className="btn btn-ghost justify-start"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <Icon size={16} />
-                      {item.name}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </div>
-      )}
     </header>
   );
 }

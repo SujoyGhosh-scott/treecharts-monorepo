@@ -11,7 +11,7 @@ export default function MobileNavigation() {
       {/* Floating Action Button - Mobile Only */}
       <button
         onClick={() => setIsMobileMenuOpen(true)}
-        className="lg:hidden fixed bottom-6 right-6 z-40 btn btn-primary btn-circle w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-200"
+        className="lg:hidden fixed bottom-20 right-6 z-40 btn btn-primary btn-circle w-14 h-14 shadow-lg hover:shadow-xl transition-all duration-200"
         aria-label="Browse documentation"
       >
         <svg
@@ -39,8 +39,8 @@ export default function MobileNavigation() {
           />
 
           {/* Sidebar */}
-          <div className="relative w-80 bg-base-100 border-r border-base-300 max-w-[85vw] h-full">
-            <div className="flex items-center justify-between p-4 border-b border-base-300 bg-base-100">
+          <div className="relative w-80 bg-base-100 border-r border-base-300 max-w-[85vw] h-full flex flex-col">
+            <div className="flex items-center justify-between p-4 border-b border-base-300 bg-base-100 flex-shrink-0">
               <h2 className="text-lg font-semibold">Browse Documentation</h2>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -61,7 +61,9 @@ export default function MobileNavigation() {
                 </svg>
               </button>
             </div>
-            <Sidebar isMobile={true} />
+            <div className="flex-1 overflow-y-auto">
+              <Sidebar isMobile={true} />
+            </div>
           </div>
         </div>
       )}
