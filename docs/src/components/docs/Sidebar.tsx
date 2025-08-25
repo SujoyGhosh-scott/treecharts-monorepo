@@ -33,7 +33,20 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
                     : "text-base-content"
                 }`}
               >
-                {section.title}
+                <div className="flex items-center justify-between">
+                  <span>{section.title}</span>
+                  {section.tag && (
+                    <span
+                      className={`text-xs px-2 py-1 rounded-full font-normal ${
+                        section.tag === "new"
+                          ? "bg-primary/20 text-primary"
+                          : "bg-warning/20 text-warning"
+                      }`}
+                    >
+                      {section.tag}
+                    </span>
+                  )}
+                </div>
               </Link>
               <p className="text-sm text-base-content/60 mt-1">
                 {section.description}
@@ -51,7 +64,20 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
                         : "text-base-content/70 border-transparent"
                     }`}
                   >
-                    {topic.title}
+                    <div className="flex items-center justify-between">
+                      <span>{topic.title}</span>
+                      {topic.tag && (
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full ${
+                            topic.tag === "new"
+                              ? "bg-primary/20 text-primary"
+                              : "bg-warning/20 text-warning"
+                          }`}
+                        >
+                          {topic.tag}
+                        </span>
+                      )}
+                    </div>
                   </Link>
                 </li>
               ))}

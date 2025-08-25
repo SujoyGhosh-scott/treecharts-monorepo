@@ -229,6 +229,7 @@ All directional trees can expand in multiple directions from the root.
           title: "Family Tree",
           description: "Specialized layout for family relationships",
           path: "/docs/tree-options/family-tree",
+          tag: "new",
           content: `
 # Family Tree Layout
 
@@ -325,6 +326,7 @@ Interactive nodes that allow users to expand and collapse child branches.
           title: "Image Node",
           description: "Nodes that display images alongside text",
           path: "/docs/node-types/image-node",
+          tag: "new",
           content: `
 # Image Nodes
 

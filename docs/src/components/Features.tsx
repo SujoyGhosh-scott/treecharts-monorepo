@@ -4,7 +4,21 @@ export default function Features() {
       title: "Multiple Tree Types",
       description:
         "Support for direct connection, right-angle, curved edges, and all-direction trees",
-      icon: "🌳",
+      icon: (
+        <svg
+          className="w-8 h-8 text-base-content"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+          />
+        </svg>
+      ),
       items: [
         "Direct Connection Trees",
         "Right Angle Trees",
@@ -17,7 +31,21 @@ export default function Features() {
       title: "Flexible Node Types",
       description:
         "Various node shapes and styles to fit your visualization needs",
-      icon: "📦",
+      icon: (
+        <svg
+          className="w-8 h-8 text-base-content"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+          />
+        </svg>
+      ),
       items: [
         "Regular Nodes",
         "Custom Shape Nodes",
@@ -29,7 +57,21 @@ export default function Features() {
     {
       title: "Extensive Customization",
       description: "Customize every aspect of your tree visualization",
-      icon: "🎨",
+      icon: (
+        <svg
+          className="w-8 h-8 text-base-content"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"
+          />
+        </svg>
+      ),
       items: [
         "Tree Titles",
         "Action Buttons",
@@ -62,9 +104,7 @@ export default function Features() {
             >
               <div className="card-body">
                 <div className="flex gap-4 mb-4">
-                  <div className="flex-shrink-0">
-                    <span className="text-3xl">{feature.icon}</span>
-                  </div>
+                  <div className="flex-shrink-0">{feature.icon}</div>
                   <div className="flex-1">
                     <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
                     <p className="text-base-content/70 text-sm mb-4">

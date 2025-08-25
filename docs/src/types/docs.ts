@@ -4,6 +4,7 @@ export interface DocSection {
   description: string;
   content?: string; // Optional content for sections that don't need subsections
   topics: DocTopic[];
+  tag?: "new" | "updated"; // Optional tag for highlighting
 }
 
 export interface DocTopic {
@@ -12,6 +13,7 @@ export interface DocTopic {
   description: string;
   content: string;
   path: string;
+  tag?: "new" | "updated"; // Optional tag for highlighting
 }
 
 export interface Navigation {

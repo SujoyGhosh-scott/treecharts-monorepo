@@ -3,6 +3,7 @@ import { docsNavigation } from "@/data/docs";
 import MarkdownContent from "@/components/docs/MarkdownContent";
 import DocsNavigation from "@/components/docs/DocsNavigation";
 import BasicUsageWithCodeDisplay from "@/components/docs/BasicUsageWithCodeDisplay";
+import Breadcrumb from "@/components/docs/Breadcrumb";
 import { notFound } from "next/navigation";
 
 interface PageProps {
@@ -46,6 +47,10 @@ export default function DynamicDocsPage({ params }: PageProps) {
 
     return (
       <div className="prose prose-lg max-w-none">
+        <Breadcrumb
+          items={[{ label: "Docs", href: "/docs" }, { label: section.title }]}
+        />
+
         <div className="not-prose mb-8">
           <h1 className="text-4xl font-bold mb-4 font-macondo">
             {section.title}
@@ -64,18 +69,26 @@ export default function DynamicDocsPage({ params }: PageProps) {
         {section.topics && section.topics.length > 0 && (
           <>
             <h2 className="text-2xl font-bold mb-6 font-macondo">Topics</h2>
-            <div className="grid gap-4 mt-6">
+            <div className="grid gap-4 md:grid-cols-2 mt-6">
               {section.topics.map((topic) => (
                 <div
                   key={topic.id}
                   className="card bg-base-100 border border-base-300 hover:shadow-lg transition-shadow"
                 >
                   <div className="card-body">
-                    <h3 className="card-title">
-                      <a href={topic.path} className="hover:text-primary">
-                        {topic.title}
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="card-title flex-1">
+                        <a href={topic.path} className="hover:text-primary">
+                          {topic.title}
+                        </a>
+                      </h3>
+                      <a
+                        href={topic.path}
+                        className="btn btn-primary btn-xs rounded-full px-4 ml-3 flex-shrink-0"
+                      >
+                        Read
                       </a>
-                    </h3>
+                    </div>
                     <p className="text-base-content/70">{topic.description}</p>
                   </div>
                 </div>
@@ -93,8 +106,9 @@ export default function DynamicDocsPage({ params }: PageProps) {
   if (slug.length === 2) {
     const [sectionId, topicId] = slug;
     const topic = getTopic(sectionId, topicId);
+    const section = docsNavigation.sections.find((s) => s.id === sectionId);
 
-    if (!topic) {
+    if (!topic || !section) {
       return notFound();
     }
 
@@ -102,6 +116,13 @@ export default function DynamicDocsPage({ params }: PageProps) {
     if (sectionId === "core-concepts" && topicId === "basic-usage") {
       return (
         <div>
+          <Breadcrumb
+            items={[
+              { label: "Docs", href: "/docs" },
+              { label: section.title, href: `/docs/${section.id}` },
+              { label: topic.title },
+            ]}
+          />
           <BasicUsageWithCodeDisplay />
           <DocsNavigation />
         </div>
@@ -110,6 +131,13 @@ export default function DynamicDocsPage({ params }: PageProps) {
 
     return (
       <div>
+        <Breadcrumb
+          items={[
+            { label: "Docs", href: "/docs" },
+            { label: section.title, href: `/docs/${section.id}` },
+            { label: topic.title },
+          ]}
+        />
         <MarkdownContent content={topic.content} />
         <DocsNavigation />
       </div>

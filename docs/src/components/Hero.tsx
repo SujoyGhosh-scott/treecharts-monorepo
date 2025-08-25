@@ -22,7 +22,7 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center mb-12">
-              <Link href="/docs" className="btn btn-primary rounded-full">
+              <Link href="/docs" className="btn btn-primary rounded-full px-6">
                 Get Started
                 <svg
                   className="w-5 h-5 ml-2"
@@ -41,7 +41,7 @@ export default function Hero() {
 
               <Link
                 href="/playground"
-                className="btn btn-secondary rounded-full"
+                className="btn btn-secondary rounded-full px-6"
               >
                 Try Playground
                 <svg
