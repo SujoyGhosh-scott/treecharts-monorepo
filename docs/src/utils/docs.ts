@@ -34,11 +34,14 @@ export function getNavigationContext(currentPath: string): NavigationContext {
   let currentSection: DocSection | null = null;
   let allTopics: DocTopic[] = [];
 
+  // Normalize the current path by removing trailing slash
+  const normalizedCurrentPath = currentPath.replace(/\/$/, "") || "/";
+
   // Collect all topics and find current topic
   docsNavigation.sections.forEach((section) => {
     section.topics.forEach((topic) => {
       allTopics.push(topic);
-      if (topic.path === currentPath) {
+      if (topic.path === normalizedCurrentPath) {
         currentTopic = topic;
         currentSection = section;
       }
@@ -55,7 +58,7 @@ export function getNavigationContext(currentPath: string): NavigationContext {
   }
 
   const currentIndex = allTopics.findIndex(
-    (topic) => topic.path === currentPath
+    (topic) => topic.path === normalizedCurrentPath
   );
   const previous = currentIndex > 0 ? allTopics[currentIndex - 1] : null;
   const next =

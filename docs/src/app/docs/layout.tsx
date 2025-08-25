@@ -1,5 +1,4 @@
 import Sidebar from "@/components/docs/Sidebar";
-import DocsNavigation from "@/components/docs/DocsNavigation";
 import Header from "@/components/Header";
 import MobileNavigation from "@/components/docs/MobileNavigation";
 
@@ -20,15 +19,12 @@ export default function DocsLayout({
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 min-w-0 overflow-y-auto">
+        <div className="flex-1 min-w-0 overflow-y-auto bg-base-200">
           {/* Mobile Navigation Component */}
           <MobileNavigation />
 
           <div className="max-w-4xl mx-auto">
             <main className="px-6 py-8">{children}</main>
-
-            {/* Navigation */}
-            <DocsNavigation />
           </div>
         </div>
       </div>

@@ -13,7 +13,7 @@ export default function DocsNavigation() {
   }
 
   return (
-    <div className="border-t border-base-300 mt-16 pt-8 px-6 pb-8">
+    <div className="border-t border-base-300 mt-16 py-6">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {/* Previous Topic */}
         {navigation.previous && (
@@ -36,10 +36,10 @@ export default function DocsNavigation() {
         {navigation.next && (
           <Link
             href={navigation.next.path}
-            className="btn btn-primary btn-block justify-end h-auto p-4"
+            className="btn btn-outline btn-block justify-end h-auto p-4"
           >
             <div className="text-right">
-              <div className="text-xs text-primary-content/80 mb-1">Next</div>
+              <div className="text-xs text-base-content/60 mb-1">Next</div>
               <div className="font-medium">{navigation.next.title}</div>
             </div>
           </Link>
