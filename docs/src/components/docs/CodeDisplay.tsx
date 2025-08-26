@@ -220,7 +220,10 @@ export default function CodeDisplay({
               <h4 className="text-lg font-medium mb-3 text-primary">
                 Expected Output
               </h4>
-              <div className="bg-base-200 rounded-lg border border-base-300 p-6 min-h-[300px] flex items-center justify-center">
+              <div
+                className="rounded-lg border border-base-300 p-6 min-h-[300px] flex items-center justify-center"
+                style={{ backgroundColor: "#eee" }}
+              >
                 {example.outputImage ? (
                   <img
                     src={example.outputImage}

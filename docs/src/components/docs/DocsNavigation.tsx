@@ -14,7 +14,7 @@ export default function DocsNavigation() {
 
   return (
     <div className="border-t border-base-300 mt-16 py-6">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {/* Previous Topic */}
         {navigation.previous && (
           <Link

@@ -6,8 +6,10 @@ export const docsNavigation: Navigation = {
       id: "getting-started",
       title: "Getting Started",
       description: "Learn how to install and use TreeCharts in your project",
-      content: `
-# Getting Started
+      content: [
+        {
+          type: "markdown",
+          value: `# Getting Started
 
 TreeCharts is a powerful, flexible library for creating interactive tree visualizations. It supports all major frontend frameworks and vanilla JavaScript.
 
@@ -47,10 +49,15 @@ yarn add @treecharts/vue
 
 ## Quick Start
 
-Once installed, you can create your first tree chart in just a few lines:
-
-\`\`\`javascript
-// Define your data structure
+Once installed, you can create your first tree chart in just a few lines:`,
+        },
+        {
+          type: "code",
+          title: "Quick Start Example",
+          description: "Create your first tree chart with minimal setup",
+          id: "quick-start-example",
+          codes: {
+            javascript: `// Define your data structure
 const data = {
   name: "Root Node",
   children: [
@@ -65,10 +72,12 @@ const chart = new TreeChart(container, {
   nodeRenderer: 'circle'
 });
 
-chart.render();
-\`\`\`
-
-## TypeScript Support
+chart.render();`,
+          },
+        },
+        {
+          type: "markdown",
+          value: `## TypeScript Support
 
 All packages include TypeScript definitions out of the box.
 
@@ -76,16 +85,19 @@ All packages include TypeScript definitions out of the box.
 
 - [Basic Usage](/docs/core-concepts/basic-usage) - Learn the fundamentals
 - [Tree Options](/docs/tree-options) - Explore different layouts and connections  
-- [Node Types](/docs/node-types) - Customize how nodes are displayed
-      `,
+- [Node Types](/docs/node-types) - Customize how nodes are displayed`,
+        },
+      ],
       topics: [],
     },
     {
       id: "core-concepts",
       title: "Core Concepts",
       description: "Understanding the fundamentals of TreeCharts",
-      content: `
-# Core Concepts
+      content: [
+        {
+          type: "markdown",
+          value: `# Core Concepts
 
 TreeCharts works with a simple nested data structure and provides flexible options for rendering and layout.
 
@@ -111,60 +123,102 @@ TreeCharts accepts a nested object structure where each node can have children:
 }
 \`\`\`
 
-### Required Properties
+## Configuration Options
 
-- **name**: The display text for the node
-- **children**: Array of child nodes (optional)
-
-### Optional Properties
-
-- **id**: Unique identifier for the node
-- **description**: Additional text description
-- **image**: URL to an image for the node
-- **customData**: Any additional data you want to store
-
-## Renderers
-
-TreeCharts supports multiple node renderers:
-
-- **Circle**: Simple circular nodes
-- **Rectangle**: Rectangular nodes with text
-- **Image**: Nodes with images
-- **Collapsible**: Nodes that can expand/collapse children
-
-## Connections
-
-Different connection types are available:
-
-- **Direct**: Straight lines between nodes
-- **Curved**: Smooth curved connections  
-- **Right Angle**: L-shaped connections
-- **All Directional**: Multi-directional layouts
-
-## Layout Directions
-
-Trees can be oriented in different directions:
-
-- **Down**: Traditional top-to-bottom layout
-- **Up**: Bottom-to-top layout
-- **Left**: Right-to-left layout
-- **Right**: Left-to-right layout
-      `,
+TreeCharts provides extensive configuration options for customizing the appearance and behavior of your trees.`,
+        },
+      ],
       topics: [
         {
           id: "basic-usage",
           title: "Basic Usage",
-          description: "Learn how to create your first tree chart",
+          description: "Learn the fundamentals of creating tree charts",
           path: "/docs/core-concepts/basic-usage",
-          content: `
-# Basic Usage
+          content: [
+            {
+              type: "markdown",
+              value: `# Basic Usage
 
-Create your first tree chart with minimal configuration.
+Learn how to create your first tree chart with TreeCharts.
 
-## Simple Family Tree Example
+## Overview
 
-This example shows how to create a basic family tree with just a few lines of code. The tree will display a simple hierarchical structure with parent-child relationships.
-          `,
+TreeCharts makes it easy to create beautiful, interactive tree visualizations from your hierarchical data.`,
+            },
+            {
+              type: "code",
+              title: "Basic Family Tree",
+              description:
+                "A simple family tree showing parent-child relationships",
+              id: "basic-family-tree",
+              outputImage: "/docs/tree/basic-family-tree-example.svg",
+              codes: {
+                javascript: `// Create a basic tree chart
+const data = {
+  name: "John Smith",
+  children: [
+    {
+      name: "Jane Smith",
+      children: [
+        { name: "Bob Smith" },
+        { name: "Alice Smith" }
+      ]
+    },
+    {
+      name: "Mike Smith",
+      children: [
+        { name: "Emma Smith" }
+      ]
+    }
+  ]
+};
+
+// Initialize the tree chart
+const chart = new TreeChart(document.getElementById('tree-container'), {
+  data: data,
+  nodeRenderer: 'circle',
+  direction: 'down'
+});
+
+// Render the chart
+chart.render();`,
+                react: `import { TreeChart } from '@treecharts/react';
+
+const data = {
+  name: "John Smith",
+  children: [
+    {
+      name: "Jane Smith",
+      children: [
+        { name: "Bob Smith" },
+        { name: "Alice Smith" }
+      ]
+    },
+    {
+      name: "Mike Smith",
+      children: [
+        { name: "Emma Smith" }
+      ]
+    }
+  ]
+};
+
+function FamilyTree() {
+  return (
+    <TreeChart
+      data={data}
+      nodeRenderer="circle"
+      direction="down"
+      width={800}
+      height={600}
+    />
+  );
+}
+
+export default FamilyTree;`,
+              },
+            },
+          ],
         },
       ],
     },
@@ -172,76 +226,355 @@ This example shows how to create a basic family tree with just a few lines of co
       id: "tree-options",
       title: "Tree Options",
       description: "Different tree layout and connection types",
+      content: [
+        {
+          type: "markdown",
+          value: `# Tree Options
+
+TreeCharts offers four distinct connection types to suit different visualization needs. Each renderer creates a unique visual style and is optimized for specific use cases. Each renderer supports the same core configuration options while providing its own unique visual characteristics.
+
+## Available Renderers
+
+### Direct Connection
+Clean, straight-line connections between nodes. Perfect for simple hierarchies and when performance matters.
+
+### Right Angle Connection  
+Professional 90-degree angle connections that create structured, grid-like layouts. Ideal for organizational charts.
+
+### Curved Connection
+Smooth, flowing curved lines that create organic and visually appealing tree structures. Great for creative presentations.
+
+### All Directional Layout
+Radial tree layout with the root at center and children distributed in all directions. Optimal for complex networks and space efficiency.
+
+## Choosing the Right Renderer
+
+- **Direct** - Use for simple, clean hierarchies and maximum performance
+- **Right Angle** - Choose for professional, structured organizational charts  
+- **Curved** - Select for visually appealing, organic tree presentations
+- **All Directional** - Pick for complex trees, network diagrams, or space-constrained layouts
+
+## Configuration Options
+
+### Node Configuration
+- Colors, sizes, shapes, fonts, and borders
+- Custom styling and theming options
+
+### Node Behavior and Interactivity  
+- Click handlers, hover effects, selection states
+- Interactive features and event handling`,
+        },
+      ],
       topics: [
         {
           id: "direct",
           title: "Direct Connection",
           description: "Simple straight-line connections between nodes",
           path: "/docs/tree-options/direct",
-          content: `
-# Direct Connection
+          content: [
+            {
+              type: "markdown",
+              value: `# Direct Connection
 
-Direct connections use straight lines to connect parent and child nodes.
+Direct connections provide the foundation for clean, professional tree visualizations that focus on content over visual effects. Direct connections use clean, straight lines to connect parent and child nodes, providing the most minimal and straightforward tree visualization.`,
+            },
+            {
+              type: "code",
+              title: "Direct Connection Example",
+              description:
+                "Create a tree chart with clean, straight-line connections",
+              id: "direct-connection-example",
+              outputImage: "/docs/tree/direct-renderer-example.svg",
+              codes: {
+                javascript: `import { TreeChart } from '@treecharts/core';
 
-## Features
+// Define your tree data
+const treeData = {
+  value: "A",
+  child: [
+    {
+      value: "B",
+      child: [
+        { value: "D", child: [] },
+        { value: "E", child: [] }
+      ]
+    },
+    {
+      value: "C",
+      child: [
+        { value: "F", child: [] }
+      ]
+    }
+  ]
+};
 
-- Clean, minimal appearance
-- Best for simple hierarchical data
-- Fast rendering performance
-          `,
+// Create chart with direct connections
+const chart = new TreeChart("container-id", {
+  type: "direct",
+  nodeConfig: {
+    color: "#08CB00"
+  }
+});
+
+// Render the tree
+chart.render(treeData);`,
+              },
+            },
+            {
+              type: "markdown",
+              value: `## Features
+
+- **Clean, minimal appearance** - Straight lines create a clutter-free visualization
+- **Best performance** - Fastest rendering with minimal computational overhead
+- **Clear hierarchy** - Direct visual path from parent to child
+- **Universal compatibility** - Works well in all contexts and screen sizes
+
+## When to Use
+
+Direct connections are ideal for simple organizational charts, basic hierarchical data visualization, and situations when performance is critical. They work particularly well for clean professional presentations, mobile applications where better touch interaction is needed, and high-density data where clarity is important.
+
+## Configuration Options
+
+The direct renderer supports all standard TreeChart configuration options. For detailed customization:
+
+- **Node Configuration** - See [Node Styling](/docs/node-styling) and [Node Types](/docs/node-types)
+- **Edge Configuration** - See [Edges Customization](/docs/edges-customization)`,
+            },
+          ],
         },
         {
           id: "right-angle",
           title: "Right Angle",
           description: "90-degree angle connections for structured layouts",
           path: "/docs/tree-options/right-angle",
-          content: `
-# Right Angle Connections
+          content: [
+            {
+              type: "markdown",
+              value: `# Right Angle Connections
 
-Right angle connections create structured, grid-like layouts.
+Right angle connections provide the most structured and professional approach to tree visualization, making them ideal for corporate and formal applications. Right angle connections create structured, professional layouts using clean 90-degree angles to connect parent and child nodes.`,
+            },
+            {
+              type: "code",
+              title: "Right Angle Connection Example",
+              description:
+                "Create structured layouts with 90-degree angle connections",
+              id: "right-angle-connection-example",
+              outputImage: "/docs/tree/right-angle-renderer-example.svg",
+              codes: {
+                javascript: `import { TreeChart } from '@treecharts/core';
 
-## Features
+// Define your tree data
+const treeData = {
+  value: "A",
+  child: [
+    {
+      value: "B",
+      child: [
+        { value: "D", child: [] },
+        { value: "E", child: [] }
+      ]
+    },
+    {
+      value: "C",
+      child: [
+        { value: "F", child: [] }
+      ]
+    }
+  ]
+};
 
-- Professional appearance
-- Clear hierarchical structure
-- Good for organizational charts
-          `,
+// Create chart with right angle connections
+const chart = new TreeChart("container-id", {
+  type: "right-angle",
+  nodeConfig: {
+    color: "#08CB00"
+  }
+});
+
+// Render the tree
+chart.render(treeData);`,
+              },
+            },
+            {
+              type: "markdown",
+              value: `## Features
+
+- **Professional appearance** - Clean, structured look perfect for business use
+- **Clear hierarchical structure** - Easy to follow parent-child relationships
+- **Grid-like alignment** - Nodes align perfectly in rows and columns
+- **Optimal for organizational charts** - Industry standard for corporate hierarchies
+
+## When to Use
+
+Right angle connections are perfect for organizational charts and corporate hierarchies, flowcharts and process diagrams, and system architecture diagrams. They excel in structured data visualization, formal presentations and reports, and any scenario where you need clear visual separation between levels.
+
+## Configuration Options
+
+The right angle renderer supports all standard TreeChart configuration options. For detailed customization:
+
+- **Node Configuration** - See [Node Styling](/docs/node-styling) and [Node Types](/docs/node-types)
+- **Edge Configuration** - See [Edges Customization](/docs/edges-customization)`,
+            },
+          ],
+        },
+        {
+          id: "curved",
+          title: "Curved Connection",
+          description: "Smooth curved connections for organic tree layouts",
+          path: "/docs/tree-options/curved",
+          content: [
+            {
+              type: "markdown",
+              value: `# Curved Connection
+
+The curved renderer creates beautiful, flowing tree visualizations that are perfect for when you want to add visual elegance to your hierarchical data. Curved connections use smooth, flowing lines to connect parent and child nodes, creating an organic and visually appealing appearance.`,
+            },
+            {
+              type: "code",
+              title: "Curved Connection Example",
+              description:
+                "Create organic tree layouts with smooth, flowing curved connections",
+              id: "curved-connection-example",
+              outputImage: "/docs/tree/curved-renderer-example.svg",
+              codes: {
+                javascript: `import { TreeChart } from '@treecharts/core';
+
+// Define your tree data
+const treeData = {
+  value: "A",
+  child: [
+    {
+      value: "B",
+      child: [
+        { value: "D", child: [] },
+        { value: "E", child: [] }
+      ]
+    },
+    {
+      value: "C",
+      child: [
+        { value: "F", child: [] }
+      ]
+    }
+  ]
+};
+
+// Create chart with curved connections
+const chart = new TreeChart("container-id", {
+  type: "curved",
+  nodeConfig: {
+    color: "#08CB00"
+  }
+});
+
+// Render the tree
+chart.render(treeData);`,
+              },
+            },
+            {
+              type: "markdown",
+              value: `## Features
+
+- **Smooth, curved lines** - Creates elegant flowing connections between nodes
+- **Organic appearance** - Perfect for natural hierarchies and mind maps
+- **Visual appeal** - More aesthetically pleasing than straight lines
+- **Better readability** - Easier to follow complex tree structures
+
+## When to Use
+
+Curved connections work best for mind maps and brainstorming diagrams, creative and artistic presentations, and family trees and genealogy charts. They're particularly effective for natural hierarchies like biological classifications and any scenario where you want a softer, more organic visual style.
+
+## Configuration Options
+
+The curved renderer supports all standard TreeChart configuration options. For detailed customization:
+
+- **Node Configuration** - See [Node Styling](/docs/node-styling) and [Node Types](/docs/node-types)
+- **Edge Configuration** - See [Edges Customization](/docs/edges-customization)`,
+            },
+          ],
         },
         {
           id: "all-directional",
           title: "All Directional",
           description: "Multi-directional tree layouts",
           path: "/docs/tree-options/all-directional",
-          content: `
-# All Directional Layout
+          content: [
+            {
+              type: "markdown",
+              value: `# All Directional Layout
 
-All directional trees can expand in multiple directions from the root.
+All directional layouts create visually stunning tree visualizations that make optimal use of space while providing clear hierarchical relationships in a radial format. All directional trees use a radial layout where nodes are distributed in multiple directions from the center, creating space-efficient and visually striking tree visualizations.`,
+            },
+            {
+              type: "code",
+              title: "All Directional Layout Example",
+              description:
+                "Create radial tree layouts with nodes distributed in all directions",
+              id: "all-directional-layout-example",
+              outputImage: "/docs/tree/all-direction-renderer-example.svg",
+              codes: {
+                javascript: `import { TreeChart } from '@treecharts/core';
 
-## Features
+// Define your tree data
+const treeData = {
+  value: "A",
+  child: [
+    {
+      value: "B",
+      child: [
+        { value: "D", child: [] },
+        { value: "E", child: [] }
+      ]
+    },
+    {
+      value: "C",
+      child: [
+        { value: "F", child: [] }
+      ]
+    },
+    {
+      value: "G", child: [] },
+    {
+      value: "H", child: [] },
+    {
+      value: "I", child: [] }
+  ]
+};
 
-- Flexible positioning
-- Optimal space utilization
-- Great for complex relationships
-          `,
-        },
-        {
-          id: "family-tree",
-          title: "Family Tree",
-          description: "Specialized layout for family relationships",
-          path: "/docs/tree-options/family-tree",
-          tag: "new",
-          content: `
-# Family Tree Layout
+// Create chart with all-directional layout
+const chart = new TreeChart("container-id", {
+  type: "all-direction",
+  nodeConfig: {
+    color: "#08CB00"
+  }
+});
 
-Specialized layout designed specifically for family relationships and genealogy.
+// Render the tree
+chart.render(treeData);`,
+              },
+            },
+            {
+              type: "markdown",
+              value: `## Features
 
-## Features
+- **Radial layout** - Root node at center with children radiating outward
+- **Space efficient** - Optimal use of available space in all directions
+- **Scalable design** - Handles large trees better than linear layouts
+- **Visual impact** - Creates striking, eye-catching diagrams
 
-- Support for marriages and partnerships
-- Multiple parent relationships
-- Gender-specific styling options
-- Generation-based alignment
-          `,
+## When to Use
+
+All directional layouts work best for network diagrams and relationship maps, mind maps and brainstorming sessions, and complex hierarchies with many branches. They're particularly effective when space is limited but the tree is large, for scientific diagrams like molecular structures and taxonomies, social network visualizations, and hub-and-spoke organizational structures.
+
+## Configuration Options
+
+The all-directional renderer has specialized options for radial layouts. For detailed customization:
+
+- **Node Configuration** - See [Node Styling](/docs/node-styling) and [Node Types](/docs/node-types)
+- **Edge Configuration** - See [Edges Customization](/docs/edges-customization)`,
+            },
+          ],
         },
       ],
     },
@@ -255,288 +588,18 @@ Specialized layout designed specifically for family relationships and genealogy.
           title: "Regular Nodes",
           description: "Standard text-based nodes",
           path: "/docs/node-types/regular-nodes",
-          content: `
-# Regular Nodes
+          content: [
+            {
+              type: "markdown",
+              value: `# Regular Nodes
 
 Standard nodes that display text content in simple shapes.
 
 ## Basic Text Nodes
 
-The most common node type for displaying names and labels.
-          `,
-        },
-        {
-          id: "custom-shape-nodes",
-          title: "Custom Shape Nodes",
-          description: "Nodes with custom shapes and styling",
-          path: "/docs/node-types/custom-shape-nodes",
-          content: `
-# Custom Shape Nodes
-
-Create nodes with custom shapes like circles, rectangles, hexagons, and more.
-
-## Available Shapes
-
-- Circle
-- Rectangle 
-- Rounded Rectangle
-- Hexagon
-- Diamond
-- Custom SVG paths
-          `,
-        },
-        {
-          id: "node-with-description",
-          title: "Node with Description",
-          description: "Nodes that include additional descriptive text",
-          path: "/docs/node-types/node-with-description",
-          content: `
-# Node with Description
-
-Nodes that can display both a title and additional descriptive text.
-
-## Features
-
-- Primary title text
-- Secondary description text
-- Flexible text positioning
-- Custom typography options
-          `,
-        },
-        {
-          id: "collapsible-node",
-          title: "Collapsible Node",
-          description: "Interactive nodes that can expand/collapse children",
-          path: "/docs/node-types/collapsible-node",
-          content: `
-# Collapsible Nodes
-
-Interactive nodes that allow users to expand and collapse child branches.
-
-## Features
-
-- Click to expand/collapse
-- Visual indicators for collapsed state
-- Smooth animations
-- Keyboard navigation support
-          `,
-        },
-        {
-          id: "image-node",
-          title: "Image Node",
-          description: "Nodes that display images alongside text",
-          path: "/docs/node-types/image-node",
-          tag: "new",
-          content: `
-# Image Nodes
-
-Nodes that can display images alongside or instead of text content.
-
-## Features
-
-- Support for various image formats
-- Automatic image sizing
-- Fallback options for failed loads
-- Custom image positioning
-          `,
-        },
-      ],
-    },
-    {
-      id: "node-styling",
-      title: "Node Styling",
-      description: "Customize the appearance of your tree nodes",
-      topics: [
-        {
-          id: "colors-and-themes",
-          title: "Colors and Themes",
-          description: "Apply colors, gradients, and theme styling to nodes",
-          path: "/docs/node-styling/colors-and-themes",
-          content: `
-# Colors and Themes
-
-Customize the visual appearance of your tree nodes with colors and themes.
-
-## Color Options
-
-- Background colors
-- Border colors
-- Text colors
-- Gradient fills
-- Theme-based color schemes
-          `,
-        },
-        {
-          id: "typography",
-          title: "Typography",
-          description: "Control fonts, sizes, and text styling",
-          path: "/docs/node-styling/typography",
-          content: `
-# Typography
-
-Control the typography and text styling of your tree nodes.
-
-## Text Styling Options
-
-- Font family selection
-- Font size and weight
-- Text alignment
-- Line height and spacing
-- Text shadows and effects
-          `,
-        },
-      ],
-    },
-    {
-      id: "edges-customization",
-      title: "Edges Customization",
-      description: "Style the connections between nodes",
-      content: `
-# Edges Customization
-
-Customize the appearance and behavior of connections between nodes in your tree charts.
-
-## Line Styles
-
-Control the visual appearance of connection lines:
-
-### Basic Styling
-
-\`\`\`javascript
-const chart = new TreeChart(container, {
-  data: data,
-  edgeStyles: {
-    stroke: '#08CB00',
-    strokeWidth: 2,
-    strokeDasharray: '5,5' // Dashed lines
-  }
-});
-\`\`\`
-
-### Styling Options
-
-- **Line thickness**: Control stroke width
-- **Line colors**: Set stroke color
-- **Dash patterns**: Create dashed or dotted lines
-- **Arrow styles**: Add directional arrows
-- **Curved vs straight**: Choose connection style
-
-## Connection Types
-
-Different connection renderers are available:
-
-- **Direct**: Simple straight lines
-- **Curved**: Smooth bezier curves  
-- **Right Angle**: L-shaped connections
-- **All Directional**: Multi-directional layouts
-
-## Animations
-
-Add smooth animations to edge connections:
-
-### Animation Types
-
-- **Draw-in animations**: Lines appear progressively
-- **Hover effects**: Interactive highlighting
-- **Connection transitions**: Smooth changes
-- **Loading animations**: Progressive tree building
-
-### Example
-
-\`\`\`javascript
-const chart = new TreeChart(container, {
-  data: data,
-  animations: {
-    enabled: true,
-    duration: 800,
-    easing: 'ease-in-out'
-  }
-});
-\`\`\`
-      `,
-      topics: [],
-    },
-    {
-      id: "alignment-and-options",
-      title: "Alignment and Other Options",
-      description: "Control layout, positioning, and additional features",
-      topics: [
-        {
-          id: "horizontal-alignment",
-          title: "Horizontal Alignment",
-          description: "Control horizontal positioning and spacing",
-          path: "/docs/alignment-and-options/horizontal-alignment",
-          content: `
-# Horizontal Alignment
-
-Control how nodes are positioned horizontally within the tree layout.
-
-## Alignment Options
-
-- Left alignment
-- Center alignment
-- Right alignment
-- Justified spacing
-- Custom spacing controls
-          `,
-        },
-        {
-          id: "vertical-alignment",
-          title: "Vertical Alignment",
-          description: "Control vertical positioning and spacing",
-          path: "/docs/alignment-and-options/vertical-alignment",
-          content: `
-# Vertical Alignment
-
-Control how nodes are positioned vertically within the tree layout.
-
-## Alignment Options
-
-- Top alignment
-- Middle alignment
-- Bottom alignment
-- Even spacing
-- Custom vertical spacing
-          `,
-        },
-        {
-          id: "tree-title",
-          title: "Tree Title and Description",
-          description: "Add titles and descriptions to your trees",
-          path: "/docs/alignment-and-options/tree-title",
-          content: `
-# Tree Title and Description
-
-Add descriptive titles and descriptions to provide context for your trees.
-
-## Features
-
-- Main tree title
-- Subtitle support
-- Description text
-- Custom positioning
-- Styling options
-          `,
-        },
-        {
-          id: "action-buttons",
-          title: "Action Buttons",
-          description: "Add interactive buttons for tree operations",
-          path: "/docs/alignment-and-options/action-buttons",
-          content: `
-# Action Buttons
-
-Add interactive buttons to provide users with tree manipulation capabilities.
-
-## Available Actions
-
-- Zoom in/out
-- Reset view
-- Export options
-- Print functionality
-- Full screen mode
-- Data filtering
-          `,
+The most common node type for displaying names and labels.`,
+            },
+          ],
         },
       ],
     },

@@ -1,6 +1,7 @@
 import { getTopic } from "@/utils/docs";
 import { docsNavigation } from "@/data/docs";
 import MarkdownContent from "@/components/docs/MarkdownContent";
+import ContentRenderer from "@/components/docs/ContentRenderer";
 import DocsNavigation from "@/components/docs/DocsNavigation";
 import BasicUsageWithCodeDisplay from "@/components/docs/BasicUsageWithCodeDisplay";
 import Breadcrumb from "@/components/docs/Breadcrumb";
@@ -62,7 +63,7 @@ export default function DynamicDocsPage({ params }: PageProps) {
         {/* Show section content if available */}
         {section.content && (
           <div className="mb-8">
-            <MarkdownContent content={section.content} />
+            <ContentRenderer content={section.content} />
           </div>
         )}
 
@@ -139,7 +140,7 @@ export default function DynamicDocsPage({ params }: PageProps) {
             { label: topic.title },
           ]}
         />
-        <MarkdownContent content={topic.content} />
+        <ContentRenderer content={topic.content} />
         <DocsNavigation />
       </div>
     );
