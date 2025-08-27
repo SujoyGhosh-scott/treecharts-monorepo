@@ -18,6 +18,14 @@
   - Resolved issue where applyCommonStyling was overwriting gradient fill with solid color
   - Gradients now display correctly with proper color transitions from start to end colors
 
+#### Removed
+
+- **Icon Support**: Removed redundant icon functionality from node options
+  - Removed `icon`, `iconSize`, and `iconColor` properties from NodeConfig and NodeOptions interfaces
+  - Removed icon creation logic from NodeDrawer class
+  - Removed icon support example from documentation
+  - Use dedicated image nodes (`type: "image"`) for visual elements instead
+
 This release resolves visual corruption issues that made shadow-enabled charts unusable.
 
 ## [0.3.0] - 2025-08-20

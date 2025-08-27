@@ -46,9 +46,6 @@ export class NodeDrawer {
     gradient: false,
     gradientStartColor: "",
     gradientEndColor: "",
-    icon: "",
-    iconSize: NODE_CONSTANTS.DEFAULT_ICON_SIZE,
-    iconColor: NODE_CONSTANTS.DEFAULT_ICON_COLOR,
     customAttributes: {},
     collapsible: false,
     expanded: false,
@@ -359,14 +356,6 @@ export class NodeDrawer {
     ) {
       const textElement = this.createText(finalOptions);
       nodeElements.push(textElement);
-    }
-
-    // Add icon if provided
-    if (finalOptions.icon) {
-      const iconElement = this.createIcon(finalOptions);
-      if (iconElement) {
-        nodeElements.push(iconElement);
-      }
     }
 
     // Add all elements to SVG
@@ -758,29 +747,5 @@ export class NodeDrawer {
     }
 
     return text;
-  }
-
-  /**
-   * Create icon element for the node
-   */
-  private createIcon(options: Required<NodeOptions>): SVGElement | null {
-    if (!options.icon) return null;
-
-    // For now, we'll support text-based icons or unicode symbols
-    // In the future, this could be extended to support SVG icons or font icons
-    const icon = document.createElementNS(SVG_NS, "text");
-    const iconX = options.x + options.padding;
-    const iconY = options.y + options.padding + options.iconSize;
-
-    icon.setAttribute("x", iconX.toString());
-    icon.setAttribute("y", iconY.toString());
-    icon.setAttribute("font-size", options.iconSize.toString());
-    icon.setAttribute("font-weight", "normal");
-    icon.setAttribute("fill", options.iconColor);
-    icon.setAttribute("stroke", "none");
-    icon.setAttribute("stroke-width", "0");
-    icon.textContent = options.icon;
-
-    return icon;
   }
 }

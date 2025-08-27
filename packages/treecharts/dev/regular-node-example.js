@@ -95,34 +95,6 @@ const advancedStylingChart = new TreeChart("advanced-styling-container", {
   },
 });
 
-// 4. Icon Support Chart - Adding icons to nodes
-const iconSupportChart = new TreeChart("icon-support-container", {
-  type: "direct",
-  nodeConfig: {
-    type: "rectangle",
-    color: "#F8F9FA", // Light gray background
-    borderColor: "#6C757D", // Gray border
-    borderWidth: 1,
-    borderRadius: 6,
-    icon: "★", // Unicode star icon
-    iconSize: 16, // Icon size
-    iconColor: "#FFC107", // Golden icon color
-    fontSize: 14,
-    fontColor: "#495057", // Dark gray text
-    fontFamily: "Arial, sans-serif",
-    padding: 10,
-    width: 120,
-    height: 50,
-  },
-  actionConfig: {
-    download: {
-      enabled: true,
-      position: "top-right",
-      filename: "regular-node-icon-support.svg",
-    },
-  },
-});
-
 // Initialize all charts
 try {
   console.log("Initializing regular node styling examples...");
@@ -135,9 +107,6 @@ try {
 
   advancedStylingChart.render(simpleTree);
   console.log("✓ Advanced styling chart rendered");
-
-  iconSupportChart.render(simpleTree);
-  console.log("✓ Icon support chart rendered");
 
   console.log("🎉 All regular node examples initialized successfully!");
 } catch (error) {

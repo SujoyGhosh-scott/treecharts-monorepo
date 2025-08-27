@@ -184,11 +184,6 @@ export interface NodeConfig {
   gradientStartColor?: string;
   gradientEndColor?: string;
 
-  // Icon support
-  icon?: string;
-  iconSize?: number;
-  iconColor?: string;
-
   // Collapsible node support
   collapsible?: boolean;
 
@@ -411,11 +406,6 @@ export interface NodeOptions {
   gradient?: boolean;
   gradientStartColor?: string;
   gradientEndColor?: string;
-
-  // Icon support
-  icon?: string;
-  iconSize?: number;
-  iconColor?: string;
 
   // Custom attributes for advanced customization
   customAttributes?: { [key: string]: string | number };

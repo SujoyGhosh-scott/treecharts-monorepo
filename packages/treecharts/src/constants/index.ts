@@ -60,8 +60,6 @@ export const NODE_CONSTANTS = {
   // Default styling values
   DEFAULT_SHADOW_COLOR: "rgba(0,0,0,0.3)",
   DEFAULT_SHADOW_OFFSET: { x: 2, y: 2 },
-  DEFAULT_ICON_SIZE: 16,
-  DEFAULT_ICON_COLOR: "black",
   DEFAULT_BORDER_COLOR: "black",
   DEFAULT_BORDER_WIDTH: 1,
   DEFAULT_BORDER_RADIUS: 6,
@@ -108,9 +106,6 @@ export const DEFAULT_OPTIONS: Required<
     gradient: false,
     gradientStartColor: "",
     gradientEndColor: "",
-    icon: "",
-    iconSize: 16,
-    iconColor: "black",
     customAttributes: {},
   } as Required<NodeConfig>,
 
