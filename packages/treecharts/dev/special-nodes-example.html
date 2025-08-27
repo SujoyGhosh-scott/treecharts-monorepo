@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TreeCharts - Special Node Types Examples</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f8f9fa;
+        color: #333;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 40px;
+        font-size: 2.5rem;
+      }
+
+      .section {
+        background: white;
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .section h2 {
+        color: #34495e;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 10px;
+        margin-bottom: 25px;
+        font-size: 1.8rem;
+      }
+
+      .chart-container {
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        background: #ffffff;
+        min-height: 400px;
+        margin: 20px 0;
+        overflow: auto;
+        position: relative;
+      }
+
+      .description {
+        background: #f8f9fa;
+        border-left: 4px solid #3498db;
+        padding: 15px 20px;
+        margin-bottom: 20px;
+        border-radius: 0 4px 4px 0;
+      }
+
+      .description p {
+        margin: 0;
+        color: #5a6c7d;
+        line-height: 1.6;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .feature {
+        background: #e8f4f8;
+        padding: 15px;
+        border-radius: 6px;
+        border-left: 4px solid #2ecc71;
+      }
+
+      .feature strong {
+        color: #27ae60;
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .download-note {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin-top: 15px;
+        color: #856404;
+        font-size: 0.9rem;
+      }
+
+      .download-note strong {
+        color: #975a16;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>TreeCharts - Special Node Types</h1>
+
+      <!-- Node with Description -->
+      <div class="section">
+        <h2>Node with Description</h2>
+        <div class="description">
+          <p>
+            Nodes that display additional descriptive text alongside the main
+            value. Perfect for organizational charts, process flows, and any
+            scenario where you need to provide additional context or details for
+            each node.
+          </p>
+        </div>
+
+        <div class="features">
+          <div class="feature">
+            <strong>Rich Context</strong>
+            Display detailed descriptions for each node
+          </div>
+          <div class="feature">
+            <strong>Customizable Layout</strong>
+            Control text positioning and styling
+          </div>
+          <div class="feature">
+            <strong>Responsive Design</strong>
+            Automatically adjusts to content length
+          </div>
+        </div>
+
+        <div id="description-container" class="chart-container"></div>
+
+        <div class="download-note">
+          <strong>Download:</strong> Use the download button in the top-right
+          corner to save this chart as SVG for documentation.
+        </div>
+      </div>
+
+      <!-- Collapsible Node -->
+      <div class="section">
+        <h2>Collapsible Node</h2>
+        <div class="description">
+          <p>
+            Interactive nodes that can be expanded or collapsed to show/hide
+            additional information. Ideal for large hierarchical structures
+            where you want to provide detailed information while maintaining a
+            clean overview.
+          </p>
+        </div>
+
+        <div class="features">
+          <div class="feature">
+            <strong>Interactive Control</strong>
+            Click to expand/collapse descriptions
+          </div>
+          <div class="feature">
+            <strong>Space Efficient</strong>
+            Show details only when needed
+          </div>
+          <div class="feature">
+            <strong>Visual Indicators</strong>
+            Clear expand/collapse buttons
+          </div>
+        </div>
+
+        <div id="collapsible-container" class="chart-container"></div>
+
+        <div class="download-note">
+          <strong>Download:</strong> Use the download button in the top-right
+          corner to save this chart as SVG for documentation.
+        </div>
+      </div>
+
+      <!-- Image Node -->
+      <div class="section">
+        <h2>Image Node</h2>
+        <div class="description">
+          <p>
+            Nodes that display images along with titles and subtitles. Perfect
+            for family trees, organizational charts with photos, product
+            hierarchies, or any visualization where visual representation
+            enhances understanding.
+          </p>
+        </div>
+
+        <div class="features">
+          <div class="feature">
+            <strong>Visual Impact</strong>
+            Include images for better recognition
+          </div>
+          <div class="feature">
+            <strong>Flexible Positioning</strong>
+            Position text relative to images
+          </div>
+          <div class="feature">
+            <strong>Rich Styling</strong>
+            Control image borders, opacity, and layout
+          </div>
+        </div>
+
+        <div id="image-container" class="chart-container"></div>
+
+        <div class="download-note">
+          <strong>Download:</strong> Use the download button in the top-right
+          corner to save this chart as SVG for documentation.
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./special-nodes-example.js"></script>
+  </body>
+</html>
