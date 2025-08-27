@@ -28,7 +28,14 @@ export abstract class BaseNodeRenderer implements NodeRenderer {
     element: SVGElement,
     options: Required<NodeOptions>
   ): void {
-    element.setAttribute("fill", options.fill);
+    // Only set fill if not using gradient
+    if (
+      !options.gradient ||
+      !options.gradientStartColor ||
+      !options.gradientEndColor
+    ) {
+      element.setAttribute("fill", options.fill);
+    }
     element.setAttribute("stroke", options.stroke);
     element.setAttribute("stroke-width", options.strokeWidth.toString());
     element.setAttribute("opacity", options.opacity.toString());

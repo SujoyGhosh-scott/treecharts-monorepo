@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fixed shadow elements being added twice to SVG (once by NodeDrawer, once by renderers)
   - Corrected text elements being rendered multiple times for rectangle and circle nodes
   - Streamlined rendering flow to use dedicated renderer classes properly without duplication
+- **Gradient Rendering**: Fixed gradient styling not being applied to nodes
+  - Resolved issue where gradient fill was being overwritten by solid color fill
+  - Gradients now display correctly when enabled with proper color transitions
 
 ## [0.3.0] - 2025-08-20
 

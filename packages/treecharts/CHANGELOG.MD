@@ -14,6 +14,9 @@
   - Resolved duplicate appendChild calls between NodeDrawer and renderer classes
   - Fixed text and shadow elements being added multiple times to SVG
   - Streamlined rendering pipeline to ensure each node renders exactly once
+- **Gradient Rendering**: Fixed gradient styling not being applied to rectangle nodes
+  - Resolved issue where applyCommonStyling was overwriting gradient fill with solid color
+  - Gradients now display correctly with proper color transitions from start to end colors
 
 This release resolves visual corruption issues that made shadow-enabled charts unusable.
 
