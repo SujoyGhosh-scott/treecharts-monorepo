@@ -3,6 +3,7 @@ import { ContentBlock } from "@/types/docs";
 import { CodeExample } from "@/types/code";
 import MarkdownContent from "./MarkdownContent";
 import CodeDisplay from "./CodeDisplay";
+import ImageGrid from "./ImageGrid";
 
 interface ContentRendererProps {
   content: ContentBlock[];
@@ -32,6 +33,19 @@ export default function ContentRenderer({ content }: ContentRendererProps) {
           return (
             <div key={index} className="not-prose">
               <CodeDisplay example={codeExample} />
+            </div>
+          );
+        }
+
+        if (block.type === "image-grid") {
+          return (
+            <div key={index} className="not-prose">
+              <ImageGrid
+                images={block.images || []}
+                gridConfig={block.gridConfig || { desktop: 4, mobile: 2 }}
+                title={block.title}
+                description={block.description}
+              />
             </div>
           );
         }

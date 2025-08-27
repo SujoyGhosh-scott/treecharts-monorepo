@@ -10,15 +10,18 @@
     "export": "next build && next export"
   },
   "dependencies": {
+    "gray-matter": "^4.0.3",
+    "highlight.js": "^11.11.1",
+    "lucide-react": "^0.290.0",
     "next": "^14.0.0",
+    "next-themes": "^0.2.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "lucide-react": "^0.290.0",
-    "gray-matter": "^4.0.3",
+    "react-markdown": "^10.1.0",
+    "rehype-highlight": "^7.0.2",
     "remark": "^15.0.1",
-    "remark-html": "^16.0.1",
-    "remark-gfm": "^4.0.0",
-    "next-themes": "^0.2.1"
+    "remark-gfm": "^4.0.1",
+    "remark-html": "^16.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

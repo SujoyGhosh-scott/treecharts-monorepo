@@ -1,5 +1,11 @@
+export interface ImageGridItem {
+  src: string;
+  alt: string;
+  description?: string;
+}
+
 export interface ContentBlock {
-  type: "markdown" | "code";
+  type: "markdown" | "code" | "image-grid";
   value?: string; // For markdown content
   codes?: {
     javascript?: string;
@@ -7,10 +13,19 @@ export interface ContentBlock {
     angular?: string;
     vue?: string;
   };
-  title?: string; // For code blocks
-  description?: string; // For code blocks
+  title?: string; // For code blocks and image grids
+  description?: string; // For code blocks and image grids
   id?: string; // For code blocks
   outputImage?: string; // Path to the expected output image
+
+  // For image grid
+  images?: ImageGridItem[];
+  gridConfig?: {
+    desktop: number; // Number of columns on desktop
+    mobile: number; // Number of columns on mobile
+    gap?: string; // Gap between items (default: "20px")
+    maxWidth?: string; // Max width per item (default: "300px")
+  };
 }
 
 export interface DocSection {
