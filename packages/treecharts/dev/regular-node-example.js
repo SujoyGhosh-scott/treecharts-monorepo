@@ -15,6 +15,33 @@ const simpleTree = {
   ],
 };
 
+// Tree structure for individual node configuration example
+const individualConfigTree = {
+  value: "Root",
+  child: [
+    {
+      value: "Child 1",
+      nodeConfig: {
+        color: "#FF6B6B", // Red background
+        fontColor: "white",
+        borderColor: "#FF5252",
+        borderWidth: 2,
+      },
+      child: [],
+    },
+    {
+      value: "Child 2",
+      nodeConfig: {
+        color: "#FFE66D", // Yellow background
+        fontColor: "#333",
+        borderColor: "#FFC107",
+        borderWidth: 2,
+      },
+      child: [],
+    },
+  ],
+};
+
 // 1. Visual Styling Chart - Colors, borders, opacity, shadows
 const visualStylingChart = new TreeChart("visual-styling-container", {
   type: "direct",
@@ -95,6 +122,31 @@ const advancedStylingChart = new TreeChart("advanced-styling-container", {
   },
 });
 
+// 4. Individual Node Configuration Chart - Different styles per node
+const individualConfigChart = new TreeChart("individual-config-container", {
+  type: "direct",
+  nodeConfig: {
+    type: "rectangle",
+    color: "#E3F2FD", // Light blue background (default for root)
+    borderColor: "#2196F3", // Blue border
+    borderWidth: 2,
+    borderRadius: 6,
+    fontSize: 14,
+    fontColor: "#1976D2", // Dark blue text
+    fontFamily: "Arial, sans-serif",
+    padding: 12,
+    width: 120,
+    height: 50,
+  },
+  actionConfig: {
+    download: {
+      enabled: true,
+      position: "top-right",
+      filename: "regular-node-individual-config.svg",
+    },
+  },
+});
+
 // Initialize all charts
 try {
   console.log("Initializing regular node styling examples...");
@@ -107,6 +159,9 @@ try {
 
   advancedStylingChart.render(simpleTree);
   console.log("✓ Advanced styling chart rendered");
+
+  individualConfigChart.render(individualConfigTree);
+  console.log("✓ Individual configuration chart rendered");
 
   console.log("🎉 All regular node examples initialized successfully!");
 } catch (error) {
