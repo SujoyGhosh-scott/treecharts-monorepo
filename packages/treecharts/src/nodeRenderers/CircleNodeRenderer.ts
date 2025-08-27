@@ -24,9 +24,6 @@ export class CircleNodeRenderer extends BaseNodeRenderer {
     const text = this.createBasicText(options);
     group.appendChild(text);
 
-    // Add to SVG
-    this.svg.appendChild(group);
-
     const radius = Math.min(options.width, options.height) / 2;
     const centerX = options.x + options.width / 2;
     const centerY = options.y + options.height / 2;

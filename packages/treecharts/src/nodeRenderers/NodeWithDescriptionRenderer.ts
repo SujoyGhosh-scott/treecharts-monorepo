@@ -36,9 +36,6 @@ export class NodeWithDescriptionRenderer extends BaseNodeRenderer {
     const textElements = this.createTextElements(updatedOptions);
     textElements.forEach((element) => group.appendChild(element));
 
-    // Add to SVG
-    this.svg.appendChild(group);
-
     return {
       element: group,
       bounds: {

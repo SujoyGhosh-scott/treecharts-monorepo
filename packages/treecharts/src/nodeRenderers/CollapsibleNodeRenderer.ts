@@ -48,9 +48,6 @@ export class CollapsibleNodeRenderer extends BaseNodeRenderer {
     // Add click handler for expand/collapse
     this.addClickHandler(group, updatedOptions);
 
-    // Add to SVG
-    this.svg.appendChild(group);
-
     return {
       element: group,
       bounds: {

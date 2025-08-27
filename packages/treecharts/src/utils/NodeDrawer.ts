@@ -319,8 +319,15 @@ export class NodeDrawer {
           : finalOptions.height,
     };
 
-    // Add shadow if enabled
-    if (finalOptions.shadow) {
+    // Add shadow if enabled - only for legacy node types that don't use dedicated renderers
+    if (
+      finalOptions.shadow &&
+      finalOptions.type !== "rectangle" &&
+      finalOptions.type !== "circle" &&
+      finalOptions.type !== "image" &&
+      finalOptions.type !== "node-with-description" &&
+      finalOptions.type !== "collapsible-node"
+    ) {
       const shadowElement = this.createShadow(finalOptions);
       if (shadowElement) {
         this.svg.appendChild(shadowElement);
@@ -340,10 +347,12 @@ export class NodeDrawer {
     // Apply basic styling
     this.applyBasicStyling(shapeElement, finalOptions);
 
-    // Add text if provided - special handling for image nodes (other types handle text in their renderers)
+    // Add text if provided - only for legacy node types that don't use dedicated renderers
     if (
       finalOptions.text &&
       finalOptions.text.trim() &&
+      finalOptions.type !== "rectangle" &&
+      finalOptions.type !== "circle" &&
       finalOptions.type !== "image" &&
       finalOptions.type !== "node-with-description" &&
       finalOptions.type !== "collapsible-node"

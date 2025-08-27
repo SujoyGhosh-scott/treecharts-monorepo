@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-08-30
+
+### Fixed
+
+- **Shadow Rendering Issues**: Resolved critical shadow rendering problems that caused visual corruption
+  - Fixed duplicate shadow elements creating multiple overlapping black shapes
+  - Corrected shadow opacity handling for both solid colors and rgba values
+  - Removed unwanted borders from shadow elements for proper drop shadow appearance
+  - Eliminated triple rendering layers causing text and node duplication
+- **Node Rendering Architecture**: Fixed fundamental rendering pipeline issues
+  - Resolved duplicate appendChild calls between NodeDrawer and dedicated renderer classes
+  - Fixed shadow elements being added twice to SVG (once by NodeDrawer, once by renderers)
+  - Corrected text elements being rendered multiple times for rectangle and circle nodes
+  - Streamlined rendering flow to use dedicated renderer classes properly without duplication
+
 ## [0.3.0] - 2025-08-20
 
 ### Added

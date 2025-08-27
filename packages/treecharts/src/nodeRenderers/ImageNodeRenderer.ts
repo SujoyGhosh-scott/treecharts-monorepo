@@ -43,9 +43,6 @@ export class ImageNodeRenderer extends BaseNodeRenderer {
     const textElements = this.createTextElements(options, layout);
     textElements.forEach((element) => group.appendChild(element));
 
-    // Add to SVG
-    this.svg.appendChild(group);
-
     return {
       element: group,
       bounds: {

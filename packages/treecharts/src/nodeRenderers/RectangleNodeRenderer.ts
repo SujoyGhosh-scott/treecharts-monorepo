@@ -23,9 +23,6 @@ export class RectangleNodeRenderer extends BaseNodeRenderer {
     const text = this.createBasicText(options);
     group.appendChild(text);
 
-    // Add to SVG
-    this.svg.appendChild(group);
-
     return {
       element: group,
       bounds: {

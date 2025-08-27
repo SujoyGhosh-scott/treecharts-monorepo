@@ -1,5 +1,22 @@
 # Changelog - TreeCharts Core
 
+## [0.4.0] - 2025-08-30
+
+### 🐛 Critical Bug Fixes
+
+#### Fixed
+
+- **Shadow Rendering Issues**: Resolved critical visual corruption when shadows were enabled
+  - Fixed duplicate shadow elements creating overlapping black shapes that obscured content
+  - Corrected shadow styling to appear as proper drop shadows instead of solid rectangles
+  - Fixed double opacity application when using rgba color values
+- **Node Duplication**: Eliminated triple rendering layers causing each node to appear 3 times
+  - Resolved duplicate appendChild calls between NodeDrawer and renderer classes
+  - Fixed text and shadow elements being added multiple times to SVG
+  - Streamlined rendering pipeline to ensure each node renders exactly once
+
+This release resolves visual corruption issues that made shadow-enabled charts unusable.
+
 ## [0.3.0] - 2025-08-20
 
 ### 🚀 Advanced Node Types & Architecture Overhaul

@@ -57,6 +57,15 @@ export abstract class BaseNodeRenderer implements NodeRenderer {
       (options.y + options.shadowOffset.y).toString()
     );
     shadowElement.setAttribute("fill", options.shadowColor);
+
+    // Remove any stroke/border from shadow
+    shadowElement.setAttribute("stroke", "none");
+    shadowElement.setAttribute("stroke-width", "0");
+
+    // Only add opacity if shadowColor doesn't already include alpha channel
+    if (!options.shadowColor.includes("rgba")) {
+      shadowElement.setAttribute("opacity", "0.3"); // Add transparency for shadow effect
+    }
     shadowElement.setAttribute("rx", options.borderRadius.toString());
     shadowElement.setAttribute("ry", options.borderRadius.toString());
 
