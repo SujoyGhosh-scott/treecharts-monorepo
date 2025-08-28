@@ -140,17 +140,12 @@ export default function Features() {
                 <div className="mockup-code bg-base-300 border border-base-content/20 text-left">
                   <pre data-prefix="$" className="text-base-content">
                     <code className="text-base-content">
-                      npm install @treecharts/react
+                      npm install treecharts
                     </code>
                   </pre>
                   <pre data-prefix="$" className="text-base-content">
                     <code className="text-base-content">
-                      npm install @treecharts/angular
-                    </code>
-                  </pre>
-                  <pre data-prefix="$" className="text-base-content">
-                    <code className="text-base-content">
-                      npm install @treecharts/vue
+                      npm install treecharts-react
                     </code>
                   </pre>
                 </div>

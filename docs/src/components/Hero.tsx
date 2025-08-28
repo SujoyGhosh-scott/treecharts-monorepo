@@ -15,8 +15,8 @@ export default function Hero() {
             </h1>
 
             <p className="text-lg md:text-xl mb-8 text-base-content/80">
-              A powerful and flexible library for creating stunning tree
-              visualizations in React, Angular, Vue, and vanilla JavaScript.
+              A highly customizable and lightweight library for creating
+              stunning tree visualizations in React and vanilla JavaScript.
               Perfect for family trees, organizational charts, decision trees,
               and more.
             </p>
@@ -69,14 +69,6 @@ export default function Hero() {
                 <div className="flex items-center gap-2 text-base-content/60">
                   <span className="text-xl">⚛️</span>
                   <span className="text-sm font-medium">React</span>
-                </div>
-                <div className="flex items-center gap-2 text-base-content/60">
-                  <span className="text-xl">🅰️</span>
-                  <span className="text-sm font-medium">Angular</span>
-                </div>
-                <div className="flex items-center gap-2 text-base-content/60">
-                  <span className="text-xl">💚</span>
-                  <span className="text-sm font-medium">Vue</span>
                 </div>
                 <div className="flex items-center gap-2 text-base-content/60">
                   <span className="text-xl">🟨</span>

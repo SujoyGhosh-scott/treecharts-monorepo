@@ -9,40 +9,32 @@ export const gettingStartedSection: DocSection = {
       type: "markdown",
       value: `# Getting Started
 
-TreeCharts is a powerful, flexible library for creating interactive tree visualizations. It supports all major frontend frameworks and vanilla JavaScript.
+TreeCharts is a powerful, flexible library for creating interactive tree visualizations. It supports React and vanilla JavaScript with a highly customizable and lightweight architecture.
 
 ## Installation
 
-Choose the package that matches your framework:
+Choose the package that matches your setup:
 
-### React
+### Core Library (Vanilla JavaScript)
 
 \`\`\`bash
-npm install @treecharts/react
+npm install treecharts
 # or
-yarn add @treecharts/react
+yarn add treecharts
 \`\`\`
 
-### Angular
+### React Wrapper
 
 \`\`\`bash
-npm install @treecharts/angular
+npm install treecharts-react
 # or
-yarn add @treecharts/angular
-\`\`\`
-
-### Vue
-
-\`\`\`bash
-npm install @treecharts/vue
-# or
-yarn add @treecharts/vue
+yarn add treecharts-react
 \`\`\`
 
 ### CDN (Vanilla JavaScript)
 
 \`\`\`html
-<script src="https://cdn.jsdelivr.net/npm/@treecharts/core@latest/dist/treecharts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/treecharts@latest/dist/treecharts.min.js"></script>
 \`\`\`
 
 ## Quick Start
