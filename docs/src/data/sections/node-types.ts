@@ -3,6 +3,7 @@ import { regularNodesTopic } from "./node-types/regular-nodes";
 import { nodeWithDescriptionTopic } from "./node-types/node-with-description";
 import { collapsibleNodeTopic } from "./node-types/collapsible-node";
 import { imageNodeTopic } from "./node-types/image-node";
+import { customShapeTopic } from "./node-types/custom-shape";
 
 export const nodeTypesSection: DocSection = {
   id: "node-types",
@@ -13,5 +14,6 @@ export const nodeTypesSection: DocSection = {
     nodeWithDescriptionTopic,
     collapsibleNodeTopic,
     imageNodeTopic,
+    customShapeTopic,
   ],
 };

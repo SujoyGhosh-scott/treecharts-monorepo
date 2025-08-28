@@ -621,6 +621,10 @@ export class NodeDrawer {
     if (options.customAttributes.d) {
       const path = document.createElementNS(SVG_NS, "path");
       path.setAttribute("d", String(options.customAttributes.d));
+
+      // Apply transformation to position the path correctly
+      path.setAttribute("transform", `translate(${options.x}, ${options.y})`);
+
       return path;
     }
 

@@ -79,6 +79,8 @@ export class NodeFactory {
       imageUrl: node.imageUrl,
       title: node.title,
       subtitle: node.subtitle,
+      // Custom attributes for advanced customization
+      customAttributes: effectiveNodeConfig.customAttributes || {},
     });
   }
 

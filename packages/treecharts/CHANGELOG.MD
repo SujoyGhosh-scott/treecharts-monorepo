@@ -17,6 +17,12 @@
 - **Gradient Rendering**: Fixed gradient styling not being applied to rectangle nodes
   - Resolved issue where applyCommonStyling was overwriting gradient fill with solid color
   - Gradients now display correctly with proper color transitions from start to end colors
+- **Custom Shape Support**: Fixed custom SVG path shapes not rendering correctly
+  - Fixed customAttributes property not being passed from NodeFactory and AllDirectionRenderer to NodeDrawer
+  - Added missing customAttributes parameter to all drawNode method calls
+  - Fixed custom shape positioning by adding proper transform translation to node coordinates
+  - Custom shapes with SVG paths now render at correct positions instead of appearing at origin (0,0)
+  - Enhanced createCustomShape method to apply node positioning transformation
 
 #### Removed
 

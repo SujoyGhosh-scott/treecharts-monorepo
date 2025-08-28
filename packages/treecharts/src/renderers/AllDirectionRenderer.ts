@@ -159,6 +159,7 @@ export class AllDirectionRenderer extends BaseRenderer {
         gradient: effectiveNodeConfig.gradient,
         gradientStartColor: effectiveNodeConfig.gradientStartColor,
         gradientEndColor: effectiveNodeConfig.gradientEndColor,
+        customAttributes: effectiveNodeConfig.customAttributes || {},
       });
 
       this.nodeMap[`0-0`] = {
@@ -229,6 +230,7 @@ export class AllDirectionRenderer extends BaseRenderer {
           gradient: effectiveNodeConfig.gradient,
           gradientStartColor: effectiveNodeConfig.gradientStartColor,
           gradientEndColor: effectiveNodeConfig.gradientEndColor,
+          customAttributes: effectiveNodeConfig.customAttributes || {},
         });
 
         // Store node data with direction
@@ -329,6 +331,7 @@ export class AllDirectionRenderer extends BaseRenderer {
               gradient: effectiveNodeConfig.gradient,
               gradientStartColor: effectiveNodeConfig.gradientStartColor,
               gradientEndColor: effectiveNodeConfig.gradientEndColor,
+              customAttributes: effectiveNodeConfig.customAttributes || {},
             });
 
             // Store node data

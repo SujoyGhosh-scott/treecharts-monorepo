@@ -83,6 +83,58 @@ const imageTree = {
   ],
 };
 
+// Simple tree for Custom Shape Nodes
+const customShapeTree = {
+  value: "Shapes",
+  nodeConfig: { type: "hexagon", color: "#e8f4fd" },
+  child: [
+    {
+      value: "Circle",
+      nodeConfig: { type: "circle", color: "#98FB98" },
+      child: [
+        {
+          value: "Pentagon",
+          nodeConfig: { type: "pentagon", color: "#87CEEB" },
+          child: [],
+        },
+      ],
+    },
+    {
+      value: "Diamond",
+      nodeConfig: { type: "diamond", color: "#FFD700" },
+      child: [
+        {
+          value: "Octagon",
+          nodeConfig: { type: "octagon", color: "#DDA0DD" },
+          child: [],
+        },
+      ],
+    },
+    {
+      value: "Triangle",
+      nodeConfig: { type: "triangle", color: "#FFB6C1" },
+      child: [
+        {
+          value: "Star",
+          nodeConfig: { type: "star", color: "#F0E68C" },
+          child: [],
+        },
+      ],
+    },
+    {
+      value: "Custom",
+      nodeConfig: {
+        type: "custom",
+        color: "#FF6B6B",
+        customAttributes: {
+          d: "M 40,20 C 40,15 35,10 25,10 C 15,10 10,15 10,25 C 10,35 40,55 40,55 C 40,55 70,35 70,25 C 70,15 65,10 55,10 C 45,10 40,15 40,20 Z",
+        },
+      },
+      child: [],
+    },
+  ],
+};
+
 // Node with Description Chart
 const descriptionChart = new TreeChart("description-container", {
   type: "right-angle",
@@ -166,11 +218,38 @@ const imageChart = new TreeChart("image-container", {
   },
 });
 
+// Custom Shape Chart
+const customShapeChart = new TreeChart("custom-shape-container", {
+  type: "right-angle",
+  horizontalGap: 100,
+  verticalGap: 80,
+  nodeConfig: {
+    width: 80,
+    height: 60,
+    fontSize: 11,
+    fontColor: "#333333",
+    borderWidth: 2,
+    borderColor: "#666666",
+  },
+  titleConfig: {
+    title: "Custom Shape Example",
+    description: "All available geometric shapes including custom SVG paths",
+  },
+  actionConfig: {
+    download: {
+      enabled: true,
+      position: "top-right",
+      filename: "custom-shape-example.svg",
+    },
+  },
+});
+
 // Render all charts
 try {
   descriptionChart.render(descriptionTree);
   collapsibleChart.render(collapsibleTree);
   imageChart.render(imageTree);
+  customShapeChart.render(customShapeTree);
 
   console.log("All special node type charts initialized successfully!");
 } catch (error) {

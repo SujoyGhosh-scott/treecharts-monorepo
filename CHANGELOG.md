@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Gradient Rendering**: Fixed gradient styling not being applied to nodes
   - Resolved issue where gradient fill was being overwritten by solid color fill
   - Gradients now display correctly when enabled with proper color transitions
+- **Custom Shape Support**: Fixed custom SVG path shapes not rendering correctly
+  - Fixed customAttributes not being passed from renderers to NodeDrawer
+  - Fixed custom shape positioning - shapes now render at correct node positions instead of origin (0,0)
+  - Custom shapes with SVG paths now work properly across all renderer types
 
 ## [0.3.0] - 2025-08-20
 
