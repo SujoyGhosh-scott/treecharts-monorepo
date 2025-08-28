@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TreeCharts - Download Feature Demo</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .demo-section {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 30px;
+      }
+      .demo-title {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .demo-description {
+        color: #666;
+        margin-bottom: 20px;
+        font-size: 14px;
+      }
+      .chart-container {
+        min-height: 400px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        background: #fafafa;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 40px;
+      }
+      .feature-note {
+        background: #e8f4fd;
+        border-left: 4px solid #4a90e2;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 0 4px 4px 0;
+      }
+      .feature-note strong {
+        color: #2c3e50;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>TreeCharts Download Feature Demo</h1>
+
+      <div class="feature-note">
+        <strong>Download Feature:</strong> Each chart below includes a download
+        button that allows you to save the visualization as an SVG file. Look
+        for the download icon in the chart corners.
+      </div>
+
+      <div class="demo-section">
+        <div class="demo-title">Basic Download (Top-Right Position)</div>
+        <div class="demo-description">
+          Standard download button positioned at the top-right corner with a
+          custom filename.
+        </div>
+        <div id="basic-download-container" class="chart-container"></div>
+      </div>
+
+      <div class="demo-section">
+        <div class="demo-title">Custom Position (Top-Left)</div>
+        <div class="demo-description">
+          Download button positioned at the top-left corner using curved
+          connections.
+        </div>
+        <div id="custom-position-container" class="chart-container"></div>
+      </div>
+
+      <div class="demo-section">
+        <div class="demo-title">Dynamic Filename with Date</div>
+        <div class="demo-description">
+          Download with a dynamically generated filename that includes the
+          current date.
+        </div>
+        <div id="styled-download-container" class="chart-container"></div>
+      </div>
+    </div>
+
+    <script type="module" src="download-feature-example.js"></script>
+  </body>
+</html>

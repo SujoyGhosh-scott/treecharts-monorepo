@@ -4,6 +4,7 @@ import { coreConceptsSection } from "./sections/core-concepts";
 import { treeOptionsSection } from "./sections/tree-options";
 import { nodeTypesSection } from "./sections/node-types";
 import { edgeCustomizationSection } from "./sections/edge-customization";
+import { downloadFeatureSection } from "./sections/download-feature";
 
 export const docsNavigation: Navigation = {
   sections: [
@@ -12,5 +13,6 @@ export const docsNavigation: Navigation = {
     treeOptionsSection,
     nodeTypesSection,
     edgeCustomizationSection,
+    downloadFeatureSection,
   ],
 };
