@@ -60,7 +60,7 @@ const edgeCustomizationChart = new TreeChart("edge-container", {
 
     // Arrow configuration
     showArrows: true,
-    arrowDirection: "both",
+    arrowDirection: "source-to-target",
     arrowSize: 5,
     arrowColor: "#c0392b", // Darker red arrows
 
