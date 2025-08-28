@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TreeCharts - Alignment Examples</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 0;
+        background-color: #f5f5f5;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 40px;
+      }
+
+      h2 {
+        color: #444;
+        margin-top: 40px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+      }
+
+      .example-section {
+        margin-bottom: 50px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .chart-container {
+        margin: 20px auto;
+        width: 600px;
+        height: 300px;
+        border: 2px solid #ddd;
+        overflow: visible;
+        margin-bottom: 20px;
+        border-radius: 4px;
+        background: white;
+      }
+
+      .description {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+        border-left: 4px solid #007bff;
+      }
+
+      .description code {
+        background: #e9ecef;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: "Courier New", monospace;
+      }
+
+      .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .grid-container .chart-container {
+        width: 100%;
+        height: 250px;
+      }
+
+      .alignment-label {
+        text-align: center;
+        font-weight: bold;
+        color: #666;
+        margin-bottom: 10px;
+        padding: 8px;
+        background: #e9ecef;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>TreeCharts Alignment Examples</h1>
+
+    <!-- Horizontal Alignment Examples -->
+    <div class="example-section">
+      <h2>Horizontal Alignment (verticalAlign)</h2>
+      <div class="description">
+        The <code>verticalAlign</code> property controls the horizontal
+        positioning of nodes within each level. Available options:
+        <code>"left"</code>, <code>"center"</code>, <code>"right"</code>.
+        Default is <code>"center"</code>.
+      </div>
+
+      <div class="grid-container">
+        <div>
+          <div class="alignment-label">Left Alignment</div>
+          <div id="horizontal-left-container" class="chart-container"></div>
+        </div>
+        <div>
+          <div class="alignment-label">Center Alignment</div>
+          <div id="horizontal-center-container" class="chart-container"></div>
+        </div>
+      </div>
+
+      <div style="width: 50%; margin: 0 auto">
+        <div class="alignment-label">Right Alignment</div>
+        <div id="horizontal-right-container" class="chart-container"></div>
+      </div>
+    </div>
+
+    <!-- Vertical Alignment Examples -->
+    <div class="example-section">
+      <h2>Vertical Alignment (horizontalAlign)</h2>
+      <div class="description">
+        The <code>horizontalAlign</code> property controls the vertical flow
+        direction of the tree. Available options: <code>"top-to-bottom"</code>,
+        <code>"bottom-to-top"</code>. Default is <code>"top-to-bottom"</code>.
+      </div>
+
+      <div class="grid-container">
+        <div>
+          <div class="alignment-label">Top to Bottom</div>
+          <div id="vertical-top-bottom-container" class="chart-container"></div>
+        </div>
+        <div>
+          <div class="alignment-label">Bottom to Top</div>
+          <div id="vertical-bottom-top-container" class="chart-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Combined Alignment Examples -->
+    <div class="example-section">
+      <h2>Combined Alignment Examples</h2>
+      <div class="description">
+        You can combine both horizontal and vertical alignment options for
+        different layouts. These examples show simple color variations to
+        distinguish the different alignment combinations.
+      </div>
+
+      <div class="grid-container">
+        <div>
+          <div class="alignment-label">Right + Bottom-to-Top</div>
+          <div
+            id="combined-right-bottom-container"
+            class="chart-container"
+          ></div>
+        </div>
+        <div>
+          <div class="alignment-label">Left + Bottom-to-Top</div>
+          <div
+            id="combined-left-bottom-container"
+            class="chart-container"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="alignment-example.js"></script>
+  </body>
+</html>
