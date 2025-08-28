@@ -5,9 +5,13 @@ import { TreeNode, FormattedTree, NodePosition } from "../types";
  * that's easier to render visually
  *
  * @param tree The hierarchical tree structure
+ * @param options Optional formatting options including alignment
  * @returns A formatted representation of the tree organized by levels
  */
-export function formatTree(tree: TreeNode): FormattedTree {
+export function formatTree(
+  tree: TreeNode,
+  options?: { horizontalAlign?: string }
+): FormattedTree {
   const formattedTree: FormattedTree = [];
   const stack: Array<{
     level: number;
@@ -71,7 +75,43 @@ export function formatTree(tree: TreeNode): FormattedTree {
     }
   }
 
+  // If bottom-to-top alignment, reverse the levels and update parent references
+  if (options?.horizontalAlign === "bottom-to-top") {
+    return reverseTreeForBottomToTop(formattedTree);
+  }
+
   return formattedTree;
+}
+
+/**
+ * Reverses the tree structure for bottom-to-top alignment
+ * This places the root at the bottom and children flowing upward
+ */
+function reverseTreeForBottomToTop(
+  formattedTree: FormattedTree
+): FormattedTree {
+  // Reverse the order of levels
+  const reversedTree = [...formattedTree].reverse();
+
+  // Update parent references to match the new level indices
+  const maxLevel = formattedTree.length - 1;
+
+  reversedTree.forEach((level, newLevelIndex) => {
+    level.forEach((node) => {
+      if (node.parent) {
+        const parentPos = JSON.parse(node.parent) as NodePosition;
+        const newParentLevel = maxLevel - parentPos.level;
+
+        // Update the parent reference to the new level index
+        node.parent = JSON.stringify({
+          level: newParentLevel,
+          position: parentPos.position,
+        });
+      }
+    });
+  });
+
+  return reversedTree;
 }
 
 /**

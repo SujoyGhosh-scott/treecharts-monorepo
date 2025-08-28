@@ -246,15 +246,8 @@ export class LayoutCalculator {
         // Calculate Y position using actual level heights
         let y;
         if (horizontalAlign === "bottom-to-top") {
-          const remainingLevels = levelHeights
-            .slice(levelIndex + 1)
-            .reduce((sum, h) => sum + h + verticalGap, 0);
-          y =
-            totalHeight -
-            remainingLevels -
-            levelHeight -
-            titleSpace.bottom -
-            basePadding;
+          // For bottom-to-top, use simple cumulative positioning since levels are already reversed
+          y = cumulativeY;
         } else {
           y = cumulativeY;
         }
@@ -277,10 +270,8 @@ export class LayoutCalculator {
         nodes,
       });
 
-      // Move to next level (only for top-to-bottom)
-      if (horizontalAlign !== "bottom-to-top") {
-        cumulativeY += levelHeight + verticalGap;
-      }
+      // Move to next level
+      cumulativeY += levelHeight + verticalGap;
     });
 
     return levels;

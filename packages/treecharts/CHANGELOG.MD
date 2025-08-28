@@ -6,42 +6,14 @@
 
 #### Fixed
 
-- **Shadow Rendering Issues**: Resolved critical visual corruption when shadows were enabled
-  - Fixed duplicate shadow elements creating overlapping black shapes that obscured content
-  - Corrected shadow styling to appear as proper drop shadows instead of solid rectangles
-  - Fixed double opacity application when using rgba color values
-- **Node Duplication**: Eliminated triple rendering layers causing each node to appear 3 times
-  - Resolved duplicate appendChild calls between NodeDrawer and renderer classes
-  - Fixed text and shadow elements being added multiple times to SVG
-  - Streamlined rendering pipeline to ensure each node renders exactly once
-- **Gradient Rendering**: Fixed gradient styling not being applied to rectangle nodes
-  - Resolved issue where applyCommonStyling was overwriting gradient fill with solid color
-  - Gradients now display correctly with proper color transitions from start to end colors
-- **Custom Shape Support**: Fixed custom SVG path shapes not rendering correctly
-  - Fixed customAttributes property not being passed from NodeFactory and AllDirectionRenderer to NodeDrawer
-  - Added missing customAttributes parameter to all drawNode method calls
-  - Fixed custom shape positioning by adding proper transform translation to node coordinates
-  - Custom shapes with SVG paths now render at correct positions instead of appearing at origin (0,0)
-  - Enhanced createCustomShape method to apply node positioning transformation
-- **Right-Angle Arrow Positioning**: Fixed arrows appearing on incorrect segments in right-angle connections
-  - Fixed "source-to-target" arrows appearing on horizontal segments instead of final vertical segments connecting to target nodes
-  - Fixed "target-to-source" arrows appearing on all segments instead of only the initial vertical segments from parent nodes
-  - Implemented proper arrow segment control in RightAngleRenderer by conditionally applying arrows based on direction
-  - Arrows now correctly appear on the 3rd segment (horizontal-to-child) for "source-to-target" direction
-  - Arrows now correctly appear on the 1st segment (parent-to-horizontal) for "target-to-source" direction
-  - Both "source-to-target" and "target-to-source" directions now work correctly for all right-angle connection scenarios
-  - Fixed applies to both multiple children connections and single child with alternating offset connections
-- **EdgeConfig Cleanup**: Removed unused `type` property from EdgeConfig interface
-  - Removed redundant `type` property that was duplicating the main TreeChart type configuration
-  - Connection types are now determined solely by the renderer (DirectRenderer → "direct", RightAngleRenderer → "right-angle", etc.)
-  - Simplified EdgeConfig interface to focus only on actual edge styling properties (color, width, dasharray, arrows, etc.)
-  - Updated type definitions, constants, and examples to remove the unused property
-- **ConnectionDrawer Optimization**: Cleaned up unused method parameters and improved curve rendering
-  - Removed unused `options` parameter from `createDirectConnection` and `createRightAngleConnection` methods
-  - Removed unused `fromPoint` and `toPoint` parameters from `addArrow` method (arrows use SVG markers, not coordinates)
-  - Enhanced `createCurvedConnection` to properly utilize the `curveRadius` parameter for controlling curve intensity
-  - Simplified method signatures to only include required parameters, improving code maintainability
-  - All renderer calls verified and updated to use correct parameter counts
+- **Shadow Rendering Issues**: Resolved critical visual corruption when shadows were enabled, fixing duplicate shadow elements and opacity issues that created overlapping black shapes
+- **Node Duplication**: Eliminated triple rendering layers causing nodes to appear multiple times by streamlining the rendering pipeline between NodeDrawer and renderer classes
+- **Gradient Rendering**: Fixed gradient styling not being applied to rectangle nodes where solid colors were overwriting gradient fills
+- **Custom Shape Support**: Fixed custom SVG path shapes not rendering correctly at proper positions, resolving missing customAttributes parameter passing and coordinate positioning
+- **Right-Angle Arrow Positioning**: Fixed arrows appearing on incorrect segments in right-angle connections, ensuring "source-to-target" and "target-to-source" arrows appear on the correct connection segments
+- **EdgeConfig Cleanup**: Removed unused `type` property from EdgeConfig interface that was duplicating the main TreeChart type configuration, simplifying the API
+- **ConnectionDrawer Optimization**: Cleaned up unused method parameters and improved curve rendering with proper curveRadius utilization
+- **Bottom-to-Top Alignment**: Fixed critical tree alignment bug where `horizontalAlign: "bottom-to-top"` incorrectly showed root at top instead of bottom by implementing proper tree level reversal
 
 #### Removed
 

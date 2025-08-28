@@ -86,8 +86,10 @@ export class TreeChart {
    * @returns The created SVG element
    */
   public render(data: TreeNode): SVGSVGElement {
-    // Format the tree data for rendering
-    this.formattedTree = formatTree(data);
+    // Format the tree data for rendering with alignment options
+    this.formattedTree = formatTree(data, {
+      horizontalAlign: this.options.horizontalAlign,
+    });
 
     // Create appropriate renderer based on type
     const renderer = createRenderer(
