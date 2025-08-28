@@ -31,6 +31,11 @@
   - Arrows now correctly appear on the 1st segment (parent-to-horizontal) for "target-to-source" direction
   - Both "source-to-target" and "target-to-source" directions now work correctly for all right-angle connection scenarios
   - Fixed applies to both multiple children connections and single child with alternating offset connections
+- **EdgeConfig Cleanup**: Removed unused `type` property from EdgeConfig interface
+  - Removed redundant `type` property that was duplicating the main TreeChart type configuration
+  - Connection types are now determined solely by the renderer (DirectRenderer → "direct", RightAngleRenderer → "right-angle", etc.)
+  - Simplified EdgeConfig interface to focus only on actual edge styling properties (color, width, dasharray, arrows, etc.)
+  - Updated type definitions, constants, and examples to remove the unused property
 
 #### Removed
 

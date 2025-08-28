@@ -202,8 +202,7 @@ export interface NodeConfig {
  * EdgeConfig represents configuration for edge/connection styling and behavior
  */
 export interface EdgeConfig {
-  // Connection type and basic styling
-  type?: ConnectionType;
+  // Basic styling
   color?: string;
   width?: number;
   opacity?: number;

@@ -33,6 +33,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fixed "target-to-source" arrows appearing on all segments instead of only initial vertical segments
   - Arrows now correctly target the appropriate connection segments based on direction
   - Both arrow directions now work correctly for all right-angle connection types
+- **EdgeConfig Cleanup**: Removed unused `type` property from EdgeConfig interface
+  - Removed redundant `type` property that was duplicating the main TreeChart type configuration
+  - Connection types are now determined solely by the renderer, simplifying the API
+  - EdgeConfig now focuses only on actual styling properties (color, width, dasharray, arrows, etc.)
 
 ## [0.3.0] - 2025-08-20
 

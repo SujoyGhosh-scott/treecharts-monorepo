@@ -111,7 +111,6 @@ export const DEFAULT_OPTIONS: Required<
 
   // Default edge configuration
   edgeConfig: {
-    type: "direct",
     color: "black",
     width: 1,
     opacity: 1,

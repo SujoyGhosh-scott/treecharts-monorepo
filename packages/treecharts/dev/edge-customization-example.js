@@ -53,7 +53,6 @@ const edgeCustomizationChart = new TreeChart("edge-container", {
 
   // Edge configuration with customizations
   edgeConfig: {
-    type: "right-angle",
     color: "#e74c3c", // Red edges
     width: 2, // Thicker lines
     dasharray: "5,5", // Dashed lines
