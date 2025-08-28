@@ -28,6 +28,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fixed customAttributes not being passed from renderers to NodeDrawer
   - Fixed custom shape positioning - shapes now render at correct node positions instead of origin (0,0)
   - Custom shapes with SVG paths now work properly across all renderer types
+- **Right-Angle Arrow Positioning**: Fixed arrows appearing on incorrect segments in right-angle connections
+  - Fixed "source-to-target" arrows appearing on horizontal segments instead of final vertical segments
+  - Fixed "target-to-source" arrows appearing on all segments instead of only initial vertical segments
+  - Arrows now correctly target the appropriate connection segments based on direction
+  - Both arrow directions now work correctly for all right-angle connection types
 
 ## [0.3.0] - 2025-08-20
 

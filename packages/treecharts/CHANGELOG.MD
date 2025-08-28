@@ -23,6 +23,14 @@
   - Fixed custom shape positioning by adding proper transform translation to node coordinates
   - Custom shapes with SVG paths now render at correct positions instead of appearing at origin (0,0)
   - Enhanced createCustomShape method to apply node positioning transformation
+- **Right-Angle Arrow Positioning**: Fixed arrows appearing on incorrect segments in right-angle connections
+  - Fixed "source-to-target" arrows appearing on horizontal segments instead of final vertical segments connecting to target nodes
+  - Fixed "target-to-source" arrows appearing on all segments instead of only the initial vertical segments from parent nodes
+  - Implemented proper arrow segment control in RightAngleRenderer by conditionally applying arrows based on direction
+  - Arrows now correctly appear on the 3rd segment (horizontal-to-child) for "source-to-target" direction
+  - Arrows now correctly appear on the 1st segment (parent-to-horizontal) for "target-to-source" direction
+  - Both "source-to-target" and "target-to-source" directions now work correctly for all right-angle connection scenarios
+  - Fixed applies to both multiple children connections and single child with alternating offset connections
 
 #### Removed
 

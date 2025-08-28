@@ -98,7 +98,12 @@ export class RightAngleRenderer extends BaseRenderer {
                 color: this.options.edgeConfig!.color,
                 width: this.options.edgeConfig!.width,
                 dasharray: this.options.edgeConfig!.dasharray,
-                showArrows: this.options.edgeConfig!.showArrows,
+                // Only show arrows on parent-to-horizontal segment for target-to-source direction
+                showArrows:
+                  this.options.edgeConfig!.showArrows &&
+                  (this.options.edgeConfig!.arrowDirection ===
+                    "target-to-source" ||
+                    this.options.edgeConfig!.arrowDirection === "both"),
                 arrowDirection: this.options.edgeConfig!.arrowDirection,
                 arrowSize: this.options.edgeConfig!.arrowSize,
               }
@@ -125,6 +130,14 @@ export class RightAngleRenderer extends BaseRenderer {
                 color: this.options.edgeConfig!.color,
                 width: this.options.edgeConfig!.width,
                 dasharray: this.options.edgeConfig!.dasharray,
+                // Show arrows on horizontal-to-child segments for source-to-target direction
+                showArrows:
+                  this.options.edgeConfig!.showArrows &&
+                  (this.options.edgeConfig!.arrowDirection ===
+                    "source-to-target" ||
+                    this.options.edgeConfig!.arrowDirection === "both"),
+                arrowDirection: this.options.edgeConfig!.arrowDirection,
+                arrowSize: this.options.edgeConfig!.arrowSize,
                 edgeText: childNode.node?.edgeText || undefined,
                 textSize: this.options.edgeConfig!.textSize,
                 textColor: this.options.edgeConfig!.textColor,
@@ -213,7 +226,11 @@ export class RightAngleRenderer extends BaseRenderer {
             color: this.options.edgeConfig!.color,
             width: this.options.edgeConfig!.width,
             dasharray: this.options.edgeConfig!.dasharray,
-            showArrows: this.options.edgeConfig!.showArrows,
+            // Only show arrows on parent-to-horizontal segment for target-to-source direction
+            showArrows:
+              this.options.edgeConfig!.showArrows &&
+              (this.options.edgeConfig!.arrowDirection === "target-to-source" ||
+                this.options.edgeConfig!.arrowDirection === "both"),
             arrowDirection: this.options.edgeConfig!.arrowDirection,
             arrowSize: this.options.edgeConfig!.arrowSize,
           }
@@ -277,6 +294,14 @@ export class RightAngleRenderer extends BaseRenderer {
                 color: this.options.edgeConfig!.color,
                 width: this.options.edgeConfig!.width,
                 dasharray: this.options.edgeConfig!.dasharray,
+                // Show arrows on horizontal-to-child segments for source-to-target direction
+                showArrows:
+                  this.options.edgeConfig!.showArrows &&
+                  (this.options.edgeConfig!.arrowDirection ===
+                    "source-to-target" ||
+                    this.options.edgeConfig!.arrowDirection === "both"),
+                arrowDirection: this.options.edgeConfig!.arrowDirection,
+                arrowSize: this.options.edgeConfig!.arrowSize,
                 edgeText: childNode.node?.edgeText || undefined,
                 textSize: this.options.edgeConfig!.textSize,
                 textColor: this.options.edgeConfig!.textColor,
