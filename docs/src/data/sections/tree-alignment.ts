@@ -9,9 +9,37 @@ export const treeAlignmentSection: DocSection = {
   content: [
     {
       type: "markdown",
-      value: `TreeCharts provides powerful alignment options to control both the horizontal positioning of nodes within each level and the vertical flow direction of your entire tree structure.
-
-## Alignment Options
+      value: `TreeCharts provides powerful alignment options to control both the horizontal positioning of nodes within each level and the vertical flow direction of your entire tree structure.`,
+    },
+    {
+      type: "image-grid",
+      images: [
+        {
+          src: "/docs/alignment/horizontal-left-alignment.svg",
+          alt: "Left alignment - nodes positioned to the left within each level",
+          description: "Left alignment positioning",
+        },
+        {
+          src: "/docs/alignment/combined-left-bottom-alignment.svg",
+          alt: "Combined alignment - left positioning with bottom-to-top flow",
+          description: "Combined alignment options",
+        },
+        {
+          src: "/docs/alignment/horizontal-right-alignment.svg",
+          alt: "Right alignment - nodes positioned to the right within each level",
+          description: "Right alignment positioning",
+        },
+      ],
+      gridConfig: {
+        desktop: 3,
+        mobile: 2,
+        gap: "1.5rem",
+        maxWidth: "900px",
+      },
+    },
+    {
+      type: "markdown",
+      value: `## Alignment Options
 
 TreeCharts offers two alignment properties that work together to control your tree layout:
 

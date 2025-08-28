@@ -106,7 +106,26 @@ export default function Features() {
                 <div className="flex gap-4 mb-4">
                   <div className="flex-shrink-0">{feature.icon}</div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                    <h3 className="text-xl font-bold mb-2">
+                      {index === 0 && (
+                        <>
+                          <span className="text-primary">Multiple</span> Tree
+                          Types
+                        </>
+                      )}
+                      {index === 1 && (
+                        <>
+                          <span className="text-primary">Flexible</span> Node
+                          Types
+                        </>
+                      )}
+                      {index === 2 && (
+                        <>
+                          <span className="text-primary">Extensive</span>{" "}
+                          Customization
+                        </>
+                      )}
+                    </h3>
                     <p className="text-base-content/70 text-sm mb-4">
                       {feature.description}
                     </p>

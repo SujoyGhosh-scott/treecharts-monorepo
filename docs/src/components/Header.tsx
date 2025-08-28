@@ -22,7 +22,7 @@ export default function Header() {
             <span className="text-base-content -ml-2">charts</span>
           </Link>
           <span className="mt-1 text-xs text-base-content/50 bg-base-200 px-2 py-1 rounded-full font-medium">
-            v1.0.0
+            v0.4.0
           </span>
         </div>
       </div>
