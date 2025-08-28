@@ -26,7 +26,7 @@ TreeCharts offers two alignment properties that work together to control your tr
       type: "code",
       title: "Alignment Examples",
       description: "Examples demonstrating different alignment combinations",
-      outputImage: "/docs/alignment-examples.svg",
+      outputImage: "/docs/alignment-example.svg",
       codes: {
         javascript: `const chart = new TreeChart("alignment-container", {
   type: "direct",
