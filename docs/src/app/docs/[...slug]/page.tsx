@@ -1,6 +1,5 @@
 import { getTopic } from "@/utils/docs";
 import { docsNavigation } from "@/data/docs";
-import MarkdownContent from "@/components/docs/MarkdownContent";
 import ContentRenderer from "@/components/docs/ContentRenderer";
 import DocsNavigation from "@/components/docs/DocsNavigation";
 import BasicUsageWithCodeDisplay from "@/components/docs/BasicUsageWithCodeDisplay";

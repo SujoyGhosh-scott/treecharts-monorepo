@@ -48,6 +48,27 @@ export function getNavigationContext(currentPath: string): NavigationContext {
     });
   });
 
+  // If no topic found, check if it's a section page with content
+  if (!currentTopic) {
+    docsNavigation.sections.forEach((section) => {
+      if (
+        `/docs/${section.id}` === normalizedCurrentPath &&
+        section.content &&
+        section.content.length > 0
+      ) {
+        // Create a virtual topic for the section content
+        currentTopic = {
+          id: section.id,
+          title: section.title,
+          description: section.description,
+          path: `/docs/${section.id}`,
+          content: section.content,
+        };
+        currentSection = section;
+      }
+    });
+  }
+
   if (!currentTopic) {
     return {
       current: null,
@@ -57,12 +78,36 @@ export function getNavigationContext(currentPath: string): NavigationContext {
     };
   }
 
-  const currentIndex = allTopics.findIndex(
-    (topic) => topic.path === normalizedCurrentPath
+  // Create a combined list of all navigable items (topics + sections with content)
+  let allNavigableItems: DocTopic[] = [];
+
+  docsNavigation.sections.forEach((section) => {
+    // Add section as navigable item if it has content
+    if (section.content && section.content.length > 0) {
+      allNavigableItems.push({
+        id: section.id,
+        title: section.title,
+        description: section.description,
+        path: `/docs/${section.id}`,
+        content: section.content,
+      });
+    }
+
+    // Add all topics
+    section.topics.forEach((topic) => {
+      allNavigableItems.push(topic);
+    });
+  });
+
+  const currentIndex = allNavigableItems.findIndex(
+    (item) => item.path === normalizedCurrentPath
   );
-  const previous = currentIndex > 0 ? allTopics[currentIndex - 1] : null;
+  const previous =
+    currentIndex > 0 ? allNavigableItems[currentIndex - 1] : null;
   const next =
-    currentIndex < allTopics.length - 1 ? allTopics[currentIndex + 1] : null;
+    currentIndex < allNavigableItems.length - 1
+      ? allNavigableItems[currentIndex + 1]
+      : null;
 
   return {
     current: currentTopic,

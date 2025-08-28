@@ -24,7 +24,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
                     ? "/docs"
                     : `/docs/${section.id}`
                 }
-                className={`block font-semibold text-lg hover:text-primary transition-colors ${
+                className={`block font-semibold hover:text-primary transition-colors ${
                   (section.id === "getting-started" && pathname === "/docs") ||
                   pathname === `/docs/${section.id}`
                     ? "text-primary"
@@ -46,7 +46,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
                   )}
                 </div>
               </Link>
-              <p className="text-sm text-base-content/60 mt-1">
+              <p className="text-xs text-base-content/60 mt-1">
                 {section.description}
               </p>
             </div>

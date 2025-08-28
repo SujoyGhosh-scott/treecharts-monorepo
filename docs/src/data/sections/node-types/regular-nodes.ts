@@ -2,7 +2,7 @@ import { DocTopic } from "@/types/docs";
 
 export const regularNodesTopic: DocTopic = {
   id: "regular-nodes",
-  title: "Regular Nodes",
+  title: "Regular Nodes (style and configuration)",
   description: "Standard geometric shapes for displaying text content",
   path: "/docs/node-types/regular-nodes",
   content: [
