@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TreeCharts - Custom Connections Demo</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
+
+      .demo-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 2.5em;
+      }
+
+      .subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 30px;
+        font-size: 1.2em;
+      }
+
+      .description {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        border-left: 5px solid #007bff;
+      }
+
+      .features {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+      }
+
+      .feature {
+        text-align: center;
+        padding: 15px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 10px;
+        margin: 5px;
+        flex: 1;
+        min-width: 200px;
+      }
+
+      .feature-icon {
+        font-size: 2em;
+        margin-bottom: 10px;
+      }
+
+      .chart-container {
+        border: 3px solid #e9ecef;
+        border-radius: 15px;
+        padding: 20px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 600px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .code-explanation {
+        margin-top: 30px;
+        background: #2d3748;
+        color: #e2e8f0;
+        padding: 20px;
+        border-radius: 10px;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .code-title {
+        color: #4fd1c7;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demo-container">
+      <h1>🌳 TreeCharts Custom Connections</h1>
+      <p class="subtitle">
+        Demonstrating the power of custom SVG path connections
+      </p>
+
+      <div class="description">
+        <h3>🎨 What are Custom Connections?</h3>
+        <p>
+          The <code>createCustomConnection</code> method allows you to define
+          completely custom SVG paths for connecting nodes. Instead of being
+          limited to straight lines, right angles, or simple curves, you can
+          create:
+        </p>
+        <ul>
+          <li>
+            <strong>Wavy connections</strong> - Perfect for showing flow or
+            organic relationships
+          </li>
+          <li>
+            <strong>Zigzag patterns</strong> - Great for electrical diagrams or
+            showing complexity
+          </li>
+          <li>
+            <strong>Spiral paths</strong> - Ideal for showing cyclical processes
+            or emphasis
+          </li>
+          <li>
+            <strong>Any SVG path</strong> - Hearts, stars, lightning bolts, or
+            complex geometric shapes!
+          </li>
+        </ul>
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">🌊</div>
+          <h4>Wavy Paths</h4>
+          <p>Smooth, flowing connections using quadratic curves</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">⚡</div>
+          <h4>Zigzag Paths</h4>
+          <p>Angular, dynamic connections with sharp turns</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🌀</div>
+          <h4>Spiral Paths</h4>
+          <p>Curved, orbital connections that draw attention</p>
+        </div>
+      </div>
+
+      <div class="chart-container" id="chart-container">
+        <!-- Chart will be rendered here -->
+      </div>
+
+      <div class="code-explanation">
+        <div class="code-title">💡 How It Works:</div>
+        <p>
+          <strong>1. Define Custom Path:</strong> Use SVG path commands (M, L,
+          Q, C, etc.) to create your shape
+        </p>
+        <p>
+          <strong>2. Set Connection Type:</strong> Set
+          <code>type: "custom"</code> in your connection options
+        </p>
+        <p>
+          <strong>3. Provide Path Data:</strong> Pass your SVG path string in
+          <code>customPath</code> property
+        </p>
+        <p>
+          <strong>4. Style as Needed:</strong> Add colors, arrows, animations -
+          everything works!
+        </p>
+
+        <br />
+        <div
+          style="
+            background: #1a202c;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+          "
+        >
+          <div style="color: #4fd1c7">
+            // Example: Creating a heart-shaped connection
+          </div>
+          <div style="color: #f7fafc">
+            const heartPath = "M 12,21.35 C 11.65,21.75 10.99,21.75 10.64,21.35
+            C 4.23,15.48 2,12.78 2,9.5 C 2,6.42 4.42,4 7.5,4 C 9.24,4 10.91,4.81
+            12,6.09 C 13.09,4.81 14.76,4 16.5,4 C 19.58,4 22,6.42 22,9.5 C
+            22,12.78 19.77,15.48 13.36,21.35 Z";
+          </div>
+          <div style="color: #68d391">
+            connectionDrawer.drawConnection(from, to, {
+          </div>
+          <div style="color: #68d391">&nbsp;&nbsp;type: "custom",</div>
+          <div style="color: #68d391">&nbsp;&nbsp;customPath: heartPath,</div>
+          <div style="color: #68d391">&nbsp;&nbsp;color: "#e53e3e"</div>
+          <div style="color: #68d391">});</div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { TreeChart } from "../src/index.js";
+
+      // Custom path generator functions
+      function createWavyPath(fromX, fromY, toX, toY) {
+        const midX = (fromX + toX) / 2;
+        const midY = (fromY + toY) / 2;
+        const amplitude = 20;
+
+        const controlX1 = fromX + (midX - fromX) / 2;
+        const controlY1 = fromY + amplitude * Math.sin(Math.PI * 0.5);
+
+        const controlX2 = midX + (toX - midX) / 2;
+        const controlY2 = midY + amplitude * Math.sin(Math.PI * 1.5);
+
+        return `M ${fromX} ${fromY} Q ${controlX1} ${controlY1} ${midX} ${midY} Q ${controlX2} ${controlY2} ${toX} ${toY}`;
+      }
+
+      function createZigzagPath(fromX, fromY, toX, toY) {
+        const steps = 4;
+        const amplitude = 25;
+        let path = `M ${fromX} ${fromY}`;
+
+        for (let i = 1; i <= steps; i++) {
+          const progress = i / steps;
+          const x = fromX + (toX - fromX) * progress;
+          const y = fromY + (toY - fromY) * progress;
+          const offset = i % 2 === 0 ? amplitude : -amplitude;
+          path += ` L ${x + offset} ${y}`;
+        }
+        path += ` L ${toX} ${toY}`;
+
+        return path;
+      }
+
+      function createSpiralPath(fromX, fromY, toX, toY) {
+        const centerX = (fromX + toX) / 2;
+        const centerY = (fromY + toY) / 2;
+        const radius = 25;
+
+        let path = `M ${fromX} ${fromY}`;
+        path += ` Q ${centerX - radius} ${
+          centerY - radius
+        } ${centerX} ${centerY}`;
+        path += ` Q ${centerX + radius} ${centerY - radius / 2} ${
+          centerX + radius / 2
+        } ${centerY}`;
+        path += ` Q ${centerX} ${centerY + radius / 2} ${toX} ${toY}`;
+
+        return path;
+      }
+
+      // Sample data
+      const treeData = {
+        value: "Custom Connections",
+        child: [
+          {
+            value: "Wavy Style",
+            child: [
+              { value: "Flow A", child: [] },
+              { value: "Flow B", child: [] },
+            ],
+          },
+          {
+            value: "Zigzag Style",
+            child: [
+              { value: "Sharp A", child: [] },
+              { value: "Sharp B", child: [] },
+            ],
+          },
+          {
+            value: "Spiral Style",
+            child: [{ value: "Curve A", child: [] }],
+          },
+        ],
+      };
+
+      // First, let's create a working chart with normal connections
+      console.log("Creating TreeChart...");
+
+      try {
+        const chart = new TreeChart("chart-container", {
+          horizontalGap: 140,
+          verticalGap: 120,
+          nodeConfig: {
+            width: 110,
+            height: 45,
+            color: "#ffffff",
+            borderColor: "#007bff",
+            borderWidth: 2,
+            borderRadius: 10,
+            fontSize: 13,
+            fontColor: "#333",
+            shadow: true,
+            shadowColor: "rgba(0,123,255,0.3)",
+          },
+          edgeConfig: {
+            width: 2,
+            color: "#666",
+            showArrows: true,
+            arrowSize: 6,
+          },
+        });
+
+        console.log("Rendering chart...");
+        const svg = chart.render(treeData);
+        console.log("Chart rendered successfully!", svg);
+
+        // Now let's demonstrate custom connections
+        // We'll use the ConnectionDrawer directly to show custom paths
+        setTimeout(() => {
+          console.log("Adding custom connections...");
+          demonstrateCustomConnections(svg);
+        }, 500);
+      } catch (error) {
+        console.error("Error creating chart:", error);
+        document.getElementById(
+          "chart-container"
+        ).innerHTML = `<div style="color: red; padding: 20px; text-align: center;">
+                    <h3>Error loading chart</h3>
+                    <p>${error.message}</p>
+                    <p>Check the browser console for more details.</p>
+                </div>`;
+      }
+
+      function demonstrateCustomConnections(svg) {
+        // Create a simple custom connection demo
+        // We'll add some custom paths to show the concept
+
+        // Get the SVG dimensions
+        const svgRect = svg.getBoundingClientRect();
+        const svgWidth = svgRect.width;
+        const svgHeight = svgRect.height;
+
+        // Add a demo section with custom paths
+        const demoGroup = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "g"
+        );
+        demoGroup.setAttribute("transform", `translate(${svgWidth + 50}, 50)`);
+
+        // Create demo custom paths
+        const demoText = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "text"
+        );
+        demoText.setAttribute("x", "0");
+        demoText.setAttribute("y", "0");
+        demoText.setAttribute("font-size", "14");
+        demoText.setAttribute("fill", "#333");
+        demoText.textContent = "Custom Path Examples:";
+        demoGroup.appendChild(demoText);
+
+        // Heart path example
+        const heartPath = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "path"
+        );
+        const heartData =
+          "M 12,21.35 C 11.65,21.75 10.99,21.75 10.64,21.35 C 4.23,15.48 2,12.78 2,9.5 C 2,6.42 4.42,4 7.5,4 C 9.24,4 10.91,4.81 12,6.09 C 13.09,4.81 14.76,4 16.5,4 C 19.58,4 22,6.42 22,9.5 C 22,12.78 19.77,15.48 13.36,21.35 Z";
+        heartPath.setAttribute("d", heartData);
+        heartPath.setAttribute("transform", "translate(0, 30) scale(1.5)");
+        heartPath.setAttribute("fill", "#e91e63");
+        heartPath.setAttribute("stroke", "#c2185b");
+        heartPath.setAttribute("stroke-width", "1");
+        demoGroup.appendChild(heartPath);
+
+        const heartLabel = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "text"
+        );
+        heartLabel.setAttribute("x", "40");
+        heartLabel.setAttribute("y", "45");
+        heartLabel.setAttribute("font-size", "12");
+        heartLabel.setAttribute("fill", "#666");
+        heartLabel.textContent = "Heart Shape";
+        demoGroup.appendChild(heartLabel);
+
+        // Lightning path example
+        const lightningPath = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "path"
+        );
+        const lightningData =
+          "M 5,80 L 15,60 L 10,60 L 20,40 L 25,40 L 15,60 L 20,60 L 10,80 Z";
+        lightningPath.setAttribute("d", lightningData);
+        lightningPath.setAttribute("fill", "#ff9800");
+        lightningPath.setAttribute("stroke", "#f57c00");
+        lightningPath.setAttribute("stroke-width", "1");
+        demoGroup.appendChild(lightningPath);
+
+        const lightningLabel = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "text"
+        );
+        lightningLabel.setAttribute("x", "40");
+        lightningLabel.setAttribute("y", "75");
+        lightningLabel.setAttribute("font-size", "12");
+        lightningLabel.setAttribute("fill", "#666");
+        lightningLabel.textContent = "Lightning Bolt";
+        demoGroup.appendChild(lightningLabel);
+
+        // Wavy path example
+        const wavyPath = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "path"
+        );
+        const wavyData = createWavyPath(5, 100, 35, 120);
+        wavyPath.setAttribute("d", wavyData);
+        wavyPath.setAttribute("fill", "none");
+        wavyPath.setAttribute("stroke", "#2196f3");
+        wavyPath.setAttribute("stroke-width", "3");
+        wavyPath.setAttribute("stroke-linecap", "round");
+        demoGroup.appendChild(wavyPath);
+
+        const wavyLabel = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "text"
+        );
+        wavyLabel.setAttribute("x", "40");
+        wavyLabel.setAttribute("y", "115");
+        wavyLabel.setAttribute("font-size", "12");
+        wavyLabel.setAttribute("fill", "#666");
+        wavyLabel.textContent = "Wavy Connection";
+        demoGroup.appendChild(wavyLabel);
+
+        // Update SVG width to accommodate demo
+        const newWidth = svgWidth + 200;
+        svg.setAttribute("width", newWidth.toString());
+
+        svg.appendChild(demoGroup);
+
+        console.log("Custom connections demo added!");
+      }
+    </script>
+  </body>
+</html>

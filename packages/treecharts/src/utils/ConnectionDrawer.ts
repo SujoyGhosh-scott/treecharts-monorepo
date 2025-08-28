@@ -43,41 +43,29 @@ export class ConnectionDrawer {
 
     switch (finalOptions.type) {
       case "direct":
-        pathElement = this.createDirectConnection(
-          fromPoint,
-          toPoint,
-          finalOptions
-        );
+        pathElement = this.createDirectConnection(fromPoint, toPoint);
         break;
       case "right-angle":
-        pathElement = this.createRightAngleConnection(
-          fromPoint,
-          toPoint,
-          finalOptions
-        );
+        pathElement = this.createRightAngleConnection(fromPoint, toPoint);
         break;
       case "curved":
         pathElement = this.createCurvedConnection(
           fromPoint,
           toPoint,
-          finalOptions
+          finalOptions.curveRadius
         );
         break;
       case "custom":
         pathElement = this.createCustomConnection(finalOptions);
         break;
       default:
-        pathElement = this.createDirectConnection(
-          fromPoint,
-          toPoint,
-          finalOptions
-        );
+        pathElement = this.createDirectConnection(fromPoint, toPoint);
     }
 
     this.applyLineStyles(pathElement, finalOptions);
 
     if (finalOptions.showArrows) {
-      this.addArrow(pathElement, fromPoint, toPoint, finalOptions);
+      this.addArrow(pathElement, finalOptions);
     }
 
     // Add edge text if provided
@@ -94,8 +82,7 @@ export class ConnectionDrawer {
    */
   private createDirectConnection(
     fromPoint: Point,
-    toPoint: Point,
-    options: Required<ConnectionOptions>
+    toPoint: Point
   ): SVGLineElement {
     const line = document.createElementNS(SVG_NS, "line");
     line.setAttribute("x1", fromPoint.x.toString());
@@ -110,8 +97,7 @@ export class ConnectionDrawer {
    */
   private createRightAngleConnection(
     fromPoint: Point,
-    toPoint: Point,
-    options: Required<ConnectionOptions>
+    toPoint: Point
   ): SVGPathElement {
     const path = document.createElementNS(SVG_NS, "path");
 
@@ -130,13 +116,15 @@ export class ConnectionDrawer {
   private createCurvedConnection(
     fromPoint: Point,
     toPoint: Point,
-    options: Required<ConnectionOptions>
+    curveRadius: number
   ): SVGPathElement {
     const path = document.createElementNS(SVG_NS, "path");
 
     // Create a smooth curve using quadratic Bezier curve
+    // Use curveRadius to control the intensity of the curve
     const controlX = fromPoint.x;
-    const controlY = fromPoint.y + (toPoint.y - fromPoint.y) / 2;
+    const controlY =
+      fromPoint.y + Math.min(curveRadius, (toPoint.y - fromPoint.y) / 2);
 
     const pathData = `M ${fromPoint.x} ${fromPoint.y} Q ${controlX} ${controlY} ${toPoint.x} ${toPoint.y}`;
     path.setAttribute("d", pathData);
@@ -177,8 +165,6 @@ export class ConnectionDrawer {
    */
   private addArrow(
     pathElement: SVGElement,
-    fromPoint: Point,
-    toPoint: Point,
     options: Required<ConnectionOptions>
   ): void {
     // Use edge color for arrow if arrowColor is not explicitly set

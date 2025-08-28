@@ -37,6 +37,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Removed redundant `type` property that was duplicating the main TreeChart type configuration
   - Connection types are now determined solely by the renderer, simplifying the API
   - EdgeConfig now focuses only on actual styling properties (color, width, dasharray, arrows, etc.)
+- **ConnectionDrawer Optimization**: Cleaned up unused method parameters and improved functionality
+  - Removed unused parameters from connection creation methods, improving code maintainability
+  - Enhanced curved connections to properly utilize curveRadius parameter for better curve control
+  - Streamlined arrow positioning logic by removing unnecessary coordinate parameters
 
 ## [0.3.0] - 2025-08-20
 

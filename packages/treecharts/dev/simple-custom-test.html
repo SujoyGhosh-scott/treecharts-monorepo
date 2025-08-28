@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TreeCharts - Simple Custom Connections Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background: #f5f5f5;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+      .chart-container {
+        min-height: 400px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        background: #fafafa;
+      }
+      .error {
+        color: red;
+        padding: 10px;
+        background: #ffe6e6;
+        border: 1px solid #ff9999;
+        border-radius: 5px;
+      }
+      .success {
+        color: green;
+        padding: 10px;
+        background: #e6ffe6;
+        border: 1px solid #99ff99;
+        border-radius: 5px;
+      }
+      .code-demo {
+        background: #2d3748;
+        color: #e2e8f0;
+        padding: 15px;
+        border-radius: 5px;
+        margin: 10px 0;
+        font-family: monospace;
+        font-size: 14px;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🌳 TreeCharts Custom Connections Demo</h1>
+      <p>
+        This page demonstrates the <code>createCustomConnection</code> method in
+        the ConnectionDrawer class.
+      </p>
+
+      <div id="status"></div>
+
+      <h2>1. Basic TreeChart</h2>
+      <div class="chart-container" id="basic-chart">
+        <p>Loading basic chart...</p>
+      </div>
+
+      <h2>2. Custom Connection Concept</h2>
+      <p>
+        The <code>createCustomConnection</code> method allows you to define any
+        SVG path for connections:
+      </p>
+
+      <div class="code-demo">
+        // Example: Using custom path in ConnectionDrawer
+        connectionDrawer.drawConnection(fromPoint, toPoint, { type: "custom",
+        customPath: "M 0,0 Q 50,25 100,0", // Any valid SVG path color:
+        "#ff6b35", width: 3, showArrows: true });
+      </div>
+
+      <h2>3. Visual Examples</h2>
+      <div class="chart-container" id="custom-examples">
+        <p>Loading custom connection examples...</p>
+      </div>
+    </div>
+
+    <script type="module">
+      function setStatus(message, isError = false) {
+        const statusDiv = document.getElementById("status");
+        statusDiv.className = isError ? "error" : "success";
+        statusDiv.innerHTML = message;
+      }
+
+      try {
+        setStatus("📦 Importing TreeChart...");
+
+        // Import TreeChart
+        const { TreeChart } = await import("../src/index.js");
+
+        setStatus(
+          "✅ TreeChart imported successfully! Creating basic chart..."
+        );
+
+        // 1. Create basic chart
+        const basicData = {
+          value: "Root Node",
+          child: [
+            { value: "Child A", child: [] },
+            { value: "Child B", child: [] },
+            { value: "Child C", child: [] },
+          ],
+        };
+
+        const basicChart = new TreeChart("basic-chart", {
+          horizontalGap: 100,
+          verticalGap: 80,
+          nodeConfig: {
+            width: 90,
+            height: 40,
+            color: "#e3f2fd",
+            borderColor: "#1976d2",
+            borderWidth: 2,
+            borderRadius: 8,
+          },
+          edgeConfig: {
+            color: "#1976d2",
+            width: 2,
+            showArrows: true,
+          },
+        });
+
+        const basicSvg = basicChart.render(basicData);
+
+        setStatus(
+          "✅ Basic chart created! Now creating custom connection examples..."
+        );
+
+        // 2. Create custom examples
+        setTimeout(() => {
+          createCustomExamples();
+        }, 500);
+      } catch (error) {
+        setStatus("❌ Error: " + error.message, true);
+        console.error("Full error:", error);
+      }
+
+      function createCustomExamples() {
+        const container = document.getElementById("custom-examples");
+        container.innerHTML = "";
+
+        // Create an SVG for our custom examples
+        const svg = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "svg"
+        );
+        svg.setAttribute("width", "800");
+        svg.setAttribute("height", "400");
+        svg.style.background = "#fafafa";
+        svg.style.border = "1px solid #ddd";
+        svg.style.borderRadius = "5px";
+
+        // Add title
+        const title = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "text"
+        );
+        title.setAttribute("x", "400");
+        title.setAttribute("y", "30");
+        title.setAttribute("text-anchor", "middle");
+        title.setAttribute("font-size", "18");
+        title.setAttribute("font-weight", "bold");
+        title.setAttribute("fill", "#333");
+        title.textContent = "Custom SVG Path Examples";
+        svg.appendChild(title);
+
+        // Define custom paths with descriptions
+        const examples = [
+          {
+            name: "Heart Shape",
+            path: "M 12,21.35 C 11.65,21.75 10.99,21.75 10.64,21.35 C 4.23,15.48 2,12.78 2,9.5 C 2,6.42 4.42,4 7.5,4 C 9.24,4 10.91,4.81 12,6.09 C 13.09,4.81 14.76,4 16.5,4 C 19.58,4 22,6.42 22,9.5 C 22,12.78 19.77,15.48 13.36,21.35 Z",
+            color: "#e91e63",
+            x: 100,
+            y: 80,
+          },
+          {
+            name: "Lightning Bolt",
+            path: "M 5,0 L 15,20 L 10,20 L 20,40 L 10,40 L 20,60 L 5,60 L 15,40 L 20,40 L 10,20 L 15,20 Z",
+            color: "#ff9800",
+            x: 300,
+            y: 80,
+          },
+          {
+            name: "Wavy Line",
+            path: "M 0,30 Q 10,10 20,30 T 40,30 T 60,30",
+            color: "#2196f3",
+            x: 500,
+            y: 80,
+          },
+          {
+            name: "Spiral",
+            path: "M 30,30 Q 10,10 30,0 Q 60,10 50,30 Q 20,50 30,30 Q 45,15 40,30",
+            color: "#9c27b0",
+            x: 700,
+            y: 80,
+          },
+        ];
+
+        examples.forEach((example, index) => {
+          // Create example group
+          const group = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "g"
+          );
+          group.setAttribute(
+            "transform",
+            `translate(${example.x - 50}, ${example.y})`
+          );
+
+          // Add label
+          const label = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "text"
+          );
+          label.setAttribute("x", "50");
+          label.setAttribute("y", "-10");
+          label.setAttribute("text-anchor", "middle");
+          label.setAttribute("font-size", "14");
+          label.setAttribute("font-weight", "bold");
+          label.setAttribute("fill", "#333");
+          label.textContent = example.name;
+          group.appendChild(label);
+
+          // Create the custom path
+          const path = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path"
+          );
+          path.setAttribute("d", example.path);
+          path.setAttribute("fill", example.color);
+          path.setAttribute("stroke", example.color);
+          path.setAttribute("stroke-width", "2");
+          path.setAttribute("opacity", "0.8");
+
+          // Scale and center the path
+          path.setAttribute("transform", "translate(25, 10) scale(1.5)");
+
+          group.appendChild(path);
+
+          // Add code example below
+          const code = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "foreignObject"
+          );
+          code.setAttribute("x", "0");
+          code.setAttribute("y", "100");
+          code.setAttribute("width", "100");
+          code.setAttribute("height", "80");
+
+          const codeContent = document.createElement("div");
+          codeContent.style.fontSize = "10px";
+          codeContent.style.fontFamily = "monospace";
+          codeContent.style.background = "#2d3748";
+          codeContent.style.color = "#e2e8f0";
+          codeContent.style.padding = "5px";
+          codeContent.style.borderRadius = "3px";
+          codeContent.innerHTML = `
+                    <div style="color: #4fd1c7;">// Custom path</div>
+                    <div style="font-size: 8px; word-break: break-all;">
+                        customPath: "${example.path.substring(0, 30)}..."
+                    </div>
+                `;
+
+          code.appendChild(codeContent);
+          group.appendChild(code);
+
+          svg.appendChild(group);
+        });
+
+        // Add explanation text
+        const explanation = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "text"
+        );
+        explanation.setAttribute("x", "400");
+        explanation.setAttribute("y", "350");
+        explanation.setAttribute("text-anchor", "middle");
+        explanation.setAttribute("font-size", "14");
+        explanation.setAttribute("fill", "#666");
+        explanation.textContent =
+          "These are examples of SVG paths that can be used with the 'custom' connection type";
+        svg.appendChild(explanation);
+
+        container.appendChild(svg);
+
+        setStatus(
+          "🎨 Custom connection examples created! The createCustomConnection method can use any of these SVG paths."
+        );
+      }
+    </script>
+  </body>
+</html>

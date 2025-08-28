@@ -36,6 +36,12 @@
   - Connection types are now determined solely by the renderer (DirectRenderer → "direct", RightAngleRenderer → "right-angle", etc.)
   - Simplified EdgeConfig interface to focus only on actual edge styling properties (color, width, dasharray, arrows, etc.)
   - Updated type definitions, constants, and examples to remove the unused property
+- **ConnectionDrawer Optimization**: Cleaned up unused method parameters and improved curve rendering
+  - Removed unused `options` parameter from `createDirectConnection` and `createRightAngleConnection` methods
+  - Removed unused `fromPoint` and `toPoint` parameters from `addArrow` method (arrows use SVG markers, not coordinates)
+  - Enhanced `createCurvedConnection` to properly utilize the `curveRadius` parameter for controlling curve intensity
+  - Simplified method signatures to only include required parameters, improving code maintainability
+  - All renderer calls verified and updated to use correct parameter counts
 
 #### Removed
 
