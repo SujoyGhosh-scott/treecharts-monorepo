@@ -92,46 +92,35 @@ const nodeData = {
 };
 \`\`\`
 
-## Default Configuration
+## Configuration Options
 
 Node with Description inherits all regular node properties and adds description-specific styling:
 
-| Property | Default Value | Description |
-|----------|---------------|-------------|
-| \`type\` | \`"node-with-description"\` | Node type identifier |
-| \`width\` | \`180\` | Node width (wider for descriptions) |
-| \`height\` | \`auto\` | Auto-calculated based on content |
-| \`padding\` | \`12\` | Internal padding around content |
-| \`color\` | \`"#f8f9fa"\` | Background color |
-| \`borderColor\` | \`"#dee2e6"\` | Border color |
-| \`borderWidth\` | \`1\` | Border thickness |
-| \`borderRadius\` | \`6\` | Corner roundness |`,
-    },
-    {
-      type: "markdown",
-      value: `## Configuration Options
-
-### Basic Styling
-
-All regular node properties apply, plus description-specific options:
+### Basic Properties
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | \`type\` | \`string\` | \`"node-with-description"\` | Must be set to enable descriptions |
-| \`width\` | \`number\` | \`180\` | Node width (recommended minimum 160px) |
-| \`padding\` | \`number\` | \`12\` | Internal padding for content |
+| \`width\` | \`number\` | \`180\` | Node width (wider for descriptions) |
+| \`height\` | \`string\` | \`"auto"\` | Auto-calculated based on content |
+| \`padding\` | \`number\` | \`12\` | Internal padding around content |
+| \`color\` | \`string\` | \`"#f8f9fa"\` | Background color |
+| \`borderColor\` | \`string\` | \`"#dee2e6"\` | Border color |
+| \`borderWidth\` | \`number\` | \`1\` | Border thickness |
+| \`borderRadius\` | \`number\` | \`6\` | Corner roundness |
 
-### Description Text Styling
+### Typography
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
+| \`fontSize\` | \`number\` | \`14\` | Title text size |
+| \`fontColor\` | \`string\` | \`"black"\` | Title text color |
+| \`fontFamily\` | \`string\` | \`"Arial, sans-serif"\` | Font family for all text |
 | \`descriptionFontSize\` | \`number\` | \`11\` | Description text size |
 | \`descriptionFontColor\` | \`string\` | \`"#666666"\` | Description text color |
 | \`descriptionMarginTop\` | \`number\` | \`4\` | Space between title and description |
 
-**Note:** Description font family inherits from the main \`fontFamily\` property.
-
-### Advanced Configuration
+### Advanced Configuration Example
 
 \`\`\`javascript
 const chart = new TreeChart("container", {

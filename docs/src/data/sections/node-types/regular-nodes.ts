@@ -47,32 +47,15 @@ Regular nodes offer extensive customization options. Here are some examples of w
     },
     {
       type: "markdown",
-      value: `## Default Configuration
+      value: `## Configuration Options
 
-Regular nodes come with sensible defaults that create clean, professional visualizations:
-
-| Property | Default Value | Description |
-|----------|---------------|-------------|
-| \`type\` | \`"rectangle"\` | Node shape |
-| \`width\` | \`80\` | Node width in pixels |
-| \`height\` | \`40\` | Node height in pixels |
-| \`color\` | \`"skyblue"\` | Background color |
-| \`borderColor\` | \`"black"\` | Border color |
-| \`borderWidth\` | \`1\` | Border thickness |
-| \`borderRadius\` | \`6\` | Corner roundness (rectangles only) |
-| \`opacity\` | \`1\` | Node transparency (0-1) |
-| \`fontSize\` | \`14\` | Text size in pixels |
-| \`fontColor\` | \`"black"\` | Text color |
-| \`fontFamily\` | \`"Arial, sans-serif"\` | Font family |`,
-    },
-    {
-      type: "markdown",
-      value: `## Basic Configuration Options
+Regular nodes offer extensive customization through the nodeConfig property. All properties have sensible defaults:
 
 ### Dimensions and Layout
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
+| \`type\` | \`string\` | \`"rectangle"\` | Node shape (rectangle, circle, diamond) |
 | \`width\` | \`number\` | \`80\` | Node width in pixels |
 | \`height\` | \`number\` | \`40\` | Node height in pixels |
 | \`padding\` | \`number\` | \`5\` | Internal text padding |
@@ -93,32 +76,18 @@ Regular nodes come with sensible defaults that create clean, professional visual
 |----------|------|---------|-------------|
 | \`fontSize\` | \`number\` | \`14\` | Text size in pixels |
 | \`fontColor\` | \`string\` | \`"black"\` | Text color (CSS color) |
-| \`fontFamily\` | \`string\` | \`"Arial, sans-serif"\` | Font family |`,
-    },
-    {
-      type: "markdown",
-      value: `## Advanced Styling Options
+| \`fontFamily\` | \`string\` | \`"Arial, sans-serif"\` | Font family |
 
-### Shadow Effects
+### Advanced Effects
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | \`shadow\` | \`boolean\` | \`false\` | Enable drop shadow |
 | \`shadowColor\` | \`string\` | \`"rgba(0,0,0,0.3)"\` | Shadow color |
 | \`shadowOffset\` | \`{x: number, y: number}\` | \`{x: 2, y: 2}\` | Shadow offset |
-
-### Gradient Fills
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
 | \`gradient\` | \`boolean\` | \`false\` | Enable gradient fill |
 | \`gradientStartColor\` | \`string\` | \`""\` | Gradient start color |
 | \`gradientEndColor\` | \`string\` | \`""\` | Gradient end color |
-
-### Custom Attributes
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
 | \`customAttributes\` | \`object\` | \`{}\` | Custom SVG attributes |`,
     },
     {

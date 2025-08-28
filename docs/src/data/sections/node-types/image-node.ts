@@ -107,44 +107,24 @@ const nodeData = {
 };
 \`\`\`
 
-## Default Configuration
+## Configuration Options
 
-Image nodes have specialized defaults optimized for visual content:
-
-| Property | Default Value | Description |
-|----------|---------------|-------------|
-| \`type\` | \`"image"\` | Node type identifier |
-| \`imageConfig.imageWidth\` | \`60\` | Image width in pixels |
-| \`imageConfig.imageHeight\` | \`60\` | Image height in pixels |
-| \`imageConfig.imageBorderRadius\` | \`4\` | Image corner roundness |
-| \`imageConfig.imageBorderWidth\` | \`1\` | Image border thickness |
-| \`imageConfig.imageBorderColor\` | \`"#333333"\` | Image border color |
-| \`imageConfig.imageOpacity\` | \`1\` | Image transparency |
-| \`imageTextPositionConfig.position\` | \`"bottom"\` | Text position relative to image |
-| \`imageTextPositionConfig.padding\` | \`8\` | Spacing between image and text |
-| \`imageTextPositionConfig.spacing\` | \`4\` | Spacing between title and subtitle |`,
-    },
-    {
-      type: "markdown",
-      value: `## Configuration Options
+Image nodes have specialized configuration organized into logical groups:
 
 ### Image Configuration
 
-Configure the image appearance and dimensions:
-
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
+| \`type\` | \`string\` | \`"image"\` | Must be set to enable image functionality |
 | \`imageConfig.imageWidth\` | \`number\` | \`60\` | Image width in pixels |
 | \`imageConfig.imageHeight\` | \`number\` | \`60\` | Image height in pixels |
-| \`imageConfig.imageBorderRadius\` | \`number\` | \`4\` | Corner roundness for images |
-| \`imageConfig.imageBorderColor\` | \`string\` | \`"#333333"\` | Border color around image |
-| \`imageConfig.imageBorderWidth\` | \`number\` | \`1\` | Border thickness in pixels |
+| \`imageConfig.imageBorderRadius\` | \`number\` | \`4\` | Image corner roundness |
+| \`imageConfig.imageBorderColor\` | \`string\` | \`"#333333"\` | Image border color |
+| \`imageConfig.imageBorderWidth\` | \`number\` | \`1\` | Image border thickness |
 | \`imageConfig.imageOpacity\` | \`number\` | \`1\` | Image transparency (0-1) |
 | \`imageConfig.backgroundColor\` | \`string\` | \`"transparent"\` | Background color behind image |
 
 ### Text Positioning
-
-Control where text appears relative to the image:
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
@@ -153,8 +133,6 @@ Control where text appears relative to the image:
 | \`imageTextPositionConfig.spacing\` | \`number\` | \`4\` | Space between title and subtitle |
 
 ### Title Styling
-
-Configure the main title text appearance:
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
@@ -165,8 +143,6 @@ Configure the main title text appearance:
 
 ### Subtitle Styling
 
-Configure the subtitle text appearance:
-
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | \`imageSubtitleConfig.fontSize\` | \`number\` | \`10\` | Subtitle text size |
@@ -176,18 +152,14 @@ Configure the subtitle text appearance:
 
 ### Node Container
 
-Basic node styling options:
-
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | \`imageMargin\` | \`number\` | \`8\` | Internal margin around all content |
 | \`color\` | \`string\` | \`"#ffffff"\` | Background color of node container |
 | \`borderColor\` | \`string\` | \`"#e1e8ed"\` | Border color of node container |
-| \`borderWidth\` | \`number\` | \`1\` | Border thickness of node container |`,
-    },
-    {
-      type: "markdown",
-      value: `## Advanced Configuration
+| \`borderWidth\` | \`number\` | \`1\` | Border thickness of node container |
+
+### Advanced Configuration Example
 
 \`\`\`javascript
 const chart = new TreeChart("container", {
@@ -243,49 +215,7 @@ const chart = new TreeChart("container", {
     },
     {
       type: "markdown",
-      value: `## Text Positioning Options
-
-### Bottom Position (Default)
-- **Image**: Top of the node
-- **Text**: Below the image
-- **Best for**: Profile cards, product displays
-- **Layout**: Compact vertical arrangement
-
-### Left Position
-- **Image**: Left side of the node
-- **Text**: Right side of the image
-- **Best for**: Business cards, contact lists
-- **Layout**: Horizontal arrangement
-
-### Right Position
-- **Image**: Right side of the node
-- **Text**: Left side of the image
-- **Best for**: Alternative layouts, RTL content
-- **Layout**: Horizontal arrangement with image on right
-
-## Layout Considerations
-
-### Automatic Sizing
-
-- **Minimum Dimensions**: 120×60px (MIN_IMAGE_NODE_WIDTH × MIN_IMAGE_NODE_HEIGHT)
-- **Dynamic Width**: Calculated based on image size, text width, and position
-- **Dynamic Height**: Calculated based on image size, text height, and position
-- **Content Alignment**: All content is automatically centered within the node
-
-### Spacing and Margins
-
-- **Image Margin**: 8px default internal margin around all content
-- **Text Padding**: 8px default spacing between image and text
-- **Text Spacing**: 4px default spacing between title and subtitle
-- **Border Radius**: Independent control for image and container corners
-
-### Performance
-
-- **Image Loading**: Images are loaded asynchronously without blocking rendering
-- **Text Measurement**: Dynamic text width calculation for optimal layout
-- **Memory Efficient**: Only required styling attributes are applied
-
-## Common Use Cases
+      value: `## Common Use Cases
 
 ### Organizational Charts
 Team hierarchies with employee photos, names, and job titles.

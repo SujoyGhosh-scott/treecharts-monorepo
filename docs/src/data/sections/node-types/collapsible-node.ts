@@ -95,34 +95,33 @@ const nodeData = {
 };
 \`\`\`
 
-## Default Configuration
+## Configuration Options
 
 Collapsible nodes inherit all regular node properties plus interactive features:
 
-| Property | Default Value | Description |
-|----------|---------------|-------------|
-| \`type\` | \`"collapsible-node"\` | Node type identifier |
-| \`width\` | \`200\` | Node width (wider for descriptions) |
-| \`height\` | \`auto\` | Auto-calculated based on content and state |
-| \`padding\` | \`5\` | Internal padding around content |
-| \`color\` | \`"skyblue"\` | Background color |
-| \`borderColor\` | \`"black"\` | Border color |
-| \`borderWidth\` | \`1\` | Border thickness |
-| \`borderRadius\` | \`6\` | Corner roundness |`,
-    },
-    {
-      type: "markdown",
-      value: `## Configuration Options
-
-### Basic Styling
-
-All regular node properties apply to collapsible nodes:
+### Basic Properties
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | \`type\` | \`string\` | \`"collapsible-node"\` | Must be set to enable collapsible functionality |
-| \`width\` | \`number\` | \`200\` | Node width (recommended minimum 150px) |
-| \`padding\` | \`number\` | \`5\` | Internal padding for content |
+| \`width\` | \`number\` | \`200\` | Node width (wider for descriptions) |
+| \`height\` | \`string\` | \`"auto"\` | Auto-calculated based on content and state |
+| \`padding\` | \`number\` | \`5\` | Internal padding around content |
+| \`color\` | \`string\` | \`"skyblue"\` | Background color |
+| \`borderColor\` | \`string\` | \`"black"\` | Border color |
+| \`borderWidth\` | \`number\` | \`1\` | Border thickness |
+| \`borderRadius\` | \`number\` | \`6\` | Corner roundness |
+
+### Typography
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| \`fontSize\` | \`number\` | \`14\` | Title text size |
+| \`fontColor\` | \`string\` | \`"black"\` | Title text color |
+| \`fontFamily\` | \`string\` | \`"Arial, sans-serif"\` | Font family for all text |
+| \`descriptionFontSize\` | \`number\` | \`11\` | Description text size |
+| \`descriptionFontColor\` | \`string\` | \`"#666666"\` | Description text color |
+| \`descriptionMarginTop\` | \`number\` | \`4\` | Space between title and description |
 
 ### Interactive Features
 
@@ -130,19 +129,7 @@ All regular node properties apply to collapsible nodes:
 |----------|------|---------|-------------|
 | \`collapsibleState.expanded\` | \`boolean\` | \`false\` | Initial expanded/collapsed state |
 
-### Description Text Styling
-
-Same as Node with Description, collapsible nodes support:
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| \`descriptionFontSize\` | \`number\` | \`11\` | Description text size |
-| \`descriptionFontColor\` | \`string\` | \`"#666666"\` | Description text color |
-| \`descriptionMarginTop\` | \`number\` | \`4\` | Space between title and description |
-
 ### Chevron Icon Styling
-
-The chevron expand/collapse button has specific styling characteristics:
 
 | Property | Value | Description |
 |----------|-------|-------------|
@@ -154,11 +141,9 @@ The chevron expand/collapse button has specific styling characteristics:
 
 **Note:** 
 - **Down chevron (▼)** indicates collapsed state (clickable to expand)
-- **Up chevron (▲)** indicates expanded state (clickable to collapse)`,
-    },
-    {
-      type: "markdown",
-      value: `## Advanced Configuration
+- **Up chevron (▲)** indicates expanded state (clickable to collapse)
+
+### Advanced Configuration Example
 
 \`\`\`javascript
 const chart = new TreeChart("container", {
@@ -210,30 +195,6 @@ const nodeData = {
 - **Click chevron to toggle** between expanded/collapsed states
 - **State is maintained** during interactions
 - **Dynamic resizing** occurs automatically when toggling
-
-## Layout Considerations
-
-### Space Allocation
-
-- **Chevron Space**: Automatically reserves 20px (SPACE_FOR_ARROW_BUTTON) on the right for the chevron icon
-- **Text Centering**: Main text is centered in the remaining space (width - chevron space)
-- **Click Area**: 20px invisible click area around chevron for better user experience
-- **Dynamic Width**: Nodes expand to accommodate description content when expanded
-- **Minimum Width**: Use at least 100px width (MIN_WIDTH_FOR_DESCRIPTION) for descriptions
-
-### Content Spacing
-
-- **Title-Description Gap**: 12px fixed spacing between title and description
-- **Description Line Height**: 1.2x line spacing for description text
-- **Bottom Padding**: Expanded nodes get double bottom padding for better visual spacing
-- **Chevron Positioning**: 8px padding from right edge, vertically centered with title
-
-### Performance
-
-- **Efficient Rendering**: Only expanded descriptions are rendered and measured
-- **Dynamic Calculation**: Width and height calculated based on content and expanded state
-- **Memory Optimization**: Collapsed descriptions don't impact layout calculations
-- **Smooth Interactions**: State changes trigger automatic dimension recalculation
 
 ## Common Use Cases
 
