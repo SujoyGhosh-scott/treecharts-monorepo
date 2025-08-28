@@ -86,10 +86,15 @@ export class TreeChart {
    * @returns The created SVG element
    */
   public render(data: TreeNode): SVGSVGElement {
-    // Format the tree data for rendering with alignment options
-    this.formattedTree = formatTree(data, {
-      horizontalAlign: this.options.horizontalAlign,
-    });
+    // Format the tree data for rendering
+    // Only apply alignment options for chart types that support them
+    // All-direction (radial) charts don't use alignment as nodes are positioned radially
+    const formatOptions =
+      this.options.type === "all-direction"
+        ? undefined
+        : { horizontalAlign: this.options.horizontalAlign };
+
+    this.formattedTree = formatTree(data, formatOptions);
 
     // Create appropriate renderer based on type
     const renderer = createRenderer(

@@ -14,6 +14,7 @@
 - **EdgeConfig Cleanup**: Removed unused `type` property from EdgeConfig interface that was duplicating the main TreeChart type configuration, simplifying the API
 - **ConnectionDrawer Optimization**: Cleaned up unused method parameters and improved curve rendering with proper curveRadius utilization
 - **Bottom-to-Top Alignment**: Fixed critical tree alignment bug where `horizontalAlign: "bottom-to-top"` incorrectly showed root at top instead of bottom by implementing proper tree level reversal
+- **All-Direction Alignment**: Fixed all-direction charts becoming invisible when horizontal alignment options were applied, since alignment concepts don't apply to radial layouts
 
 #### Removed
 
