@@ -36,7 +36,7 @@ export const metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://treecharts.dev",
+    url: "https://treecharts.netlify.app",
     siteName: "TreeCharts",
     title: "TreeCharts - Beautiful Tree Visualizations for Web",
     description:

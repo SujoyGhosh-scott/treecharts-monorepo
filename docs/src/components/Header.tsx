@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { Github, BookOpen, FileText, Play } from "lucide-react";
 

@@ -1,19 +1,19 @@
 import { NextResponse } from "next/server";
 
 const staticPaths = [
-  "https://treecharts.dev",
-  "https://treecharts.dev/docs",
-  "https://treecharts.dev/docs/getting-started",
-  "https://treecharts.dev/docs/core-concepts",
-  "https://treecharts.dev/docs/tree-options",
-  "https://treecharts.dev/docs/node-types",
-  "https://treecharts.dev/docs/edge-customization",
-  "https://treecharts.dev/docs/tree-alignment",
-  "https://treecharts.dev/docs/download-feature",
-  "https://treecharts.dev/playground",
-  "https://treecharts.dev/examples",
-  "https://treecharts.dev/blog",
-  "https://treecharts.dev/changelog",
+  "https://treecharts.netlify.app",
+  "https://treecharts.netlify.app/docs",
+  "https://treecharts.netlify.app/docs/getting-started",
+  "https://treecharts.netlify.app/docs/core-concepts",
+  "https://treecharts.netlify.app/docs/tree-options",
+  "https://treecharts.netlify.app/docs/node-types",
+  "https://treecharts.netlify.app/docs/edge-customization",
+  "https://treecharts.netlify.app/docs/tree-alignment",
+  "https://treecharts.netlify.app/docs/download-feature",
+  "https://treecharts.netlify.app/playground",
+  "https://treecharts.netlify.app/examples",
+  "https://treecharts.netlify.app/blog",
+  "https://treecharts.netlify.app/changelog",
 ];
 
 export async function GET() {
@@ -25,7 +25,9 @@ ${staticPaths
     <loc>${url}</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>${url === "https://treecharts.dev" ? "1.0" : "0.8"}</priority>
+    <priority>${
+      url === "https://treecharts.netlify.app" ? "1.0" : "0.8"
+    }</priority>
   </url>`
   )
   .join("\n")}

@@ -5,10 +5,10 @@ export async function GET() {
 Allow: /
 
 # Host
-Host: https://treecharts.dev
+Host: https://treecharts.netlify.app
 
 # Sitemaps
-Sitemap: https://treecharts.dev/sitemap.xml`;
+Sitemap: https://treecharts.netlify.app/sitemap.xml`;
 
   return new NextResponse(robots, {
     headers: {

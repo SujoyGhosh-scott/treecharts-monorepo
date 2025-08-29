@@ -139,7 +139,17 @@ export default function Footer() {
             © {currentYear} TreeCharts. All rights reserved.
           </p>
           <div className="flex items-center gap-4 text-xs text-base-content/60">
-            <span>Made with ❤️ by the TreeCharts team</span>
+            <span>
+              Made with ❤️ by{" "}
+              <a
+                href="https://sujoyghosh.netlify.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:text-primary/80 transition-colors font-medium"
+              >
+                Sujoy
+              </a>
+            </span>
           </div>
         </div>
       </div>
