@@ -17,6 +17,7 @@ export interface ContentBlock {
   description?: string; // For code blocks and image grids
   id?: string; // For code blocks
   outputImage?: string; // Path to the expected output image
+  showOutput?: boolean; // For code blocks - whether to show output section
 
   // For image grid
   images?: ImageGridItem[];

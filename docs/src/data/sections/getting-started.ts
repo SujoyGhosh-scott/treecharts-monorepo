@@ -13,31 +13,28 @@ TreeCharts is a powerful, flexible library for creating interactive tree visuali
 
 ## Installation
 
-Choose the package that matches your setup:
+Choose the package that matches your setup:`,
+    },
+    {
+      type: "code",
+      title: "Installation Commands",
+      description: "Install TreeCharts for your preferred framework",
+      id: "installation-commands",
+      showOutput: false,
+      codes: {
+        javascript: `# Core Library (Vanilla JavaScript)
 
-### Core Library (Vanilla JavaScript)
-
-\`\`\`bash
-npm install treecharts
-# or
-yarn add treecharts
-\`\`\`
-
-### React Wrapper
-
-\`\`\`bash
+# CDN Alternative
+# <script src="https://cdn.jsdelivr.net/npm/treecharts@latest/dist/treecharts.min.js"></script>`,
+        react: `# React Wrapper
 npm install treecharts-react
 # or
-yarn add treecharts-react
-\`\`\`
-
-### CDN (Vanilla JavaScript)
-
-\`\`\`html
-<script src="https://cdn.jsdelivr.net/npm/treecharts@latest/dist/treecharts.min.js"></script>
-\`\`\`
-
-## Quick Start
+yarn add treecharts-react`,
+      },
+    },
+    {
+      type: "markdown",
+      value: `## Quick Start
 
 Once installed, you can create your first tree chart in just a few lines:`,
     },

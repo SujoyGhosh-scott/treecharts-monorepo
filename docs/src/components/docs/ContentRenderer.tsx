@@ -32,7 +32,10 @@ export default function ContentRenderer({ content }: ContentRendererProps) {
 
           return (
             <div key={index} className="not-prose">
-              <CodeDisplay example={codeExample} />
+              <CodeDisplay
+                example={codeExample}
+                showOutput={block.showOutput}
+              />
             </div>
           );
         }
