@@ -1,18 +1,18 @@
-// components/GameOfLifeBackground.jsx
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 
-const GameOfLifeBackground = ({
-  cellSize = 40,
-  updateInterval = 300,
-  initialDensity = 0.15,
+const GameOfLifeVisualization = ({
+  cellSize = 30,
+  updateInterval = 400,
+  initialDensity = 0.2,
   deadCellOpacity = 0,
-  liveCellOpacity = 0.08,
-  cellColor = "255, 255, 255",
+  liveCellOpacity = 0.15,
+  cellColor = "34, 197, 94", // Green color to match your theme
   glowEffect = false,
 }) => {
   const canvasRef = useRef(null);
+  const containerRef = useRef(null);
   const gridRef = useRef(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
@@ -93,10 +93,10 @@ const GameOfLifeBackground = ({
         const yPos = y * cellSize;
 
         if (grid[y][x] === 1) {
-          // Live cell with edge fade
-          // Calculate distance from edges (0 to 1, where 0 is edge and 1 is center)
-          const edgeFadeX = Math.min(x / 5, (cols - 1 - x) / 5, 1);
-          const edgeFadeY = Math.min(y / 5, (rows - 1 - y) / 5, 1);
+          // Live cell with edge fade for contained version
+          // Calculate distance from edges (fade on all sides)
+          const edgeFadeX = Math.min(x / 3, (cols - 1 - x) / 3, 1);
+          const edgeFadeY = Math.min(y / 3, (rows - 1 - y) / 3, 1);
           const edgeFade = Math.min(edgeFadeX, edgeFadeY);
 
           // Apply fade to opacity
@@ -112,8 +112,11 @@ const GameOfLifeBackground = ({
   // Setup and handle resize
   useEffect(() => {
     const setupGrid = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
+      if (!containerRef.current) return;
+
+      const rect = containerRef.current.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
       setDimensions({ width, height });
 
       const cols = Math.ceil(width / cellSize);
@@ -131,9 +134,17 @@ const GameOfLifeBackground = ({
       }
     };
 
+    // Use ResizeObserver for container size changes
+    const resizeObserver = new ResizeObserver(setupGrid);
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
     setupGrid();
-    window.addEventListener("resize", setupGrid);
-    return () => window.removeEventListener("resize", setupGrid);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
   }, [cellSize, initializeGrid]);
 
   // Animation loop
@@ -165,17 +176,16 @@ const GameOfLifeBackground = ({
   };
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={dimensions.width}
-      height={dimensions.height}
-      onClick={handleClick}
-      className="fixed top-0 left-0 w-full h-full pointer-events-auto cursor-pointer"
-      style={{
-        zIndex: 0,
-      }}
-    />
+    <div ref={containerRef} className="absolute inset-0">
+      <canvas
+        ref={canvasRef}
+        width={dimensions.width}
+        height={dimensions.height}
+        onClick={handleClick}
+        className="absolute inset-0 w-full h-full cursor-pointer"
+      />
+    </div>
   );
 };
 
-export default GameOfLifeBackground;
+export default GameOfLifeVisualization;

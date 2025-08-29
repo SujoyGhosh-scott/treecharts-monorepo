@@ -1,4 +1,5 @@
-import GameOfLifeBackground from "@/components/GameOfLifeBackground";
+// app/examples/page.jsx
+import GameOfLifeVisualization from "@/components/GameOfLifeVisualization";
 
 export const metadata = {
   title: "Examples - TreeCharts",
@@ -51,25 +52,20 @@ export const metadata = {
 
 export default function ExamplesPage() {
   return (
-    <div className="min-h-screen bg-base-100 relative">
-      {/* Game of Life Background - Client Component */}
-      <div className="fixed inset-0 bg-gradient-to-br from-primary/10 to-secondary/10">
-        <GameOfLifeBackground
-          cellSize={40}
-          updateInterval={300}
-          initialDensity={0.15}
-          deadCellOpacity={0}
-          liveCellOpacity={0.06}
-          cellColor="255, 255, 255"
-          glowEffect={false}
-        />
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 relative">
+      {/* Game of Life Background using GameOfLifeVisualization */}
+      <GameOfLifeVisualization
+        cellSize={40}
+        updateInterval={300}
+        initialDensity={0.15}
+        deadCellOpacity={0}
+        liveCellOpacity={0.06}
+        cellColor="255, 255, 255"
+        glowEffect={false}
+      />
 
       {/* Main Content */}
-      <div
-        style={{ minHeight: `calc(100vh - 14rem)` }}
-        className="relative z-10 min-h-[calc(100vh-14rem)]"
-      >
+      <div className="relative z-10 min-h-screen">
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-4xl mx-auto text-center">
             {/* Coming Soon Badge */}
