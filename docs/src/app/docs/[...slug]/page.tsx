@@ -12,6 +12,152 @@ interface PageProps {
   };
 }
 
+export async function generateMetadata({ params }: PageProps) {
+  const { slug } = params;
+
+  if (!slug || slug.length === 0) {
+    return {
+      title: "Documentation Not Found",
+      description:
+        "The documentation page you're looking for could not be found.",
+    };
+  }
+
+  // Handle section-only paths (e.g., /docs/getting-started)
+  if (slug.length === 1) {
+    const section = docsNavigation.sections.find((s) => s.id === slug[0]);
+
+    if (!section) {
+      return {
+        title: "Documentation Section Not Found",
+        description:
+          "The documentation section you're looking for could not be found.",
+      };
+    }
+
+    const sectionTitle = `${section.title} - TreeCharts Documentation`;
+    const sectionDescription =
+      section.description ||
+      `Learn about ${section.title} in TreeCharts. Complete guide and examples for building tree visualizations.`;
+
+    return {
+      title: sectionTitle,
+      description: sectionDescription,
+      keywords: [
+        `treecharts ${section.id.replace("-", " ")}`,
+        `${section.title.toLowerCase()} tutorial`,
+        `tree visualization ${section.title.toLowerCase()}`,
+        `react tree ${section.id.replace("-", " ")}`,
+        `javascript tree ${section.title.toLowerCase()}`,
+        `${section.title.toLowerCase()} documentation`,
+        `treecharts guide`,
+        `tree chart ${section.title.toLowerCase()}`,
+      ],
+      authors: [{ name: "Sujoy Ghosh" }],
+      robots: {
+        index: true,
+        follow: true,
+      },
+      openGraph: {
+        title: sectionTitle,
+        description: sectionDescription,
+        url: `https://treecharts.netlify.app/docs/${section.id}`,
+        siteName: "TreeCharts",
+        images: [
+          {
+            url: "https://treecharts.netlify.app/og-image.jpg",
+            width: 1200,
+            height: 630,
+            alt: sectionTitle,
+          },
+        ],
+        locale: "en_US",
+        type: "article",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: sectionTitle,
+        description: sectionDescription,
+        images: ["https://treecharts.netlify.app/og-image.jpg"],
+      },
+    };
+  }
+
+  // Handle topic paths (e.g., /docs/getting-started/installation)
+  if (slug.length === 2) {
+    const [sectionId, topicId] = slug;
+    const topic = getTopic(sectionId, topicId);
+    const section = docsNavigation.sections.find((s) => s.id === sectionId);
+
+    if (!topic || !section) {
+      return {
+        title: "Documentation Topic Not Found",
+        description:
+          "The documentation topic you're looking for could not be found.",
+      };
+    }
+
+    const topicTitle = `${topic.title} - ${section.title} - TreeCharts`;
+    const topicDescription =
+      topic.description ||
+      `Learn about ${
+        topic.title
+      } in TreeCharts. Detailed guide for ${section.title.toLowerCase()} with examples and best practices.`;
+
+    return {
+      title: topicTitle,
+      description: topicDescription,
+      keywords: [
+        `treecharts ${topic.title.toLowerCase()}`,
+        `${topic.title.toLowerCase()} tutorial`,
+        `tree visualization ${topic.title.toLowerCase()}`,
+        `react ${topic.title.toLowerCase()}`,
+        `javascript ${topic.title.toLowerCase()}`,
+        `${section.title.toLowerCase()} ${topic.title.toLowerCase()}`,
+        `treecharts ${sectionId.replace("-", " ")} ${topicId.replace(
+          "-",
+          " "
+        )}`,
+        `tree chart ${topic.title.toLowerCase()}`,
+      ],
+      authors: [{ name: "Sujoy Ghosh" }],
+      robots: {
+        index: true,
+        follow: true,
+      },
+      openGraph: {
+        title: topicTitle,
+        description: topicDescription,
+        url: `https://treecharts.netlify.app/docs/${sectionId}/${topicId}`,
+        siteName: "TreeCharts",
+        images: [
+          {
+            url: "https://treecharts.netlify.app/og-image.jpg",
+            width: 1200,
+            height: 630,
+            alt: topicTitle,
+          },
+        ],
+        locale: "en_US",
+        type: "article",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: topicTitle,
+        description: topicDescription,
+        images: ["https://treecharts.netlify.app/og-image.jpg"],
+      },
+    };
+  }
+
+  // Default fallback
+  return {
+    title: "TreeCharts Documentation",
+    description:
+      "Complete documentation for TreeCharts library. Learn how to create beautiful tree visualizations.",
+  };
+}
+
 export async function generateStaticParams() {
   const paths: { slug: string[] }[] = [];
 

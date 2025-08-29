@@ -6,13 +6,13 @@ async function fetchChangelogContent() {
   try {
     const response = await fetch(CHANGELOG_CONFIG.url, {
       // Revalidate based on config
-      next: { revalidate: CHANGELOG_CONFIG.revalidateInterval }
+      next: { revalidate: CHANGELOG_CONFIG.revalidateInterval },
     });
-    
+
     if (!response.ok) {
       throw new Error(`Failed to fetch changelog: ${response.status}`);
     }
-    
+
     return await response.text();
   } catch (error) {
     console.error("Error fetching changelog:", error);
@@ -52,6 +52,48 @@ export default async function ChangelogPage() {
 }
 
 export const metadata = {
-  title: "Changelog - TreeCharts",
-  description: "Track all changes, updates, and improvements to TreeCharts library",
+  title: "Changelog",
+  description:
+    "Track all changes, updates, and improvements to TreeCharts library. Stay updated with new features, bug fixes, and enhancements.",
+  keywords: [
+    "treecharts changelog",
+    "updates",
+    "release notes",
+    "version history",
+    "new features",
+    "bug fixes",
+    "improvements",
+    "library updates",
+    "tree visualization updates",
+    "react library changelog",
+  ],
+  authors: [{ name: "Sujoy Ghosh" }],
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "TreeCharts Changelog - Latest Updates & Features",
+    description:
+      "Track all changes, updates, and improvements to TreeCharts library. Stay updated with new features, bug fixes, and enhancements.",
+    url: "https://treecharts.netlify.app/changelog",
+    siteName: "TreeCharts",
+    images: [
+      {
+        url: "https://treecharts.netlify.app/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "TreeCharts Changelog - Latest Updates & Features",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TreeCharts Changelog - Latest Updates & Features",
+    description:
+      "Track all changes, updates, and improvements to TreeCharts library. Stay updated with new features, bug fixes, and enhancements.",
+    images: ["https://treecharts.netlify.app/og-image.jpg"],
+  },
 };
