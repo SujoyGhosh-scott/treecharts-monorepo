@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import MarkdownContent from "@/components/docs/MarkdownContent";
 import { CHANGELOG_CONFIG } from "@/utils/changelog";
 
@@ -25,9 +24,6 @@ export default async function ChangelogPage() {
 
   return (
     <div className="min-h-screen bg-base-100">
-      {/* Header */}
-      <Header />
-
       {/* Main Content */}
       <div className="bg-gradient-to-br from-base-300 to-base-100 min-h-[calc(100vh-4rem)]">
         <div className="container mx-auto px-4 py-8">

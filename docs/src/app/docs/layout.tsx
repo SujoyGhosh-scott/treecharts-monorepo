@@ -1,5 +1,4 @@
 import Sidebar from "@/components/docs/Sidebar";
-import Header from "@/components/Header";
 import MobileNavigation from "@/components/docs/MobileNavigation";
 
 export const metadata = {
@@ -58,9 +57,6 @@ export default function DocsLayout({
 }) {
   return (
     <div className="min-h-screen bg-base-100">
-      {/* Header */}
-      <Header />
-
       <div className="flex h-[calc(100vh-4rem)]">
         {/* Sidebar - Desktop */}
         <div className="hidden lg:block w-80 border-r border-base-300 bg-base-50 overflow-hidden">
