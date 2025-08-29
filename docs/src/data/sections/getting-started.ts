@@ -46,23 +46,50 @@ Once installed, you can create your first tree chart in just a few lines:`,
       title: "Quick Start Example",
       description: "Create your first tree chart with minimal setup",
       id: "quick-start-example",
+      outputImage: "/docs/getting-started-example.svg",
       codes: {
-        javascript: `// Define your data structure
-const data = {
-  name: "Root Node",
-  children: [
-    { name: "Child 1" },
-    { name: "Child 2" }
+        javascript: `// Define your tree data structure
+const treeData = {
+  value: "Root Node",
+  child: [
+    { value: "Child 1", child: [] },
+    { value: "Child 2", child: [] }
   ]
 };
 
 // Create the tree chart
-const chart = new TreeChart(container, {
-  data: data,
-  nodeRenderer: 'circle'
+const chart = new TreeChart("container", {
+  type: "right-angle",
+  nodeConfig: {
+    color: "#90EE90",
+    width: 120,
+  }
 });
 
-chart.render();`,
+// Render the tree
+chart.render(treeData);`,
+        react: `import { TreeChart } from 'treecharts-react';
+
+const treeData = {
+  value: "Root Node",
+  child: [
+    { value: "Child 1", child: [] },
+    { value: "Child 2", child: [] }
+  ]
+};
+
+function MyComponent() {
+  return (
+    <TreeChart
+      data={treeData}
+      type="right-angle"
+      nodeConfig={{
+        color: "#90EE90",
+        width: 120,
+      }}
+    />
+  );
+}`,
       },
     },
     {
@@ -73,9 +100,12 @@ All packages include TypeScript definitions out of the box.
 
 ## What's Next?
 
-- [Basic Usage](/docs/core-concepts/basic-usage) - Learn the fundamentals
-- [Tree Options](/docs/tree-options) - Explore different layouts and connections  
-- [Node Types](/docs/node-types) - Customize how nodes are displayed`,
+- [Core Concepts](/docs/core-concepts) - Learn the fundamentals
+- [Tree Options](/docs/tree-options) - Explore different layouts and connections
+- [Node Types](/docs/node-types) - Customize how nodes are displayed
+- [Edge Customization](/docs/edge-customization) - Control the appearance of connections
+- [Tree Alignment](/docs/tree-alignment) - Adjust the positioning of nodes and branches
+`,
     },
   ],
   topics: [],

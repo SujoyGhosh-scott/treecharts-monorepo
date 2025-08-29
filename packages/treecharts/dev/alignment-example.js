@@ -1,43 +1,48 @@
 import { TreeChart } from "../src/index.js";
 
-// Simple tree data for alignment demonstrations
-const sampleData = {
-  value: "Root",
+// Tree data matching the Core Concepts documentation examples
+const coreConceptsData = {
+  value: "Root Node",
   child: [
     {
-      value: "A",
+      value: "Child 1",
       child: [
-        { value: "A1", child: [] },
-        { value: "A2", child: [] },
+        { value: "Grandchild 1", child: [] },
+        { value: "Grandchild 2", child: [] },
       ],
     },
     {
-      value: "B",
-      child: [{ value: "B1", child: [] }],
-    },
-    {
-      value: "C",
+      value: "Child 2",
       child: [],
     },
   ],
 };
 
+// Tree data matching the Getting Started documentation examples
+const gettingStartedData = {
+  value: "Root Node",
+  child: [
+    { value: "Child 1", child: [] },
+    { value: "Child 2", child: [] },
+  ],
+};
+
 // Base configuration for all examples
 const baseConfig = {
-  type: "direct",
-  horizontalGap: 30,
-  verticalGap: 50,
-  nodeConfig: {
-    width: 60,
-    height: 30,
-    color: "lightblue",
-  },
-  actionConfig: {
-    download: {
-      enabled: true,
-      position: "top-right",
-    },
-  },
+  type: "right-angle",
+  // horizontalGap: 30,
+  // verticalGap: 50,
+  // nodeConfig: {
+  //   width: 60,
+  //   height: 30,
+  //   color: "lightblue",
+  // },
+  // actionConfig: {
+  //   download: {
+  //     enabled: true,
+  //     position: "top-right",
+  //   },
+  // },
 };
 
 // Horizontal Alignment Examples
@@ -53,7 +58,7 @@ function createHorizontalAlignmentExamples() {
         filename: "horizontal-left-alignment.svg",
       },
     },
-  }).render(sampleData);
+  }).render(coreConceptsData);
 
   // Center alignment
   new TreeChart("horizontal-center-container", {
@@ -66,7 +71,7 @@ function createHorizontalAlignmentExamples() {
         filename: "horizontal-center-alignment.svg",
       },
     },
-  }).render(sampleData);
+  }).render(coreConceptsData);
 
   // Right alignment
   new TreeChart("horizontal-right-container", {
@@ -79,7 +84,7 @@ function createHorizontalAlignmentExamples() {
         filename: "horizontal-right-alignment.svg",
       },
     },
-  }).render(sampleData);
+  }).render(coreConceptsData);
 }
 
 // Vertical Alignment Examples
@@ -95,7 +100,7 @@ function createVerticalAlignmentExamples() {
         filename: "vertical-top-bottom-alignment.svg",
       },
     },
-  }).render(sampleData);
+  }).render(coreConceptsData);
 
   // Bottom to Top
   new TreeChart("vertical-bottom-top-container", {
@@ -108,7 +113,7 @@ function createVerticalAlignmentExamples() {
         filename: "vertical-bottom-top-alignment.svg",
       },
     },
-  }).render(sampleData);
+  }).render(coreConceptsData);
 }
 
 // Combined Alignment Examples
@@ -129,7 +134,7 @@ function createCombinedAlignmentExamples() {
         filename: "combined-right-bottom-alignment.svg",
       },
     },
-  }).render(sampleData);
+  }).render(coreConceptsData);
 
   // Left + Bottom-to-Top
   new TreeChart("combined-left-bottom-container", {
@@ -147,7 +152,42 @@ function createCombinedAlignmentExamples() {
         filename: "combined-left-bottom-alignment.svg",
       },
     },
-  }).render(sampleData);
+  }).render(coreConceptsData);
+}
+
+// Documentation Examples (for code output images)
+function createDocumentationExamples() {
+  // Getting Started Example
+  new TreeChart("getting-started-example-container", {
+    type: "right-angle",
+    nodeConfig: {
+      color: "#90EE90",
+      width: 120,
+    },
+    actionConfig: {
+      download: {
+        enabled: true,
+        position: "top-right",
+        filename: "getting-started-example.svg",
+      },
+    },
+  }).render(gettingStartedData);
+
+  // Core Concepts Example
+  new TreeChart("core-concepts-example-container", {
+    type: "right-angle",
+    nodeConfig: {
+      color: "#90EE90",
+      width: 120,
+    },
+    actionConfig: {
+      download: {
+        enabled: true,
+        position: "top-right",
+        filename: "core-concepts-example.svg",
+      },
+    },
+  }).render(coreConceptsData);
 }
 
 // Initialize all examples when the page loads
@@ -155,4 +195,5 @@ document.addEventListener("DOMContentLoaded", function () {
   createHorizontalAlignmentExamples();
   createVerticalAlignmentExamples();
   createCombinedAlignmentExamples();
+  createDocumentationExamples();
 });

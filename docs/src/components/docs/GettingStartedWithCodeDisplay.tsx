@@ -6,22 +6,17 @@ const installationExample = {
   id: "installation-commands",
   codes: {
     react: `# Install for React
-npm install @treecharts/react
+npm install treecharts-react
 # or
-yarn add @treecharts/react`,
+yarn add treecharts-react`,
 
-    angular: `# Install for Angular
-npm install @treecharts/angular
+    javascript: `# Install Core Library
+npm install treecharts
 # or
-yarn add @treecharts/angular`,
+yarn add treecharts
 
-    vue: `# Install for Vue
-npm install @treecharts/vue
-# or
-yarn add @treecharts/vue`,
-
-    javascript: `<!-- CDN for Vanilla JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/@treecharts/core@latest/dist/treecharts.min.js"></script>`,
+# CDN Alternative
+<script src="https://cdn.jsdelivr.net/npm/treecharts@latest/dist/treecharts.min.js"></script>`,
   },
 };
 
@@ -30,38 +25,46 @@ const quickStartExample = {
   description: "Create your first tree chart with minimal setup",
   id: "quick-start-example",
   codes: {
-    javascript: `// Define your data structure
-const data = {
-  name: "Root Node",
-  children: [
-    { name: "Child 1" },
-    { name: "Child 2" }
+    javascript: `// Define your tree data structure
+const treeData = {
+  value: "Root Node",
+  child: [
+    { value: "Child 1", child: [] },
+    { value: "Child 2", child: [] }
   ]
 };
 
 // Create the tree chart
-const chart = new TreeChart(document.getElementById('tree-container'), {
-  data: data,
-  nodeRenderer: 'circle'
+const chart = new TreeChart("tree-container", {
+  type: "direct",
+  nodeConfig: {
+    type: "circle",
+    color: "#87CEEB"
+  }
 });
 
-chart.render();`,
+// Render the tree
+chart.render(treeData);`,
 
-    react: `import { TreeChart } from '@treecharts/react';
+    react: `import { TreeChart } from 'treecharts-react';
 
 function MyFirstTree() {
-  const data = {
-    name: "Root Node",
-    children: [
-      { name: "Child 1" },
-      { name: "Child 2" }
+  const treeData = {
+    value: "Root Node",
+    child: [
+      { value: "Child 1", child: [] },
+      { value: "Child 2", child: [] }
     ]
   };
 
   return (
     <TreeChart 
-      data={data} 
-      nodeRenderer="circle"
+      data={treeData}
+      type="direct"
+      nodeConfig={{
+        type: "circle",
+        color: "#87CEEB"
+      }}
       width={600}
       height={400}
     />
@@ -69,53 +72,6 @@ function MyFirstTree() {
 }
 
 export default MyFirstTree;`,
-
-    angular: `import { Component } from '@angular/core';
-import { TreeChartModule } from '@treecharts/angular';
-
-@Component({
-  selector: 'app-my-first-tree',
-  template: \`
-    <tree-chart
-      [data]="data"
-      nodeRenderer="circle"
-      [width]="600"
-      [height]="400">
-    </tree-chart>
-  \`,
-  standalone: true,
-  imports: [TreeChartModule]
-})
-export class MyFirstTreeComponent {
-  data = {
-    name: "Root Node",
-    children: [
-      { name: "Child 1" },
-      { name: "Child 2" }
-    ]
-  };
-}`,
-
-    vue: `<template>
-  <TreeChart
-    :data="data"
-    node-renderer="circle"
-    :width="600"
-    :height="400"
-  />
-</template>
-
-<script setup>
-import { TreeChart } from '@treecharts/vue';
-
-const data = {
-  name: "Root Node",
-  children: [
-    { name: "Child 1" },
-    { name: "Child 2" }
-  ]
-};
-</script>`,
   },
 };
 

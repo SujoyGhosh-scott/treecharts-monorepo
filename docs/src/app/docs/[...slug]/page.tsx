@@ -2,7 +2,6 @@ import { getTopic } from "@/utils/docs";
 import { docsNavigation } from "@/data/docs";
 import ContentRenderer from "@/components/docs/ContentRenderer";
 import DocsNavigation from "@/components/docs/DocsNavigation";
-import BasicUsageWithCodeDisplay from "@/components/docs/BasicUsageWithCodeDisplay";
 import Breadcrumb from "@/components/docs/Breadcrumb";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -111,23 +110,6 @@ export default function DynamicDocsPage({ params }: PageProps) {
 
     if (!topic || !section) {
       return notFound();
-    }
-
-    // Special handling for basic-usage page with CodeDisplay component
-    if (sectionId === "core-concepts" && topicId === "basic-usage") {
-      return (
-        <div>
-          <Breadcrumb
-            items={[
-              { label: "Docs", href: "/docs" },
-              { label: section.title, href: `/docs/${section.id}` },
-              { label: topic.title },
-            ]}
-          />
-          <BasicUsageWithCodeDisplay />
-          <DocsNavigation />
-        </div>
-      );
     }
 
     return (

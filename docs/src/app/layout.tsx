@@ -16,13 +16,11 @@ export const metadata = {
     template: "%s | TreeCharts",
   },
   description:
-    "A powerful and flexible library for creating beautiful tree visualizations in React, Angular, Vue, and vanilla JavaScript.",
+    "A powerful and flexible library for creating beautiful tree visualizations in React and vanilla JavaScript.",
   keywords: [
     "tree visualization",
     "charts",
     "react",
-    "angular",
-    "vue",
     "javascript",
     "svg",
     "family tree",
@@ -42,13 +40,13 @@ export const metadata = {
     siteName: "TreeCharts",
     title: "TreeCharts - Beautiful Tree Visualizations for Web",
     description:
-      "A powerful and flexible library for creating beautiful tree visualizations in React, Angular, Vue, and vanilla JavaScript.",
+      "A powerful and flexible library for creating beautiful tree visualizations in React and vanilla JavaScript.",
   },
   twitter: {
     card: "summary_large_image",
     title: "TreeCharts - Beautiful Tree Visualizations for Web",
     description:
-      "A powerful and flexible library for creating beautiful tree visualizations in React, Angular, Vue, and vanilla JavaScript.",
+      "A powerful and flexible library for creating beautiful tree visualizations in React and vanilla JavaScript.",
   },
 };
 

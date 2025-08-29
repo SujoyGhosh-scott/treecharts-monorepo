@@ -6,52 +6,54 @@ const example = {
   description: "A simple family tree showing parent-child relationships",
   id: "basic-family-tree",
   codes: {
-    javascript: `// Create a basic tree chart
-const data = {
-  name: "John Smith",
-  children: [
+    javascript: `// Create a basic family tree
+const treeData = {
+  value: "John Smith",
+  child: [
     {
-      name: "Jane Smith",
-      children: [
-        { name: "Bob Smith" },
-        { name: "Alice Smith" }
+      value: "Jane Smith",
+      child: [
+        { value: "Bob Smith", child: [] },
+        { value: "Alice Smith", child: [] }
       ]
     },
     {
-      name: "Mike Smith",
-      children: [
-        { name: "Emma Smith" }
+      value: "Mike Smith",
+      child: [
+        { value: "Emma Smith", child: [] }
       ]
     }
   ]
 };
 
 // Initialize the tree chart
-const chart = new TreeChart(document.getElementById('tree-container'), {
-  data: data,
-  nodeRenderer: 'circle',
-  direction: 'down'
+const chart = new TreeChart("tree-container", {
+  type: "direct",
+  nodeConfig: {
+    type: "circle",
+    color: "#87CEEB"
+  }
 });
 
 // Render the chart
-chart.render();`,
+chart.render(treeData);`,
 
-    react: `import { TreeChart } from '@treecharts/react';
+    react: `import { TreeChart } from 'treecharts-react';
 
-const data = {
-  name: "John Smith",
-  children: [
+const treeData = {
+  value: "John Smith",
+  child: [
     {
-      name: "Jane Smith",
-      children: [
-        { name: "Bob Smith" },
-        { name: "Alice Smith" }
+      value: "Jane Smith",
+      child: [
+        { value: "Bob Smith", child: [] },
+        { value: "Alice Smith", child: [] }
       ]
     },
     {
-      name: "Mike Smith",
-      children: [
-        { name: "Emma Smith" }
+      value: "Mike Smith",
+      child: [
+        { value: "Emma Smith", child: [] }
       ]
     }
   ]
@@ -60,9 +62,12 @@ const data = {
 function FamilyTree() {
   return (
     <TreeChart
-      data={data}
-      nodeRenderer="circle"
-      direction="down"
+      data={treeData}
+      type="direct"
+      nodeConfig={{
+        type: "circle",
+        color: "#87CEEB"
+      }}
       width={800}
       height={600}
     />
@@ -70,77 +75,6 @@ function FamilyTree() {
 }
 
 export default FamilyTree;`,
-
-    angular: `import { Component } from '@angular/core';
-import { TreeChartModule } from '@treecharts/angular';
-
-@Component({
-  selector: 'app-family-tree',
-  template: \`
-    <tree-chart
-      [data]="treeData"
-      nodeRenderer="circle"
-      direction="down"
-      [width]="800"
-      [height]="600">
-    </tree-chart>
-  \`,
-  standalone: true,
-  imports: [TreeChartModule]
-})
-export class FamilyTreeComponent {
-  treeData = {
-    name: "John Smith",
-    children: [
-      {
-        name: "Jane Smith",
-        children: [
-          { name: "Bob Smith" },
-          { name: "Alice Smith" }
-        ]
-      },
-      {
-        name: "Mike Smith",
-        children: [
-          { name: "Emma Smith" }
-        ]
-      }
-    ]
-  };
-}`,
-
-    vue: `<template>
-  <TreeChart
-    :data="treeData"
-    node-renderer="circle"
-    direction="down"
-    :width="800"
-    :height="600"
-  />
-</template>
-
-<script setup>
-import { TreeChart } from '@treecharts/vue';
-
-const treeData = {
-  name: "John Smith",
-  children: [
-    {
-      name: "Jane Smith",
-      children: [
-        { name: "Bob Smith" },
-        { name: "Alice Smith" }
-      ]
-    },
-    {
-      name: "Mike Smith",
-      children: [
-        { name: "Emma Smith" }
-      ]
-    }
-  ]
-};
-</script>`,
   },
 };
 
