@@ -1,3 +1,5 @@
+import GameOfLifeBackground from "@/components/GameOfLifeBackground";
+
 export const metadata = {
   title: "Playground - TreeCharts",
   description:
@@ -49,13 +51,26 @@ export const metadata = {
 
 export default function PlaygroundPage() {
   return (
-    <div className="min-h-screen bg-base-100">
+    <div className="min-h-screen bg-base-100 relative">
+      {/* Game of Life Background - Client Component */}
+      <div className="fixed inset-0 bg-gradient-to-br from-primary/10 to-secondary/10">
+        <GameOfLifeBackground
+          cellSize={40}
+          updateInterval={300}
+          initialDensity={0.15}
+          deadCellOpacity={0}
+          liveCellOpacity={0.06}
+          cellColor="255, 255, 255"
+          glowEffect={false}
+        />
+      </div>
+
       {/* Main Content */}
-      <div className="bg-gradient-to-br from-primary/10 to-secondary/10 min-h-[calc(100vh-4rem)]">
+      <div className="relative z-10 min-h-[calc(100vh-4rem)]">
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-4xl mx-auto text-center">
             {/* Coming Soon Badge */}
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/20 text-primary text-sm font-medium mb-6">
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/20 text-primary text-sm font-medium mb-6 backdrop-blur-sm">
               <svg
                 className="w-4 h-4 mr-2"
                 fill="currentColor"
