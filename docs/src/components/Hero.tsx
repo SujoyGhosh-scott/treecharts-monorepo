@@ -1,6 +1,6 @@
-// components/Hero.jsx
 import Link from "next/link";
 import GameOfLifeVisualization from "../components/GameOfLifeVisualization";
+import TreeChartsAnimation from "../components/TreeChartsAnimation";
 
 export default function Hero() {
   return (
@@ -95,9 +95,9 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right Column - Empty space where animation shows through */}
-          <div className="hidden lg:block">
-            {/* This column is intentionally empty - the animation shows through from behind */}
+          {/* Right Column - TreeCharts Animation (layered on top of GameOfLife) */}
+          <div className="flex items-center justify-center h-[350px] lg:h-[350px] relative z-20">
+            <TreeChartsAnimation />
           </div>
         </div>
       </div>

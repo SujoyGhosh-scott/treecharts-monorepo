@@ -1,0 +1,272 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+
+const TreeChartsAnimation = () => {
+  const [currentText, setCurrentText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
+
+  const textSequence = [
+    "treecharts",
+    "treecharts-react",
+    "treecharts-angular",
+    "treecharts-vue",
+  ];
+
+  useEffect(() => {
+    const startDelay = setTimeout(() => {
+      setIsTyping(true);
+
+      const typeText = (text, startFrom = 0) => {
+        return new Promise((resolve) => {
+          let charIndex = startFrom;
+          const typingInterval = setInterval(() => {
+            if (charIndex <= text.length) {
+              setCurrentText(text.slice(0, charIndex));
+              charIndex++;
+            } else {
+              clearInterval(typingInterval);
+              resolve();
+            }
+          }, 100);
+        });
+      };
+
+      const eraseToBase = (fromText, baseLength) => {
+        return new Promise((resolve) => {
+          let charIndex = fromText.length;
+          const eraseInterval = setInterval(() => {
+            if (charIndex >= baseLength) {
+              setCurrentText(fromText.slice(0, charIndex));
+              charIndex--;
+            } else {
+              clearInterval(eraseInterval);
+              resolve();
+            }
+          }, 50);
+        });
+      };
+
+      const animationLoop = async () => {
+        await typeText("treecharts");
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        await typeText("treecharts-react", "treecharts".length);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        await eraseToBase("treecharts-react", "treecharts".length);
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        await typeText("treecharts-angular", "treecharts".length);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        await eraseToBase("treecharts-angular", "treecharts".length);
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        await typeText("treecharts-vue", "treecharts".length);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        await eraseToBase("treecharts-vue", "treecharts".length);
+        setIsTyping(false);
+        setIsComplete(true);
+      };
+
+      animationLoop();
+    }, 1000);
+
+    return () => clearTimeout(startDelay);
+  }, []);
+
+  const containerWidth = 500;
+  const containerHeight = 400;
+  const centerX = containerWidth / 2;
+  const centerY = containerHeight / 2;
+  const capsuleHeight = 50;
+  const smallCircleRadius = 30;
+
+  const getContainerWidth = (text) => {
+    const baseWidth = 70;
+    const charWidth = 10;
+    return baseWidth + text.length * charWidth;
+  };
+
+  const smallCircles = [
+    { x: centerX - 80, y: centerY - 90, icon: "React" },
+    { x: centerX + 90, y: centerY - 70, icon: "Vue" },
+    { x: centerX + 85, y: centerY + 85, icon: "Angular" },
+    { x: centerX - 85, y: centerY + 75, icon: "JS" },
+  ];
+
+  const typescriptCircle = { x: centerX - 15, y: centerY + 140, icon: "TS" };
+  const jsCircle = smallCircles[3];
+
+  const IconComponent = ({ icon, x, y }) => {
+    const logoSources = {
+      React:
+        "data:image/png;base64,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",
+
+      Angular:
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEzklEQVR4nM1ZTYgcVRBu//+IImLEP/xLFA1RcbqqZ4fVsat6dA8J6mFQEReVkIsaDyq48aB4EqIHPSQRUdCDERVFYsxBSEQ0ii6ixp9D/ME/jCbGnanXu4ZoWt7Mbpzp1z39O5steJed3qrvq1f1XlU9yxqC+F7tLCHnPmGYVAxfCcOjM3XnfGshS1CtniCETSHcLAwHFGPQu4TwX0X4vs/O6j212iJrIUjwiHVk23NGheAZxSBh0HFLGGYU4ys+2SuDSuWYeQcuLiwTxseF8be0oGMXwZ/aAdoRQwXtU/XsTlwTfloYdDyZrzv5wvaFpYDeO4YnK9e5UzFs68RwRkDC8Itemf+PtC3Ypm1rDJlAB83mUcK2JwwvCqEq5FEPHlKME0V0CMNM52AgbA7Ml7m4Vgy7ywgHIfRbDKdNjY6eWtgRPLdgX2y+KMKpcuMZ1x9yDuOGkvPlrygCO8syIIwH255z6ZzuFsPFeXJIxToHvjBDiPHt8gjAlvnWbwnDxtIMkNMw9JPTKHGHN0SEEDxckoEvA8s6IuqgUAyflxNCuDZCOY6XFJ+rosDPOmlVKTZcvN0MIUK3BM/8oYu6OALB2JLjyjimhZ1rDeVT9eqSwooJH+vVqW/R8E2qvylqZ8qtXBTpHX38FQC/X11fOTME9h4hvLvvb42RxbPVaE7v48GgXj8+LkZ/z08AXjD14U5doIWTWn+bfwdgd1yI6qN0Mq9i3wO7V1fbhWvmfmsTXt1nx6suz7vbQvjJIAJv5CJA+K7hfYZNPV57KWK3t+cModdjCSjCp3N5n/DGPu+PXXm6EP7dmx9Czhm93/iMN+R01lPxBBgfzBH73+sSPOSItRHfToTbUcWwKzMBFx+IDyFybsm+pbAmDEwYfoiI3R/DRIVhTXZ79s2xBFquXcumENrhc1436gO+X9H77Z5abZEujbPYnGYYiSUwfZ19bsZ4fDJL1RlVRSrGJzLlWx3PSWgnzZlOTOz/E9V8i4vUbUkjlotkOM0dOS+LzaBePzqWQNeD8HM678NrVkmiGF5NRwB/SlQmhDvSKCtzjtNKmXvC+EGiMkX4crIimLRKFmH4KMWhsSmNonUpCNxmEGcc13PPNEsR3GHYdfHWFHbXpSEw8GwWgl+D5mXH9oF38Yrst3cFe3Xo5NQxnkDg3kQCPsFNCcYnTNLZxybC+Kyxi91BWOqSJZqAB/YAD0zrYVWf51ZUTsx6Gc3Gs4QvwaQhmO86lUQCuugaQGCj4TXGu7KDnwXEzmpDH+H6WPuNkcWJBHTzEdUxhYdV/xOGD/MSkIjavuU5S6OGYLq6jZt2GKIYv41QsNUA71WX5wV/aFH1KkMvw5aIkNuVCnxcsyEMz4ePQ2F4sygBIXjL0EvwnEkUtqcmIAT3p61P5mMJwwGNycoiLde+RL9jHW7wivAdHaqZwPfthgcsDJ8dBuDfhPuH3NJt/3C8lEe9ZOB79VtcYtmci0jj8pP0I5y+0EqPc8L9umHf51VOsYYtuivqvKEVmOSFwG+eaeAFQwduEGEbFMN7BYB/PPT34VREyF4phN9lAK6rzvHUN+t8iC6xdfINeizUhZrOodjh7EIQXa3qZOy9CHVt03137p/OWQtZOu/OhFs7y4VlwzL0H/jpBoA+6ublAAAAAElFTkSuQmCC",
+
+      Vue: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADeUlEQVR4nO2WTUiUQRjHJym7Gd2KOhd16FjU3W1LUFPS8GvV9qPdtXV3zdxca2beGXUzNCRIBCuijG5FH9ZBiEhn1thuEmXQ1aiT4qVAJ17LBHVm1tf90NgfDMj6zvM8/2eeGf4A5MiRI0eOHH9BnLzGnArZcvSERGGVc81ld7gX6noCR4AG8xvzW1mcht4WaX5zIUZeSIPDeOdhxMgv2eZrbw1R5PJIRVREmj7pBJxt83+V7S9yehZzSAUw+tMYMw4qEyBG+lUd8A5FpAIKq52iLhZqkMV2xEKuwmqXdL//XkTdfU6v6xoEut9170acfFd0QZQFfdIiSgO+WQhh3qrTfQO3lzR552T7ysNN5nioRudbLBHbBZLBiFO3qhMtTzqETdHJGhIaWBmzGgfvq06u9elVZfcNRuuSKn6xWwLmIU7fqwJW4WapgNPn3fOe3tC+pXjm3+ZvCsFCfXFpwqwpaQGLIsbJCcTIgixo+ygWdof8FM51BPhSrMpo4IPi9RLRUay6uPOY42PACoiTYVVnnLdapQJstS5R13fJ1nijpchWIxfqvn1Z2X3M6F1LxS+eQhzuR4zMyYLDMSKKvRekxZWH/dNlId8P2f+LfV6BxuQXFzM6AyfgHssC/pwCjao6FBhulz+rmhV8HNU8m50tYKP0j/TvRIxOqRJVXLm47uIrowH16HDyxcwNUgEcN0pVydpeQnFSMedr3Y/ICNQIoKdAKsGcvlIldPSEkxbQ2Kf2O5jT5yDVGNw4tBGftLTMb3R+B050HQDpAHFyU9U571CbVoDO72BGYiBdwDgswIxOK7onzoT8YiN+B8ZhAUgniBOXJZ+UhN9BcVIL0k0yPqnaCK72OzSoGx0uhNgGMgEe6zqu8kmmt7HXu5f9Tr3e70BGj2ak+H8iOH2YrE/yDKj9DuLkDsg0pkcxvYq0KNMn+b2ipMkr4Lji4nIySxN0L8gGmJF2VWebH0W1fgdzEgbZAk7CfJ1PUo4Oo1Mp8ztWwXFaYlUATrXfSZdPksz+M7BZ0PmkjPodq2BO+9Yx+91gswF1Pmm5+9Np9ztWMRh16gQYvLMGbFaggHmYkwnFxWUZ8zsp90nZ8DtWQYw8WOMEhsBWAa70SYzOZM3vWAVzEll+No0Q2GrASZiPGfmMGP04mBjcAbYikBvFkBF7tuvIkeN/5jfJ0X7S9bD3YgAAAABJRU5ErkJggg==",
+
+      JS: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACHElEQVR4nO2WT0hUURTGz3HUGUSEUNL8FxYmQgWF4UJRRDAQlRYuoqyViButdiUi7WoT0sZoIVorCcHMSKQ0cSEKKZX2oGhhhbQRDZRAxL6483jebjNKEr65A+eDj4Fz7rw5v3nnnXeIRCKRyErBIdhkEgBHACAA+1GsC4YAOLEvGgLg2GMSAEcAIAD7UawLhgA4//uDvOMn3WZuYZhwsZaRlcFIDDCyDzOa6hmLz+IAYLyPEArqHP3hlBCH89YCbC8SCnJ1PJjMKD7mfnqx0tOMXx8sBXg7pOMJCYz3T934l3HC8TzGtSuM9TcW34HJRzqu2mjznT7/cz4OHuKvE2b8QjVj6dW/Xs8CAOXz5eaDGwoymhsZn0bjBGB5knCmOHICBQIuyMac5QDKqsiOFkZqSiTIqROM1RnLATyvTBPu3CBkppsQbZc5tgBq3u8F8Pec/zFL4fnvnc/L8hFATZGGKsbzBzr2ecwEGOnRucd3CSUnI+d99039neQknwAG7lH49e9Nk+tXGT1dhLKzZkuo3UedV/uPF6sqZXybcONrs4TKczqn3ta+AHx8oQF2c+FRvRrc7zDvDDMjJ9NcJZRvtfjYQq/7CWmp0YtXrfCy1+z9zta9gStKoo/SAwNQ/j5FaG9i5B9x57lakxtrGHOD0c/PDBAu1TGKCtx//1CaW/jD24Sthd2m2gEC+GESAEcA4CuASCQSkR/6DRH0JVWM43R/AAAAAElFTkSuQmCC",
+
+      TS: "data:image/png;base64,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",
+    };
+
+    return (
+      <div
+        className="absolute flex items-center justify-center"
+        style={{
+          left: x - 14,
+          top: y - 14,
+          width: 28,
+          height: 28,
+        }}
+      >
+        <img
+          src={logoSources[icon]}
+          alt={icon}
+          style={{ width: "24px", height: "24px" }}
+        />
+      </div>
+    );
+  };
+
+  return (
+    <div className="flex items-center justify-center w-full h-full">
+      <div
+        className="relative"
+        style={{ width: containerWidth, height: containerHeight }}
+      >
+        {/* Small circles */}
+        {smallCircles.map((circle, index) => (
+          <div
+            key={`small-circle-${index}`}
+            className="absolute border-2 border-white rounded-full"
+            style={{
+              left: circle.x - smallCircleRadius,
+              top: circle.y - smallCircleRadius,
+              width: smallCircleRadius * 2,
+              height: smallCircleRadius * 2,
+            }}
+          />
+        ))}
+
+        {/* Lines to small circles */}
+        {smallCircles.map((circle, index) => {
+          const dx = circle.x - centerX;
+          const dy = circle.y - centerY;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+
+          return (
+            <div
+              key={`small-line-${index}`}
+              className="absolute bg-white"
+              style={{
+                left: centerX,
+                top: centerY - 1.5,
+                width: distance - smallCircleRadius,
+                height: 3,
+                transformOrigin: "0 50%",
+                transform: `rotate(${angle}deg)`,
+              }}
+            />
+          );
+        })}
+
+        {/* TypeScript circle */}
+        <div
+          className="absolute border-2 border-white rounded-full"
+          style={{
+            left: typescriptCircle.x - smallCircleRadius,
+            top: typescriptCircle.y - smallCircleRadius,
+            width: smallCircleRadius * 2,
+            height: smallCircleRadius * 2,
+          }}
+        />
+
+        {/* Line from JavaScript to TypeScript */}
+        {(() => {
+          const dx = typescriptCircle.x - jsCircle.x;
+          const dy = typescriptCircle.y - jsCircle.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+
+          return (
+            <div
+              className="absolute bg-white"
+              style={{
+                left: jsCircle.x + (dx / distance) * smallCircleRadius,
+                top: jsCircle.y + (dy / distance) * smallCircleRadius - 1.5,
+                width: distance - smallCircleRadius * 2,
+                height: 3,
+                transformOrigin: "0 50%",
+                transform: `rotate(${angle}deg)`,
+              }}
+            />
+          );
+        })()}
+
+        {/* Central shape */}
+        {!isTyping && !isComplete && currentText === "" ? (
+          <div
+            className="absolute bg-white rounded-full transition-all duration-500 ease-in-out"
+            style={{
+              left: centerX - 25,
+              top: centerY - 25,
+              width: 50,
+              height: 50,
+            }}
+          />
+        ) : (
+          <div
+            className="absolute bg-white transition-all duration-300 ease-out"
+            style={{
+              left: centerX - getContainerWidth(currentText) / 2,
+              top: centerY - capsuleHeight / 2,
+              width: getContainerWidth(currentText),
+              height: capsuleHeight,
+              borderRadius: capsuleHeight / 2,
+            }}
+          />
+        )}
+
+        {/* Central text */}
+        <div
+          className="absolute flex items-center justify-center text-xl font-semibold text-black"
+          style={{
+            left: centerX - getContainerWidth(currentText) / 2,
+            top: centerY - 12,
+            width: getContainerWidth(currentText),
+            height: 24,
+          }}
+        >
+          {currentText}
+          {isTyping && currentText.length > 0 && (
+            <span className="animate-pulse ml-1">|</span>
+          )}
+        </div>
+
+        {/* Framework icons */}
+        {smallCircles.map((circle, index) => (
+          <IconComponent
+            key={`icon-${index}`}
+            icon={circle.icon}
+            x={circle.x}
+            y={circle.y}
+          />
+        ))}
+
+        <IconComponent
+          icon={typescriptCircle.icon}
+          x={typescriptCircle.x}
+          y={typescriptCircle.y}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default TreeChartsAnimation;
