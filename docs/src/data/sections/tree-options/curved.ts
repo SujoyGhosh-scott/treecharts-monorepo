@@ -71,8 +71,8 @@ Curved connections work best for mind maps and brainstorming diagrams, creative 
 
 The curved renderer supports all standard TreeChart configuration options. For detailed customization:
 
-- **Node Configuration** - See [Node Styling](/docs/node-styling) and [Node Types](/docs/node-types)
-- **Edge Configuration** - See [Edges Customization](/docs/edges-customization)`,
+- **Node Configuration** - See [Node Styling](/docs/node-types/regular-nodes) and [Node Types](/docs/node-types)
+- **Edge Configuration** - See [Edges Customization](/docs/edge-customization)`,
     },
   ],
 };

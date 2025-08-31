@@ -77,8 +77,8 @@ All directional layouts work best for network diagrams and relationship maps, mi
 
 The all-directional renderer has specialized options for radial layouts. For detailed customization:
 
-- **Node Configuration** - See [Node Styling](/docs/node-styling) and [Node Types](/docs/node-types)
-- **Edge Configuration** - See [Edges Customization](/docs/edges-customization)`,
+- **Node Configuration** - See [Node Styling](/docs/node-types/regular-nodes) and [Node Types](/docs/node-types)
+- **Edge Configuration** - See [Edges Customization](/docs/edge-customization)`,
     },
   ],
 };

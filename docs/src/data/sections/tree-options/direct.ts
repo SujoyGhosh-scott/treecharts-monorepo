@@ -70,8 +70,8 @@ Direct connections are ideal for simple organizational charts, basic hierarchica
 
 The direct renderer supports all standard TreeChart configuration options. For detailed customization:
 
-- **Node Configuration** - See [Node Styling](/docs/node-styling) and [Node Types](/docs/node-types)
-- **Edge Configuration** - See [Edges Customization](/docs/edges-customization)`,
+- **Node Configuration** - See [Node Styling](/docs/node-types/regular-nodes) and [Node Types](/docs/node-types)
+- **Edge Configuration** - See [Edges Customization](/docs/edge-customization)`,
     },
   ],
 };

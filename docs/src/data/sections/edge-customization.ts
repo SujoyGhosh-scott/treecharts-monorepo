@@ -270,18 +270,7 @@ interface EdgeConfig {
   textSize?: number;           // Text font size
   textColor?: string;          // Text color  
   textBackgroundColor?: string; // Text background (optional)
-}
-\`\`\`
-
-## Tips and Best Practices
-
-💡 **Edge Text**: Works best with shorter labels. For longer descriptions, consider using node descriptions instead.
-
-💡 **Right-Angle Arrows**: When using arrows with right-angle connections, they appear on the appropriate segments based on direction.
-
-⚠️ **Thick Lines**: Very thick lines (width > 10) may affect arrow positioning. Test your configuration with different arrow sizes.
-
-💡 **Color Contrast**: Use contrasting colors for edges and nodes to ensure good visual separation and readability.`,
+}`,
     },
   ],
 };

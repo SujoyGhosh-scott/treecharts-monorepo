@@ -337,8 +337,8 @@ Direct connections are ideal for simple organizational charts, basic hierarchica
 
 The direct renderer supports all standard TreeChart configuration options. For detailed customization:
 
-- **Node Configuration** - See [Node Styling](/docs/node-styling) and [Node Types](/docs/node-types)
-- **Edge Configuration** - See [Edges Customization](/docs/edges-customization)`,
+- **Node Configuration** - See [Node Styling](/docs/node-types/regular-nodes) and [Node Types](/docs/node-types)
+- **Edge Configuration** - See [Edges Customization](/docs/edge-customization)`,
             },
           ],
         },
@@ -413,8 +413,8 @@ Right angle connections are perfect for organizational charts and corporate hier
 
 The right angle renderer supports all standard TreeChart configuration options. For detailed customization:
 
-- **Node Configuration** - See [Node Styling](/docs/node-styling) and [Node Types](/docs/node-types)
-- **Edge Configuration** - See [Edges Customization](/docs/edges-customization)`,
+- **Node Configuration** - See [Node Styling](/docs/node-types/regular-nodes) and [Node Types](/docs/node-types)
+- **Edge Configuration** - See [Edges Customization](/docs/edge-customization)`,
             },
           ],
         },
@@ -489,8 +489,8 @@ Curved connections work best for mind maps and brainstorming diagrams, creative 
 
 The curved renderer supports all standard TreeChart configuration options. For detailed customization:
 
-- **Node Configuration** - See [Node Styling](/docs/node-styling) and [Node Types](/docs/node-types)
-- **Edge Configuration** - See [Edges Customization](/docs/edges-customization)`,
+- **Node Configuration** - See [Node Styling](/docs/node-types/regular-nodes) and [Node Types](/docs/node-types)
+- **Edge Configuration** - See [Edges Customization](/docs/edge-customization)`,
             },
           ],
         },
@@ -571,8 +571,8 @@ All directional layouts work best for network diagrams and relationship maps, mi
 
 The all-directional renderer has specialized options for radial layouts. For detailed customization:
 
-- **Node Configuration** - See [Node Styling](/docs/node-styling) and [Node Types](/docs/node-types)
-- **Edge Configuration** - See [Edges Customization](/docs/edges-customization)`,
+- **Node Configuration** - See [Node Styling](/docs/node-types/regular-nodes) and [Node Types](/docs/node-types)
+- **Edge Configuration** - See [Edges Customization](/docs/edge-customization)`,
             },
           ],
         },
