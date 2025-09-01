@@ -141,8 +141,6 @@ export class CollapsibleNodeRenderer extends BaseNodeRenderer {
     const fontSize = nodeConfig.fontSize || NODE_CONSTANTS.DEFAULT_FONT_SIZE;
     const descriptionFontSize =
       nodeConfig.descriptionFontSize || NODE_CONSTANTS.DESCRIPTION_FONT_SIZE;
-    const descriptionMarginTop =
-      nodeConfig.descriptionMarginTop || NODE_CONSTANTS.DESCRIPTION_MARGIN_TOP;
 
     let totalRequiredHeight = fontSize; // Start with main text height
 
@@ -260,30 +258,28 @@ export class CollapsibleNodeRenderer extends BaseNodeRenderer {
       const maxTextWidth = options.width - padding * 2;
 
       // Create description using base class method
-      if (true) {
-        // Position text (center-aligned with proper spacing between title and description)
-        const titleBottomY = options.y + padding + options.fontSize;
-        const descriptionSpacing = 12; // Add more spacing between title and description
-        const textStartY =
-          titleBottomY + descriptionSpacing + options.descriptionFontSize;
 
-        const centerX = options.x + options.width / 2;
+      const titleBottomY = options.y + padding + options.fontSize;
+      const descriptionSpacing = 12; // Add more spacing between title and description
+      const textStartY =
+        titleBottomY + descriptionSpacing + options.descriptionFontSize;
 
-        // Use base class method for text wrapping
-        const descriptionElements = this.createWrappedDescriptionText(
-          options.description,
-          maxTextWidth,
-          options.descriptionFontSize,
-          options.fontFamily,
-          centerX,
-          textStartY,
-          options.descriptionFontColor,
-          NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT,
-          "middle"
-        );
+      const centerX = options.x + options.width / 2;
 
-        elements.push(...descriptionElements);
-      }
+      // Use base class method for text wrapping
+      const descriptionElements = this.createWrappedDescriptionText(
+        options.description,
+        maxTextWidth,
+        options.descriptionFontSize,
+        options.fontFamily,
+        centerX,
+        textStartY,
+        options.descriptionFontColor,
+        NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT,
+        "middle"
+      );
+
+      elements.push(...descriptionElements);
     }
 
     return elements;

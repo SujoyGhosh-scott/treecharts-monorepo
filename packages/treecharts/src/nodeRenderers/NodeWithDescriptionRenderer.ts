@@ -227,31 +227,27 @@ export class NodeWithDescriptionRenderer extends BaseNodeRenderer {
     ) {
       const maxTextWidth = options.width - padding * 2;
 
-      // Create description using base class method
-      if (true) {
-        // Position text (center-aligned with proper spacing between title and description)
-        const titleBottomY = options.y + padding + options.fontSize;
-        const descriptionSpacing = 12; // Add more spacing between title and description
-        const textStartY =
-          titleBottomY + descriptionSpacing + options.descriptionFontSize;
+      const titleBottomY = options.y + padding + options.fontSize;
+      const descriptionSpacing = 12; // Add more spacing between title and description
+      const textStartY =
+        titleBottomY + descriptionSpacing + options.descriptionFontSize;
 
-        const centerX = options.x + options.width / 2;
+      const centerX = options.x + options.width / 2;
 
-        // Use base class method for text wrapping
-        const descriptionElements = this.createWrappedDescriptionText(
-          options.description,
-          maxTextWidth,
-          options.descriptionFontSize,
-          options.fontFamily,
-          centerX,
-          textStartY,
-          options.descriptionFontColor,
-          NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT,
-          "middle"
-        );
+      // Use base class method for text wrapping
+      const descriptionElements = this.createWrappedDescriptionText(
+        options.description,
+        maxTextWidth,
+        options.descriptionFontSize,
+        options.fontFamily,
+        centerX,
+        textStartY,
+        options.descriptionFontColor,
+        NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT,
+        "middle"
+      );
 
-        elements.push(...descriptionElements);
-      }
+      elements.push(...descriptionElements);
     }
 
     return elements;
