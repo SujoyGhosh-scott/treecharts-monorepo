@@ -9,13 +9,21 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "clean": "turbo run clean"
+    "dev:react": "turbo run dev --filter=treecharts-react...",
+    "storybook": "turbo run storybook --filter=treecharts-react",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "publish": "turbo run build"
   },
   "keywords": [],
   "author": "Sujoy Ghosh",
   "license": "MIT",
   "description": "A tree chart visualization library monorepo",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.41.0",
+    "@typescript-eslint/parser": "^8.41.0",
+    "eslint": "^8.57.1",
     "turbo": "^2.5.6"
   }
 }

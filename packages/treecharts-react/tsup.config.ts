@@ -9,5 +9,6 @@ export default defineConfig({
   clean: true,
   external: ["react", "react-dom", "treecharts"],
   splitting: false,
+  minify: false,
   treeshake: true,
 });
