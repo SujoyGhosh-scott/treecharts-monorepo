@@ -1,5 +1,6 @@
 import Sidebar from "@/components/docs/Sidebar";
 import MobileNavigation from "@/components/docs/MobileNavigation";
+import React from "react";
 
 export const metadata = {
   title: {

@@ -3,6 +3,7 @@ import { Macondo } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileBottomNavigation from "@/components/MobileBottomNavigation";
+import React from "react";
 
 const macondo = Macondo({
   weight: ["400"],

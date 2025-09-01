@@ -21,20 +21,6 @@ export default function ImageGrid({
 }: ImageGridProps) {
   const { desktop, mobile, gap = "20px", maxWidth = "300px" } = gridConfig;
 
-  const gridStyles = {
-    display: "grid",
-    gap,
-    gridTemplateColumns: `repeat(${mobile}, 1fr)`,
-    justifyItems: "center",
-    margin: "30px 0",
-  };
-
-  const desktopGridStyles = {
-    [`@media (min-width: 768px)`]: {
-      gridTemplateColumns: `repeat(${desktop}, 1fr)`,
-    },
-  };
-
   return (
     <div className="image-grid-container">
       {title && (

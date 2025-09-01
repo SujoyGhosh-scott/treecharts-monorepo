@@ -7,13 +7,6 @@ const TreeChartsAnimation = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
-  const textSequence = [
-    "treecharts",
-    "treecharts-react",
-    "treecharts-angular",
-    "treecharts-vue",
-  ];
-
   useEffect(() => {
     const startDelay = setTimeout(() => {
       setIsTyping(true);
