@@ -1,6 +1,6 @@
 // packages/treecharts-react/.eslintrc.js
 module.exports = {
-  extends: ["../../.eslintrc.js"],
+  extends: ["../../.eslintrc.js", "plugin:storybook/recommended"],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,

@@ -6,8 +6,11 @@
     "declarationMap": true,
     "outDir": "./dist",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "types": ["react", "react-dom"]
+    "types": ["react", "react-dom"],
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.stories.tsx", "**/*.test.tsx"]
+  "exclude": ["node_modules", "dist"]
 }
