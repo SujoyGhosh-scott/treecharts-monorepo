@@ -141,7 +141,7 @@ export const ArrowConnections: Story = {
       width: 3,
       showArrows: true,
       arrowDirection: "source-to-target",
-      arrowSize: 8,
+      arrowSize: 3,
       arrowColor: "#1976D2",
     },
     titleConfig: {
@@ -323,7 +323,7 @@ export const ThickConnections: Story = {
       opacity: 0.8,
       showArrows: true,
       arrowDirection: "source-to-target",
-      arrowSize: 12,
+      arrowSize: 2,
     },
     titleConfig: {
       title: "Thick Connections",
@@ -382,7 +382,7 @@ export const ColorVariations: Story = {
             width: 3,
             showArrows: true,
             arrowDirection: "source-to-target",
-            arrowSize: 7,
+            arrowSize: 4,
           }}
           width="100%"
           height="200px"
@@ -412,7 +412,7 @@ export const ColorVariations: Story = {
             width: 3,
             showArrows: true,
             arrowDirection: "source-to-target",
-            arrowSize: 7,
+            arrowSize: 4,
           }}
           width="100%"
           height="200px"
@@ -442,7 +442,7 @@ export const ColorVariations: Story = {
             width: 3,
             showArrows: true,
             arrowDirection: "source-to-target",
-            arrowSize: 7,
+            arrowSize: 4,
           }}
           width="100%"
           height="200px"
@@ -472,7 +472,7 @@ export const ColorVariations: Story = {
             width: 3,
             showArrows: true,
             arrowDirection: "source-to-target",
-            arrowSize: 7,
+            arrowSize: 4,
           }}
           width="100%"
           height="200px"
@@ -548,7 +548,7 @@ export const AdvancedStyling: Story = {
       curveRadius: 30,
       showArrows: true,
       arrowDirection: "source-to-target",
-      arrowSize: 10,
+      arrowSize: 3,
       arrowColor: "#1A237E",
       textSize: 9,
       textColor: "#1A237E",
