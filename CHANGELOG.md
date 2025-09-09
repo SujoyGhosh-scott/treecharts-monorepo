@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Resolved critical bug where connections from second-to-last level to final level nodes were not being drawn
   - Completely rewrote RightAngleRenderer connection logic using simpler, more reliable approach
   - Enhanced ConnectionDrawer with high-level methods for complex right-angle connection patterns
+- **Title Text Wrapping**: Fixed title text overflow in node-with-description and collapsible-node types when titles exceed node width by implementing automatic text wrapping with dynamic height calculation
 - **Shadow Rendering Issues**: Resolved critical shadow rendering problems that caused visual corruption
   - Fixed duplicate shadow elements creating multiple overlapping black shapes
   - Corrected shadow opacity handling for both solid colors and rgba values

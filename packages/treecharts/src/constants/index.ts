@@ -117,7 +117,7 @@ export const DEFAULT_OPTIONS: Required<
     dasharray: "",
     showArrows: false,
     arrowDirection: "source-to-target",
-    arrowSize: 6,
+    arrowSize: 4,
     arrowColor: "black",
     curveRadius: 20,
     customPath: "",

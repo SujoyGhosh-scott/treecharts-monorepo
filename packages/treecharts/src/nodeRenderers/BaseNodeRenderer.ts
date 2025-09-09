@@ -326,6 +326,109 @@ export abstract class BaseNodeRenderer implements NodeRenderer {
   }
 
   /**
+   * Create canvas-based text wrapping for titles
+   */
+  protected createWrappedTitleText(
+    title: string,
+    maxTextWidth: number,
+    fontSize: number,
+    fontFamily: string,
+    x: number,
+    startY: number,
+    fillColor: string,
+    lineHeight: number = 1.2,
+    textAnchor: "start" | "middle" | "end" = "middle"
+  ): SVGElement[] {
+    const elements: SVGElement[] = [];
+
+    // Create canvas for text measurement
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+
+    if (!context) return elements;
+
+    context.font = `bold ${fontSize}px ${fontFamily}`;
+
+    // Wrap text using simple word wrapping
+    const words = title.split(" ");
+    const lines: string[] = [];
+    let currentLine = "";
+
+    for (const word of words) {
+      const testLine = currentLine ? currentLine + " " + word : word;
+      const testWidth = context.measureText(testLine).width;
+
+      if (testWidth > maxTextWidth && currentLine) {
+        lines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+
+    // Create text elements for each line
+    lines.forEach((line, index) => {
+      const lineY = startY + index * fontSize * lineHeight;
+
+      const titleText = document.createElementNS(SVG_NS, "text");
+      titleText.setAttribute("x", x.toString());
+      titleText.setAttribute("y", lineY.toString());
+      titleText.setAttribute("font-family", fontFamily);
+      titleText.setAttribute("font-size", fontSize.toString());
+      titleText.setAttribute("font-weight", "bold");
+      titleText.setAttribute("fill", fillColor);
+      titleText.setAttribute("stroke", "none");
+      titleText.setAttribute("stroke-width", "0");
+      titleText.setAttribute("text-anchor", textAnchor);
+      titleText.setAttribute("dominant-baseline", "alphabetic");
+      titleText.textContent = line;
+      elements.push(titleText);
+    });
+
+    return elements;
+  }
+
+  /**
+   * Calculate height needed for wrapped title text
+   */
+  protected calculateWrappedTitleHeight(
+    title: string,
+    maxTextWidth: number,
+    fontSize: number,
+    fontFamily: string,
+    lineHeight: number = 1.2
+  ): number {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+
+    if (!context) return fontSize;
+
+    context.font = `bold ${fontSize}px ${fontFamily}`;
+
+    // Calculate number of lines needed
+    const words = title.split(" ");
+    let lines = 1;
+    let currentLine = "";
+
+    for (const word of words) {
+      const testLine = currentLine ? currentLine + " " + word : word;
+      const testWidth = context.measureText(testLine).width;
+
+      if (testWidth > maxTextWidth && currentLine) {
+        lines++;
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
+
+    return lines * fontSize * lineHeight;
+  }
+
+  /**
    * Calculate lines needed for text wrapping using canvas measurement
    */
   protected calculateWrappedTextLines(

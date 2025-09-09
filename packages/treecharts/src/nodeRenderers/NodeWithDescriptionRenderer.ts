@@ -123,17 +123,24 @@ export class NodeWithDescriptionRenderer extends BaseNodeRenderer {
     const fontSize = nodeConfig.fontSize || NODE_CONSTANTS.DEFAULT_FONT_SIZE;
     const descriptionFontSize =
       nodeConfig.descriptionFontSize || NODE_CONSTANTS.DESCRIPTION_FONT_SIZE;
-    const descriptionMarginTop =
-      nodeConfig.descriptionMarginTop || NODE_CONSTANTS.DESCRIPTION_MARGIN_TOP;
 
-    let totalRequiredHeight = fontSize; // Start with main text height
+    // Calculate available width for text wrapping
+    const maxWidth = nodeConfig.width || NODE_CONSTANTS.DEFAULT_MAX_WIDTH;
+    const availableWidth = maxWidth - padding * 2;
+
+    // Calculate wrapped title height
+    const titleHeight = this.calculateWrappedTitleHeight(
+      node.value || "",
+      availableWidth,
+      fontSize,
+      nodeConfig.fontFamily || "Arial, sans-serif",
+      1.2
+    );
+
+    let totalRequiredHeight = titleHeight; // Start with wrapped title height
 
     // Handle description if present
     if (node.description && node.description.trim()) {
-      // Calculate available width for text wrapping
-      const maxWidth = nodeConfig.width || NODE_CONSTANTS.DEFAULT_MAX_WIDTH;
-      const availableWidth = maxWidth - padding * 2;
-
       // Use base class method to calculate lines
       const lines = this.calculateWrappedTextLines(
         node.description,
@@ -201,23 +208,32 @@ export class NodeWithDescriptionRenderer extends BaseNodeRenderer {
     const centerX = options.x + options.width / 2;
     const padding = options.padding;
 
-    // Create main text
-    const mainText = document.createElementNS(SVG_NS, "text");
-    mainText.setAttribute("x", centerX.toString());
-    mainText.setAttribute(
-      "y",
-      (options.y + padding + options.fontSize).toString()
+    // Calculate available width for title text
+    const maxTitleWidth = options.width - padding * 2;
+
+    // Create wrapped title text
+    const titleStartY = options.y + padding + options.fontSize;
+    const titleElements = this.createWrappedTitleText(
+      options.text,
+      maxTitleWidth,
+      options.fontSize,
+      options.fontFamily,
+      centerX,
+      titleStartY,
+      options.fontColor,
+      1.2,
+      "middle"
     );
-    mainText.setAttribute("text-anchor", "middle");
-    mainText.setAttribute("dominant-baseline", "middle");
-    mainText.setAttribute("font-family", options.fontFamily);
-    mainText.setAttribute("font-size", options.fontSize.toString());
-    mainText.setAttribute("font-weight", "bold");
-    mainText.setAttribute("fill", options.fontColor);
-    mainText.setAttribute("stroke", "none");
-    mainText.setAttribute("stroke-width", "0");
-    mainText.textContent = options.text;
-    elements.push(mainText);
+    elements.push(...titleElements);
+
+    // Calculate actual height used by title
+    const titleHeight = this.calculateWrappedTitleHeight(
+      options.text,
+      maxTitleWidth,
+      options.fontSize,
+      options.fontFamily,
+      1.2
+    );
 
     // Create description text if present (only if width is sufficient)
     if (
@@ -227,7 +243,8 @@ export class NodeWithDescriptionRenderer extends BaseNodeRenderer {
     ) {
       const maxTextWidth = options.width - padding * 2;
 
-      const titleBottomY = options.y + padding + options.fontSize;
+      // Position description after the wrapped title
+      const titleBottomY = options.y + padding + titleHeight;
       const descriptionSpacing = 12; // Add more spacing between title and description
       const textStartY =
         titleBottomY + descriptionSpacing + options.descriptionFontSize;

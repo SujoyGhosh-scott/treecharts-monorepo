@@ -142,7 +142,21 @@ export class CollapsibleNodeRenderer extends BaseNodeRenderer {
     const descriptionFontSize =
       nodeConfig.descriptionFontSize || NODE_CONSTANTS.DESCRIPTION_FONT_SIZE;
 
-    let totalRequiredHeight = fontSize; // Start with main text height
+    // Calculate available width for text wrapping (accounting for chevron space)
+    const maxWidth = nodeConfig.width || NODE_CONSTANTS.DEFAULT_MAX_WIDTH;
+    const chevronSpace = NODE_CONSTANTS.SPACE_FOR_ARROW_BUTTON;
+    const titleAvailableWidth = maxWidth - padding * 2 - chevronSpace;
+
+    // Calculate wrapped title height
+    const titleHeight = this.calculateWrappedTitleHeight(
+      node.value || "",
+      titleAvailableWidth,
+      fontSize,
+      nodeConfig.fontFamily || "Arial, sans-serif",
+      1.2
+    );
+
+    let totalRequiredHeight = titleHeight; // Start with wrapped title height
 
     // Handle description if present and expanded
     if (
@@ -150,8 +164,7 @@ export class CollapsibleNodeRenderer extends BaseNodeRenderer {
       node.description.trim() &&
       node.collapsibleState?.expanded
     ) {
-      // Calculate available width for text wrapping
-      const maxWidth = nodeConfig.width || NODE_CONSTANTS.DEFAULT_MAX_WIDTH;
+      // Calculate available width for description text wrapping
       const availableWidth = maxWidth - padding * 2;
 
       // Use base class method to calculate lines
@@ -230,23 +243,32 @@ export class CollapsibleNodeRenderer extends BaseNodeRenderer {
     const chevronSpace = NODE_CONSTANTS.SPACE_FOR_ARROW_BUTTON;
     const textCenterX = options.x + (options.width - chevronSpace) / 2;
 
-    // Create main text
-    const mainText = document.createElementNS(SVG_NS, "text");
-    mainText.setAttribute("x", textCenterX.toString());
-    mainText.setAttribute(
-      "y",
-      (options.y + padding + options.fontSize).toString()
+    // Calculate available width for title text (accounting for chevron space)
+    const maxTitleWidth = options.width - padding * 2 - chevronSpace;
+
+    // Create wrapped title text
+    const titleStartY = options.y + padding + options.fontSize;
+    const titleElements = this.createWrappedTitleText(
+      options.text,
+      maxTitleWidth,
+      options.fontSize,
+      options.fontFamily,
+      textCenterX,
+      titleStartY,
+      options.fontColor,
+      1.2,
+      "middle"
     );
-    mainText.setAttribute("text-anchor", "middle");
-    mainText.setAttribute("dominant-baseline", "middle");
-    mainText.setAttribute("font-family", options.fontFamily);
-    mainText.setAttribute("font-size", options.fontSize.toString());
-    mainText.setAttribute("font-weight", "bold");
-    mainText.setAttribute("fill", options.fontColor);
-    mainText.setAttribute("stroke", "none");
-    mainText.setAttribute("stroke-width", "0");
-    mainText.textContent = options.text;
-    elements.push(mainText);
+    elements.push(...titleElements);
+
+    // Calculate actual height used by title
+    const titleHeight = this.calculateWrappedTitleHeight(
+      options.text,
+      maxTitleWidth,
+      options.fontSize,
+      options.fontFamily,
+      1.2
+    );
 
     // Create description text if present and expanded (only if width is sufficient)
     if (
@@ -257,9 +279,8 @@ export class CollapsibleNodeRenderer extends BaseNodeRenderer {
     ) {
       const maxTextWidth = options.width - padding * 2;
 
-      // Create description using base class method
-
-      const titleBottomY = options.y + padding + options.fontSize;
+      // Position description after the wrapped title
+      const titleBottomY = options.y + padding + titleHeight;
       const descriptionSpacing = 12; // Add more spacing between title and description
       const textStartY =
         titleBottomY + descriptionSpacing + options.descriptionFontSize;
@@ -293,11 +314,10 @@ export class CollapsibleNodeRenderer extends BaseNodeRenderer {
     const chevronPadding = 8; // More padding from the edge
     const chevronX = options.x + options.width - chevronPadding - 6; // 6 is half of chevronSize for centering
 
-    // Position chevron vertically centered with the title text
-    // The title text is positioned with dominant-baseline="middle" at y = options.y + options.padding + options.fontSize
-    // Adjust for visual center by moving slightly up from the mathematical baseline
-    const titleTextCenterY = options.y + options.padding + options.fontSize;
-    const textVisualCenter = titleTextCenterY - options.fontSize * 0.1;
+    // Position chevron vertically centered with the first line of the title text
+    // The first line starts at y = options.y + options.padding + options.fontSize
+    const firstLineCenterY = options.y + options.padding + options.fontSize;
+    const textVisualCenter = firstLineCenterY - options.fontSize * 0.1;
     const chevronY = textVisualCenter;
     const chevronSize = 8;
 
