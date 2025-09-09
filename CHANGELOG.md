@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Right-Angle Bottom-to-Top Connections**: Fixed missing connections in right-angle trees with bottom-to-top alignment
+  - Resolved critical bug where connections from second-to-last level to final level nodes were not being drawn
+  - Completely rewrote RightAngleRenderer connection logic using simpler, more reliable approach
+  - Enhanced ConnectionDrawer with high-level methods for complex right-angle connection patterns
 - **Shadow Rendering Issues**: Resolved critical shadow rendering problems that caused visual corruption
   - Fixed duplicate shadow elements creating multiple overlapping black shapes
   - Corrected shadow opacity handling for both solid colors and rgba values

@@ -6,6 +6,7 @@
 
 #### Fixed
 
+- **Right-Angle Bottom-to-Top Connections**: Fixed missing connections in the final level of right-angle trees when using bottom-to-top alignment. Completely rewrote RightAngleRenderer's connection logic using a simpler, more reliable child-first iteration approach and enhanced ConnectionDrawer with high-level methods for better architecture and text positioning.
 - **Shadow Rendering Issues**: Resolved critical visual corruption when shadows were enabled, fixing duplicate shadow elements and opacity issues that created overlapping black shapes
 - **Node Duplication**: Eliminated triple rendering layers causing nodes to appear multiple times by streamlining the rendering pipeline between NodeDrawer and renderer classes
 - **Gradient Rendering**: Fixed gradient styling not being applied to rectangle nodes where solid colors were overwriting gradient fills

@@ -78,6 +78,151 @@ export class ConnectionDrawer {
   }
 
   /**
+   * Draw a complete right-angle connection with three segments (parent → midpoint → child)
+   * This is a higher-level method that creates the full L-shaped connection in one call
+   */
+  public drawThreeSegmentRightAngle(
+    parentPoint: Point,
+    childPoint: Point,
+    options: Partial<ConnectionOptions> = {}
+  ): SVGElement[] {
+    const finalOptions = { ...this.defaultOptions, ...options };
+    const elements: SVGElement[] = [];
+
+    // Calculate midpoint for the horizontal segment
+    const midY = parentPoint.y + (childPoint.y - parentPoint.y) / 2;
+
+    // Segment 1: Parent → Midpoint (vertical, no text)
+    const segment1 = this.drawConnection(
+      parentPoint,
+      { x: parentPoint.x, y: midY },
+      {
+        ...finalOptions,
+        edgeText: "", // No text on parent's vertical segment
+      }
+    );
+    elements.push(segment1);
+
+    // Segment 2: Horizontal line (no text)
+    const segment2 = this.drawConnection(
+      { x: parentPoint.x, y: midY },
+      { x: childPoint.x, y: midY },
+      {
+        ...finalOptions,
+        edgeText: "", // No text on horizontal segment
+      }
+    );
+    elements.push(segment2);
+
+    // Segment 3: Midpoint → Child (vertical, WITH TEXT - this connects to the child)
+    const segment3 = this.drawConnection(
+      { x: childPoint.x, y: midY },
+      childPoint,
+      {
+        ...finalOptions,
+        edgeText: finalOptions.edgeText,
+      }
+    );
+    elements.push(segment3);
+
+    return elements;
+  }
+
+  /**
+   * Draw a multi-child right-angle connection system
+   * This creates a horizontal connector line with vertical drops to each child
+   */
+  public drawMultiChildRightAngle(
+    parentPoint: Point,
+    childPoints: Point[],
+    horizontalY: number,
+    options: Partial<ConnectionOptions> = {}
+  ): SVGElement[] {
+    const finalOptions = { ...this.defaultOptions, ...options };
+    const elements: SVGElement[] = [];
+
+    if (childPoints.length === 0) return elements;
+
+    // Find the extent of the horizontal line
+    const childXValues = childPoints.map((p) => p.x);
+    const minX = Math.min(...childXValues, parentPoint.x);
+    const maxX = Math.max(...childXValues, parentPoint.x);
+
+    // Draw vertical line from parent to horizontal line (no text)
+    const parentToHorizontal = this.drawConnection(
+      parentPoint,
+      { x: parentPoint.x, y: horizontalY },
+      {
+        ...finalOptions,
+        edgeText: "", // No text on parent's vertical segment
+      }
+    );
+    elements.push(parentToHorizontal);
+
+    // Draw horizontal connector line (no text)
+    const horizontalLine = this.drawConnection(
+      { x: minX, y: horizontalY },
+      { x: maxX, y: horizontalY },
+      {
+        ...finalOptions,
+        edgeText: "", // No text on horizontal line
+      }
+    );
+    elements.push(horizontalLine);
+
+    // Note: Individual child texts should be handled separately since each child
+    // can have different edge text. This method draws the structure,
+    // text should be added per-child by the caller.
+
+    // Draw vertical lines to each child (caller should add individual text)
+    childPoints.forEach((childPoint, index) => {
+      const childConnection = this.drawConnection(
+        { x: childPoint.x, y: horizontalY },
+        childPoint,
+        {
+          ...finalOptions,
+          edgeText: "", // Individual child text should be handled by caller
+        }
+      );
+      elements.push(childConnection);
+    });
+
+    return elements;
+  }
+
+  /**
+   * Draw individual child connections with text for multi-child right-angle systems
+   * This method should be called after drawMultiChildRightAngle to add text to individual child connections
+   */
+  public drawChildConnectionsWithText(
+    childPoints: Point[],
+    horizontalY: number,
+    childTexts: (string | undefined)[],
+    options: Partial<ConnectionOptions> = {}
+  ): SVGElement[] {
+    const finalOptions = { ...this.defaultOptions, ...options };
+    const elements: SVGElement[] = [];
+
+    childPoints.forEach((childPoint, index) => {
+      const edgeText = childTexts[index];
+      if (edgeText) {
+        // Draw the vertical connection to child with text
+        const childConnection = this.drawConnection(
+          { x: childPoint.x, y: horizontalY },
+          childPoint,
+          {
+            ...finalOptions,
+            edgeText: edgeText, // Text goes on the vertical segment connecting to this specific child
+          }
+        );
+        elements.push(childConnection);
+      }
+    });
+
+    return elements;
+  }
+
+  /**
    * Create a direct line connection
    */
   private createDirectConnection(
