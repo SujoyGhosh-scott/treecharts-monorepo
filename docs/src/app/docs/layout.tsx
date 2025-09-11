@@ -58,7 +58,7 @@ export default function DocsLayout({
 }) {
   return (
     <div className="min-h-screen bg-base-100">
-      <div className="flex h-[calc(100vh-4rem)]">
+      <div className="flex h-screen">
         {/* Sidebar - Desktop */}
         <div className="hidden lg:block w-80 border-r border-base-300 bg-base-50 overflow-hidden">
           <Sidebar />

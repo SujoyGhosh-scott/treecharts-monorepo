@@ -22,7 +22,7 @@ These nodes feature clickable chevron icons and smart state management to create
       id: "collapsible-node-example",
       outputImage: "/docs/node/other/collapsible-node-example.svg",
       codes: {
-        javascript: `import { TreeChart } from '@treecharts/core';
+        react: `import { TreeChart } from 'treecharts-react';
 
 // Tree data with collapsible descriptions
 const treeData = {
@@ -49,22 +49,86 @@ const treeData = {
   ],
 };
 
-// Create chart with collapsible nodes
-const chart = new TreeChart("container-id", {
-  type: "right-angle",
-  nodeConfig: {
-    type: "collapsible-node",
-    width: 200,
-    color: "#e8f4fd",
-  },
-  titleConfig: {
-    title: "Collapsible Node Example",
-    description: "Click the ▼ buttons to expand and view detailed descriptions",
-  },
-});
+function CollapsibleNodeTree() {
+  return (
+    <TreeChart
+      data={treeData}
+      type="right-angle"
+      nodeConfig={{
+        type: "collapsible-node",
+        width: 200,
+        color: "#e8f4fd",
+      }}
+      titleConfig={{
+        title: "Collapsible Node Example",
+        description: "Click the ▼ buttons to expand and view detailed descriptions",
+      }}
+      width={600}
+      height={400}
+    />
+  );
+}
 
-// Render the tree
-chart.render(treeData);`,
+export default CollapsibleNodeTree;`,
+        javascript: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreeCharts Collapsible Node Example</title>
+</head>
+<body>
+  <!-- Container for the tree chart -->
+  <div id="container-id" style="width: 600px; height: 400px; margin: 20px auto;"></div>
+
+  <!-- Include TreeCharts library from CDN -->
+  <script src="https://unpkg.com/treecharts@latest/dist/index.global.js"></script>
+  
+  <script>
+    // Tree data with collapsible descriptions
+    const treeData = {
+      value: "Organization",
+      description: "Modern technology company with distributed teams",
+      nodeConfig: { type: "collapsible-node" },
+      child: [
+        {
+          value: "Development",
+          description: "Software development and product creation teams",
+          child: [],
+        },
+        {
+          value: "Operations",
+          description: "Infrastructure management and DevOps initiatives",
+          child: [],
+        },
+        {
+          value: "Business",
+          description: "Strategic partnerships and business growth",
+          collapsibleState: { expanded: true },
+          child: [],
+        },
+      ],
+    };
+
+    // Create chart with collapsible nodes
+    const chart = new TreeChart("container-id", {
+      type: "right-angle",
+      nodeConfig: {
+        type: "collapsible-node",
+        width: 200,
+        color: "#e8f4fd",
+      },
+      titleConfig: {
+        title: "Collapsible Node Example",
+        description: "Click the ▼ buttons to expand and view detailed descriptions",
+      },
+    });
+
+    // Render the tree
+    chart.render(treeData);
+  </script>
+</body>
+</html>`,
       },
     },
     {

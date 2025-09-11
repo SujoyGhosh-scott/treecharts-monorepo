@@ -30,7 +30,7 @@ All edge styling is controlled through the \`edgeConfig\` property in your TreeC
       outputImage: "/docs/edge-customization-example.svg",
       id: "edge-customization-demo",
       codes: {
-        javascript: `import { TreeChart } from "treecharts";
+        react: `import { TreeChart } from 'treecharts-react';
 
 // Tree data with edge text labels
 const treeData = {
@@ -66,50 +66,147 @@ const treeData = {
   ],
 };
 
-const chart = new TreeChart("container", {
-  type: "right-angle",
-  horizontalGap: 120,
-  verticalGap: 100,
+function EdgeCustomizationTree() {
+  return (
+    <TreeChart
+      data={treeData}
+      type="right-angle"
+      horizontalGap={120}
+      verticalGap={100}
+      nodeConfig={{
+        width: 60,
+        height: 40,
+        color: "#e8f4fd",
+        borderColor: "#4a90e2",
+        borderWidth: 2,
+        fontSize: 14,
+        fontColor: "#2c3e50",
+      }}
+      edgeConfig={{
+        // Basic line styling
+        color: "#e74c3c",        // Red edges
+        width: 2,                // Thicker lines
+        dasharray: "5,5",        // Dashed pattern
+        opacity: 0.8,            // Slightly transparent
 
-  // Node styling
-  nodeConfig: {
-    width: 60,
-    height: 40,
-    color: "#e8f4fd",
-    borderColor: "#4a90e2",
-    borderWidth: 2,
-    fontSize: 14,
-    fontColor: "#2c3e50",
-  },
+        // Arrow configuration
+        showArrows: true,
+        arrowDirection: "source-to-target",
+        arrowSize: 5,
+        arrowColor: "#c0392b",   // Darker red arrows
 
-  // Comprehensive edge customization
-  edgeConfig: {
-    // Basic line styling
-    color: "#e74c3c",        // Red edges
-    width: 2,                // Thicker lines
-    dasharray: "5,5",        // Dashed pattern
-    opacity: 0.8,            // Slightly transparent
+        // Edge text styling
+        textSize: 11,
+        textColor: "#8e44ad",    // Purple text
+        textBackgroundColor: "#f8f9fa", // Light background
+      }}
+      titleConfig={{
+        title: "Edge Customization Example",
+        description: "Dashed red edges with purple text labels and arrow indicators",
+      }}
+      width={800}
+      height={500}
+    />
+  );
+}
 
-    // Arrow configuration
-    showArrows: true,
-    arrowDirection: "source-to-target",
-    arrowSize: 5,
-    arrowColor: "#c0392b",   // Darker red arrows
+export default EdgeCustomizationTree;`,
+        javascript: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreeCharts Edge Customization Example</title>
+</head>
+<body>
+  <!-- Container for the tree chart -->
+  <div id="container" style="width: 800px; height: 500px; margin: 20px auto;"></div>
 
-    // Edge text styling
-    textSize: 11,
-    textColor: "#8e44ad",    // Purple text
-    textBackgroundColor: "#f8f9fa", // Light background
-  },
+  <!-- Include TreeCharts library from CDN -->
+  <script src="https://unpkg.com/treecharts@latest/dist/index.global.js"></script>
+  
+  <script>
+    // Tree data with edge text labels
+    const treeData = {
+      value: "A",
+      child: [
+        {
+          value: "B",
+          edgeText: "to Department B",
+          child: [
+            {
+              value: "B1",
+              edgeText: "sub-unit",
+              child: [],
+            },
+            {
+              value: "B2",
+              edgeText: "branch",
+              child: [],
+            },
+          ],
+        },
+        {
+          value: "C",
+          edgeText: "to Department C",
+          child: [
+            {
+              value: "C1",
+              edgeText: "division",
+              child: [],
+            },
+          ],
+        },
+      ],
+    };
 
-  // Chart title
-  titleConfig: {
-    title: "Edge Customization Example",
-    description: "Dashed red edges with purple text labels and arrow indicators",
-  },
-});
+    const chart = new TreeChart("container", {
+      type: "right-angle",
+      horizontalGap: 120,
+      verticalGap: 100,
 
-chart.render(treeData);`,
+      // Node styling
+      nodeConfig: {
+        width: 60,
+        height: 40,
+        color: "#e8f4fd",
+        borderColor: "#4a90e2",
+        borderWidth: 2,
+        fontSize: 14,
+        fontColor: "#2c3e50",
+      },
+
+      // Comprehensive edge customization
+      edgeConfig: {
+        // Basic line styling
+        color: "#e74c3c",        // Red edges
+        width: 2,                // Thicker lines
+        dasharray: "5,5",        // Dashed pattern
+        opacity: 0.8,            // Slightly transparent
+
+        // Arrow configuration
+        showArrows: true,
+        arrowDirection: "source-to-target",
+        arrowSize: 5,
+        arrowColor: "#c0392b",   // Darker red arrows
+
+        // Edge text styling
+        textSize: 11,
+        textColor: "#8e44ad",    // Purple text
+        textBackgroundColor: "#f8f9fa", // Light background
+      },
+
+      // Chart title
+      titleConfig: {
+        title: "Edge Customization Example",
+        description: "Dashed red edges with purple text labels and arrow indicators",
+      },
+    });
+
+    chart.render(treeData);
+  </script>
+</body>
+</html>`,
       },
     },
     {
@@ -120,22 +217,10 @@ chart.render(treeData);`,
 
 | Property | Type | Default | Description | Examples |
 |----------|------|---------|-------------|----------|
-| \`color\` | string | \`"black"\` | Edge line color | \`"#e74c3c"\`, \`"red"\`, \`"rgb(231, 76, 60)"\` |
+| \`color\` | string | \`"black"\` | Edge line color (supports hex, RGB, RGBA, named, HSL) | \`"#e74c3c"\`, \`"red"\`, \`"rgb(231, 76, 60)"\` |
 | \`width\` | number | \`1\` | Line thickness in pixels | \`2\`, \`3\`, \`0.5\` |
 | \`opacity\` | number | \`1\` | Line transparency (0.0 to 1.0) | \`0.8\`, \`0.5\`, \`1\` |
 | \`dasharray\` | string | \`""\` | SVG dash pattern for dashed lines | \`"5,5"\`, \`"10,3"\`, \`"5,3,1,3"\` |
-
-### Color Format Support
-
-TreeCharts accepts all standard CSS color formats:
-
-| Format | Example | Description |
-|--------|---------|-------------|
-| Hex | \`"#ff6b35"\` | 6-digit hexadecimal |
-| RGB | \`"rgb(255, 107, 53)"\` | Red, green, blue values |
-| RGBA | \`"rgba(255, 107, 53, 0.8)"\` | RGB with alpha transparency |
-| Named | \`"orange"\`, \`"red"\` | CSS color names |
-| HSL | \`"hsl(15, 100%, 60%)"\` | Hue, saturation, lightness |
 
 ### Dash Pattern Examples
 
@@ -155,17 +240,9 @@ TreeCharts accepts all standard CSS color formats:
 | Property | Type | Default | Description | Options |
 |----------|------|---------|-------------|---------|
 | \`showArrows\` | boolean | \`false\` | Enable/disable arrow indicators | \`true\`, \`false\` |
-| \`arrowDirection\` | string | \`"source-to-target"\` | Arrow direction | \`"source-to-target"\`, \`"target-to-source"\`, \`"both"\` |
+| \`arrowDirection\` | string | \`"source-to-target"\` | Arrow direction: source-to-target (Parent → Child), target-to-source (Parent ← Child), both (Parent ↔ Child) | \`"source-to-target"\`, \`"target-to-source"\`, \`"both"\` |
 | \`arrowSize\` | number | \`6\` | Arrow size in pixels | \`4\`, \`8\`, \`10\` |
 | \`arrowColor\` | string | \`"black"\` | Arrow color (inherits edge color if not set) | Any CSS color format |
-
-### Arrow Direction Guide
-
-| Direction | Visual Result | Best Use Case |
-|-----------|---------------|---------------|
-| \`"source-to-target"\` | Parent → Child | Organizational charts, flowcharts |
-| \`"target-to-source"\` | Parent ← Child | Reverse hierarchies, dependency trees |
-| \`"both"\` | Parent ↔ Child | Bidirectional relationships |
 
 ### Arrow Styling Notes
 

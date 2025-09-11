@@ -20,7 +20,7 @@ All directional layouts create visually stunning tree visualizations that make o
       id: "all-directional-layout-example",
       outputImage: "/docs/tree/all-direction-renderer-example.svg",
       codes: {
-        javascript: `import { TreeChart } from '@treecharts/core';
+        react: `import { TreeChart } from 'treecharts-react';
 
 // Define your tree data
 const treeData = {
@@ -48,16 +48,75 @@ const treeData = {
   ]
 };
 
-// Create chart with all-directional layout
-const chart = new TreeChart("container-id", {
-  type: "all-direction",
-  nodeConfig: {
-    color: "#08CB00"
-  }
-});
+function AllDirectionalTree() {
+  return (
+    <TreeChart
+      data={treeData}
+      type="all-direction"
+      nodeConfig={{
+        color: "#08CB00"
+      }}
+      width={600}
+      height={500}
+    />
+  );
+}
 
-// Render the tree
-chart.render(treeData);`,
+export default AllDirectionalTree;`,
+        javascript: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreeCharts All Directional Layout Example</title>
+</head>
+<body>
+  <!-- Container for the tree chart -->
+  <div id="container-id" style="width: 600px; height: 500px; margin: 20px auto;"></div>
+
+  <!-- Include TreeCharts library from CDN -->
+  <script src="https://unpkg.com/treecharts@latest/dist/index.global.js"></script>
+  
+  <script>
+    // Define your tree data
+    const treeData = {
+      value: "A",
+      child: [
+        {
+          value: "B",
+          child: [
+            { value: "D", child: [] },
+            { value: "E", child: [] }
+          ]
+        },
+        {
+          value: "C",
+          child: [
+            { value: "F", child: [] }
+          ]
+        },
+        {
+          value: "G", child: [] },
+        {
+          value: "H", child: [] },
+        {
+          value: "I", child: [] }
+      ]
+    };
+
+    // Create chart with all-directional layout
+    const chart = new TreeChart("container-id", {
+      type: "all-direction",
+      nodeConfig: {
+        color: "#08CB00"
+      }
+    });
+
+    // Render the tree
+    chart.render(treeData);
+  </script>
+</body>
+</html>`,
       },
     },
     {

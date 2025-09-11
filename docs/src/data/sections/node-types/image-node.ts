@@ -22,7 +22,7 @@ Image nodes support flexible text positioning and comprehensive styling options 
       id: "image-node-example",
       outputImage: "/docs/node/other/image-node-example.svg",
       codes: {
-        javascript: `import { TreeChart } from '@treecharts/core';
+        react: `import { TreeChart } from 'treecharts-react';
 
 // Tree data with image nodes
 const treeData = {
@@ -55,32 +55,100 @@ const treeData = {
   ],
 };
 
-// Create chart with image nodes
-const chart = new TreeChart("container-id", {
-  type: "right-angle",
-  horizontalGap: 140,
-  verticalGap: 120,
-  nodeConfig: {
-    type: "image",
-    
-    // Image configuration
-    imageConfig: {
-      imageWidth: 60,
-      imageHeight: 60,
-    },
-    
-    // Text positioning
-    imageTextPositionConfig: {
-      position: "right",
-    },
-    
-    // Node container styling
-    color: "#ffffff",
-  },
-});
+function ImageNodeTree() {
+  return (
+    <TreeChart
+      data={treeData}
+      type="right-angle"
+      horizontalGap={140}
+      verticalGap={120}
+      nodeConfig={{
+        type: "image",
+        imageConfig: {
+          imageWidth: 60,
+          imageHeight: 60,
+        },
+        imageTextPositionConfig: {
+          position: "right",
+        },
+        color: "#ffffff",
+      }}
+      width={800}
+      height={400}
+    />
+  );
+}
 
-// Render the tree
-chart.render(treeData);`,
+export default ImageNodeTree;`,
+        javascript: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreeCharts Image Node Example</title>
+</head>
+<body>
+  <!-- Container for the tree chart -->
+  <div id="container-id" style="width: 800px; height: 400px; margin: 20px auto;"></div>
+
+  <!-- Include TreeCharts library from CDN -->
+  <script src="https://unpkg.com/treecharts@latest/dist/index.global.js"></script>
+  
+  <script>
+    // Tree data with image nodes
+    const treeData = {
+      value: "Leadership",
+      imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
+      title: "CEO",
+      subtitle: "Chief Executive",
+      child: [
+        {
+          value: "Engineering Lead",
+          imageUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop&crop=face",
+          title: "Sarah Chen",
+          subtitle: "VP Engineering",
+          child: [],
+        },
+        {
+          value: "Product Lead",
+          imageUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
+          title: "Emma Thompson",
+          subtitle: "VP Product",
+          child: [],
+        },
+        {
+          value: "Marketing Lead",
+          imageUrl: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=100&h=100&fit=crop&crop=face",
+          title: "Lisa Johnson",
+          subtitle: "VP Marketing",
+          child: [],
+        },
+      ],
+    };
+
+    // Create chart with image nodes
+    const chart = new TreeChart("container-id", {
+      type: "right-angle",
+      horizontalGap: 140,
+      verticalGap: 120,
+      nodeConfig: {
+        type: "image",
+        imageConfig: {
+          imageWidth: 60,
+          imageHeight: 60,
+        },
+        imageTextPositionConfig: {
+          position: "right",
+        },
+        color: "#ffffff",
+      },
+    });
+
+    // Render the tree
+    chart.render(treeData);
+  </script>
+</body>
+</html>`,
       },
     },
     {

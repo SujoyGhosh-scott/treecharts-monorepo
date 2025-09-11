@@ -35,6 +35,8 @@ TreeCharts uses a nested object structure where each node can have children. The
 }
 \`\`\`
 
+TreeCharts now works with this specific format, but we're working on supporting more common tree data structures in upcoming versions!
+
 ## Basic Usage
 
 Learn how to create your first tree chart with TreeCharts using the same data structure shown above.`,
@@ -46,35 +48,6 @@ Learn how to create your first tree chart with TreeCharts using the same data st
       id: "basic-tree-example",
       outputImage: "/docs/core-concepts-example.svg",
       codes: {
-        javascript: `// Using the same tree data from above
-const treeData = {
-  value: "Root Node",
-  child: [
-    {
-      value: "Child 1",
-      child: [
-        { value: "Grandchild 1", child: [] },
-        { value: "Grandchild 2", child: [] }
-      ]
-    },
-    {
-      value: "Child 2",
-      child: []
-    }
-  ]
-};
-
-// Initialize the tree chart
-const chart = new TreeChart("tree-container", {
-  type: "right-angle",
-  nodeConfig: {
-    color: "#90EE90",
-    width: 120,
-  }
-});
-
-// Render the chart
-chart.render(treeData);`,
         react: `import { TreeChart } from 'treecharts-react';
 
 // Using the same tree data from above
@@ -111,6 +84,53 @@ function BasicTree() {
 }
 
 export default BasicTree;`,
+        javascript: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreeCharts Basic Example</title>
+</head>
+<body>
+  <!-- Container for the tree chart -->
+  <div id="tree-container" style="width: 600px; height: 400px; margin: 20px auto;"></div>
+
+  <!-- Include TreeCharts library from CDN -->
+  <script src="https://unpkg.com/treecharts@latest/dist/index.global.js"></script>
+  
+  <script>
+    // Using the same tree data from above
+    const treeData = {
+      value: "Root Node",
+      child: [
+        {
+          value: "Child 1",
+          child: [
+            { value: "Grandchild 1", child: [] },
+            { value: "Grandchild 2", child: [] }
+          ]
+        },
+        {
+          value: "Child 2",
+          child: []
+        }
+      ]
+    };
+
+    // Initialize the tree chart
+    const chart = new TreeChart("tree-container", {
+      type: "right-angle",
+      nodeConfig: {
+        color: "#90EE90",
+        width: 120,
+      }
+    }); 
+
+    // Render the chart
+    chart.render(treeData);
+  </script>
+</body>
+</html>`,
       },
     },
     {

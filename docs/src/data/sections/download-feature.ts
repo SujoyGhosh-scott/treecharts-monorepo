@@ -21,7 +21,7 @@ The download feature adds a download button to your tree chart that, when clicke
       outputImage: "/docs/download-feature-example.png",
       id: "download-feature-demo",
       codes: {
-        javascript: `import { TreeChart } from "treecharts";
+        react: `import { TreeChart } from 'treecharts-react';
 
 // Simple tree data for download demonstration
 const downloadDemoTree = {
@@ -48,32 +48,103 @@ const downloadDemoTree = {
   ],
 };
 
-// Chart with download button
-const chart = new TreeChart("container", {
-  type: "curved",
-  
-  nodeConfig: {
-    color: "#fff3cd",
-    borderColor: "#ffcc02",
-    borderWidth: 2,
-  },
-  
-  titleConfig: {
-    title: "Chart with download button",
-    description: "Top left download button",
-  },
-  
-  // Enable download feature
-  actionConfig: {
-    download: {
-      enabled: true,
-      position: "top-left",
-      filename: "curved-tree.svg",
-    },
-  },
-});
+function DownloadFeatureTree() {
+  return (
+    <TreeChart
+      data={downloadDemoTree}
+      type="curved"
+      nodeConfig={{
+        color: "#fff3cd",
+        borderColor: "#ffcc02",
+        borderWidth: 2,
+      }}
+      titleConfig={{
+        title: "Chart with download button",
+        description: "Top left download button",
+      }}
+      actionConfig={{
+        download: {
+          enabled: true,
+          position: "top-left",
+          filename: "curved-tree.svg",
+        },
+      }}
+      width={600}
+      height={400}
+    />
+  );
+}
 
-chart.render(downloadDemoTree);`,
+export default DownloadFeatureTree;`,
+        javascript: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreeCharts Download Feature Example</title>
+</head>
+<body>
+  <!-- Container for the tree chart -->
+  <div id="container" style="width: 600px; height: 400px; margin: 20px auto;"></div>
+
+  <!-- Include TreeCharts library from CDN -->
+  <script src="https://unpkg.com/treecharts@latest/dist/index.global.js"></script>
+  
+  <script>
+    // Simple tree data for download demonstration
+    const downloadDemoTree = {
+      value: "Root",
+      child: [
+        {
+          value: "Child A",
+          child: [
+            {
+              value: "A1",
+              child: [],
+            },
+          ],
+        },
+        {
+          value: "Child B",
+          child: [
+            {
+              value: "B1",
+              child: [],
+            },
+          ],
+        },
+      ],
+    };
+
+    // Chart with download button
+    const chart = new TreeChart("container", {
+      type: "curved",
+      
+      nodeConfig: {
+        color: "#fff3cd",
+        borderColor: "#ffcc02",
+        borderWidth: 2,
+      },
+      
+      titleConfig: {
+        title: "Chart with download button",
+        description: "Top left download button",
+      },
+      
+      // Enable download feature
+      actionConfig: {
+        download: {
+          enabled: true,
+          position: "top-left",
+          filename: "curved-tree.svg",
+        },
+      },
+    });
+
+    chart.render(downloadDemoTree);
+  </script>
+</body>
+</html>`,
       },
     },
     {

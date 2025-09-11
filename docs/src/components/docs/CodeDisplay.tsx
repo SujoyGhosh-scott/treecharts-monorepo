@@ -6,7 +6,7 @@ import { CodeDisplayProps } from "@/types/code";
 export default function CodeDisplay({
   example,
   showOutput = true,
-  defaultTab = "javascript",
+  defaultTab = "react",
 }: CodeDisplayProps) {
   const [activeTab, setActiveTab] =
     useState<keyof typeof example.codes>(defaultTab);
@@ -36,7 +36,7 @@ export default function CodeDisplay({
   const getLanguageForTab = (tab: string) => {
     switch (tab) {
       case "javascript":
-        return "javascript";
+        return "html + javascript";
       case "react":
         return "jsx";
       case "angular":

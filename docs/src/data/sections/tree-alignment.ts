@@ -56,11 +56,7 @@ TreeCharts offers two alignment properties that work together to control your tr
       description: "Examples demonstrating different alignment combinations",
       outputImage: "/docs/alignment-example.svg",
       codes: {
-        javascript: `const chart = new TreeChart("alignment-container", {
-  type: "direct",
-  verticalAlign: "right",
-  horizontalAlign: "bottom-to-top",
-});
+        react: `import { TreeChart } from 'treecharts-react';
 
 const sampleData = {
   value: "Root",
@@ -83,7 +79,66 @@ const sampleData = {
   ],
 };
 
-chart.render(sampleData);`,
+function TreeAlignmentExample() {
+  return (
+    <TreeChart
+      data={sampleData}
+      type="direct"
+      verticalAlign="right"
+      horizontalAlign="bottom-to-top"
+      width={600}
+      height={400}
+    />
+  );
+}
+
+export default TreeAlignmentExample;`,
+        javascript: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreeCharts Tree Alignment Example</title>
+</head>
+<body>
+  <!-- Container for the tree chart -->
+  <div id="alignment-container" style="width: 600px; height: 400px; margin: 20px auto;"></div>
+
+  <!-- Include TreeCharts library from CDN -->
+  <script src="https://unpkg.com/treecharts@latest/dist/index.global.js"></script>
+  
+  <script>
+    const chart = new TreeChart("alignment-container", {
+      type: "direct",
+      verticalAlign: "right",
+      horizontalAlign: "bottom-to-top",
+    });
+
+    const sampleData = {
+      value: "Root",
+      child: [
+        {
+          value: "A",
+          child: [
+            { value: "A1", child: [] },
+            { value: "A2", child: [] },
+          ],
+        },
+        {
+          value: "B",
+          child: [{ value: "B1", child: [] }],
+        },
+        {
+          value: "C",
+          child: [],
+        },
+      ],
+    };
+
+    chart.render(sampleData);
+  </script>
+</body>
+</html>`,
       },
     },
   ],

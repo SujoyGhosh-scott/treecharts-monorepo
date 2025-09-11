@@ -20,7 +20,7 @@ The curved renderer creates beautiful, flowing tree visualizations that are perf
       id: "curved-connection-example",
       outputImage: "/docs/tree/curved-renderer-example.svg",
       codes: {
-        javascript: `import { TreeChart } from '@treecharts/core';
+        react: `import { TreeChart } from 'treecharts-react';
 
 // Define your tree data
 const treeData = {
@@ -42,16 +42,75 @@ const treeData = {
   ]
 };
 
-// Create chart with curved connections
-const chart = new TreeChart("container-id", {
-  type: "curved",
-  nodeConfig: {
-    color: "#08CB00"
-  }
-});
+function CurvedConnectionTree() {
+  return (
+    <TreeChart
+      data={treeData}
+      type="curved"
+      nodeConfig={{
+        color: "#08CB00"
+      }}
+      edgeConfig={{
+        curveRadius: 25
+      }}
+      width={600}
+      height={400}
+    />
+  );
+}
 
-// Render the tree
-chart.render(treeData);`,
+export default CurvedConnectionTree;`,
+        javascript: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreeCharts Curved Connection Example</title>
+</head>
+<body>
+  <!-- Container for the tree chart -->
+  <div id="container-id" style="width: 600px; height: 400px; margin: 20px auto;"></div>
+
+  <!-- Include TreeCharts library from CDN -->
+  <script src="https://unpkg.com/treecharts@latest/dist/index.global.js"></script>
+  
+  <script>
+    // Define your tree data
+    const treeData = {
+      value: "A",
+      child: [
+        {
+          value: "B",
+          child: [
+            { value: "D", child: [] },
+            { value: "E", child: [] }
+          ]
+        },
+        {
+          value: "C",
+          child: [
+            { value: "F", child: [] }
+          ]
+        }
+      ]
+    };
+
+    // Create chart with curved connections
+    const chart = new TreeChart("container-id", {
+      type: "curved",
+      nodeConfig: {
+        color: "#08CB00"
+      },
+      edgeConfig: {
+        curveRadius: 25
+      }
+    });
+
+    // Render the tree
+    chart.render(treeData);
+  </script>
+</body>
+</html>`,
       },
     },
     {

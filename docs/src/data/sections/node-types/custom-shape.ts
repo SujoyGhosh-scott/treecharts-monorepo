@@ -22,7 +22,7 @@ With 9 built-in geometric shapes plus custom SVG path support, you can create hi
       id: "custom-shape-example",
       outputImage: "/docs/node/other/custom-shape-example.svg",
       codes: {
-        javascript: `import { TreeChart } from '@treecharts/core';
+        react: `import { TreeChart } from 'treecharts-react';
 
 // Tree data with various custom shapes
 const treeData = {
@@ -76,23 +76,115 @@ const treeData = {
   ],
 };
 
-// Create chart with custom shapes
-const chart = new TreeChart("container-id", {
-  type: "right-angle",
-  horizontalGap: 100,
-  verticalGap: 80,
-  nodeConfig: {
-    width: 80,
-    height: 60,
-    fontSize: 11,
-    fontColor: "#333333",
-    borderWidth: 2,
-    borderColor: "#666666",
-  },
-});
+function CustomShapeTree() {
+  return (
+    <TreeChart
+      data={treeData}
+      type="right-angle"
+      horizontalGap={100}
+      verticalGap={80}
+      nodeConfig={{
+        width: 80,
+        height: 60,
+        fontSize: 11,
+        fontColor: "#333333",
+        borderWidth: 2,
+        borderColor: "#666666",
+      }}
+      width={800}
+      height={500}
+    />
+  );
+}
 
-// Render the tree
-chart.render(treeData);`,
+export default CustomShapeTree;`,
+        javascript: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreeCharts Custom Shape Example</title>
+</head>
+<body>
+  <!-- Container for the tree chart -->
+  <div id="container-id" style="width: 800px; height: 500px; margin: 20px auto;"></div>
+
+  <!-- Include TreeCharts library from CDN -->
+  <script src="https://unpkg.com/treecharts@latest/dist/index.global.js"></script>
+  
+  <script>
+    // Tree data with various custom shapes
+    const treeData = {
+      value: "Shapes",
+      nodeConfig: { type: "hexagon", color: "#e8f4fd" },
+      child: [
+        {
+          value: "Circle",
+          nodeConfig: { type: "circle", color: "#98FB98" },
+          child: [
+            {
+              value: "Pentagon",
+              nodeConfig: { type: "pentagon", color: "#87CEEB" },
+              child: [],
+            },
+          ],
+        },
+        {
+          value: "Diamond",
+          nodeConfig: { type: "diamond", color: "#FFD700" },
+          child: [
+            {
+              value: "Octagon",
+              nodeConfig: { type: "octagon", color: "#DDA0DD" },
+              child: [],
+            },
+          ],
+        },
+        {
+          value: "Triangle",
+          nodeConfig: { type: "triangle", color: "#FFB6C1" },
+          child: [
+            {
+              value: "Star",
+              nodeConfig: { type: "star", color: "#F0E68C" },
+              child: [],
+            },
+          ],
+        },
+        {
+          value: "Custom",
+          nodeConfig: {
+            type: "custom",
+            color: "#FF6B6B",
+            customAttributes: {
+              d: "M 40,20 C 40,15 35,10 25,10 C 15,10 10,15 10,25 C 10,35 40,55 40,55 C 40,55 70,35 70,25 C 70,15 65,10 55,10 C 45,10 40,15 40,20 Z",
+            },
+          },
+          child: [],
+        },
+      ],
+    };
+
+    // Create chart with custom shapes
+    const chart = new TreeChart("container-id", {
+      type: "right-angle",
+      horizontalGap: 100,
+      verticalGap: 80,
+      nodeConfig: {
+        width: 80,
+        height: 60,
+        fontSize: 11,
+        fontColor: "#333333",
+        borderWidth: 2,
+        borderColor: "#666666",
+      },
+    });
+
+    // Render the tree
+    chart.render(treeData);
+  </script>
+</body>
+</html>`,
       },
     },
     {
@@ -110,17 +202,11 @@ chart.render(treeData);`,
 
 TreeCharts provides 9 geometric shapes out of the box:
 
-| Shape | Type Value | Description |
-|-------|------------|-------------|
-| Rectangle | \`"rectangle"\` | Standard rectangular nodes (default) |
-| Circle | \`"circle"\` | Perfect circular nodes |
-| Ellipse | \`"ellipse"\` | Oval-shaped nodes |
-| Diamond | \`"diamond"\` | Diamond/rhombus shaped nodes |
-| Triangle | \`"triangle"\` | Triangular nodes |
-| Pentagon | \`"pentagon"\` | Five-sided polygon nodes |
-| Hexagon | \`"hexagon"\` | Six-sided polygon nodes |
-| Octagon | \`"octagon"\` | Eight-sided polygon nodes |
-| Star | \`"star"\` | Star-shaped nodes (10-point star) |
+**Basic Shapes:** \`"rectangle"\` (default), \`"circle"\`, \`"ellipse"\`, \`"diamond"\`, \`"triangle"\`
+
+**Polygon Shapes:** \`"pentagon"\`, \`"hexagon"\`, \`"octagon"\`, \`"star"\`
+
+Simply set the \`type\` property in your nodeConfig to use any of these shapes. For example: \`type: "hexagon"\` or \`type: "star"\`.
 
 ## Shape Configuration
 

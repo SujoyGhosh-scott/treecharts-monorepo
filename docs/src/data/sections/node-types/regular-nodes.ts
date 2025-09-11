@@ -120,7 +120,9 @@ The configuration follows this priority order:
       id: "individual-node-config",
       outputImage: "/docs/node/regular/regular-node-individual-config.svg",
       codes: {
-        javascript: `// Tree data with individual node configurations
+        react: `import { TreeChart } from 'treecharts-react';
+
+// Tree data with individual node configurations
 const treeData = {
   value: "Root",
   child: [
@@ -130,7 +132,6 @@ const treeData = {
         color: "#FF6B6B",        // Red background
         fontColor: "white",      // White text
         borderColor: "#FF5252",  // Darker red border
-        borderWidth: 2
       },
       child: []
     },
@@ -140,32 +141,93 @@ const treeData = {
         color: "#FFE66D",        // Yellow background
         fontColor: "#333",       // Dark text
         borderColor: "#FFC107",  // Orange border
-        borderWidth: 2
       },
       child: []
     }
   ]
 };
 
-// Create chart with default styling
-const chart = new TreeChart("container", {
-  type: "direct",
-  nodeConfig: {
-    type: "rectangle",
-    color: "#E3F2FD",          // Light blue (default)
-    borderColor: "#2196F3",     // Blue border (default)
-    borderWidth: 2,
-    borderRadius: 6,
-    fontSize: 14,
-    fontColor: "#1976D2",       // Dark blue text (default)
-    width: 120,
-    height: 50
-  }
-});
+function IndividualNodeConfigTree() {
+  return (
+    <TreeChart
+      data={treeData}
+      nodeConfig={{
+        type: "rectangle",
+        color: "#E3F2FD",          // Light blue (default)
+        borderColor: "#2196F3",     // Blue border (default)
+        borderWidth: 2,
+        fontSize: 14,
+        fontColor: "#1976D2",       // Dark blue text (default)
+        width: 120,
+        height: 50
+      }}
+      width={600}
+      height={400}
+    />
+  );
+}
 
-// The root node will use default styling
-// Child nodes will use their individual nodeConfig
-chart.render(treeData);`,
+export default IndividualNodeConfigTree;`,
+        javascript: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreeCharts Individual Node Configuration Example</title>
+</head>
+<body>
+  <!-- Container for the tree chart -->
+  <div id="container" style="width: 600px; height: 400px; margin: 20px auto;"></div>
+
+  <!-- Include TreeCharts library from CDN -->
+  <script src="https://unpkg.com/treecharts@latest/dist/index.global.js"></script>
+  
+  <script>
+    // Tree data with individual node configurations
+    const treeData = {
+      value: "Root",
+      child: [
+        {
+          value: "Child 1",
+          nodeConfig: {
+            color: "#FF6B6B",        // Red background
+            fontColor: "white",      // White text
+            borderColor: "#FF5252",  // Darker red border
+          },
+          child: []
+        },
+        {
+          value: "Child 2",
+          nodeConfig: {
+            color: "#FFE66D",        // Yellow background
+            fontColor: "#333",       // Dark text
+            borderColor: "#FFC107",  // Orange border
+          },
+          child: []
+        }
+      ]
+    };
+
+    // Create chart with default styling
+    const chart = new TreeChart("container", {
+      nodeConfig: {
+        type: "rectangle",
+        color: "#E3F2FD",          // Light blue (default)
+        borderColor: "#2196F3",     // Blue border (default)
+        borderWidth: 2,
+        fontSize: 14,
+        fontColor: "#1976D2",       // Dark blue text (default)
+        width: 120,
+        height: 50
+      }
+    });
+
+    // The root node will use default styling
+    // Child nodes will use their individual nodeConfig
+    chart.render(treeData);
+  </script>
+</body>
+</html>`,
       },
     },
     {
