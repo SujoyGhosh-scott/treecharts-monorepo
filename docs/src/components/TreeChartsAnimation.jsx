@@ -7,6 +7,21 @@ const TreeChartsAnimation = () => {
   const [currentText, setCurrentText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const [containerWidth, setContainerWidth] = useState(500);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (typeof window !== "undefined") {
+        // Use more of the available width on mobile, less conservative padding
+        const padding = window.innerWidth < 768 ? 24 : 48; // Less padding on mobile
+        setContainerWidth(Math.min(500, window.innerWidth - padding));
+      }
+    };
+
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
 
   useEffect(() => {
     const startDelay = setTimeout(() => {
@@ -70,12 +85,12 @@ const TreeChartsAnimation = () => {
     return () => clearTimeout(startDelay);
   }, []);
 
-  const containerWidth = 500;
-  const containerHeight = 400;
+  const containerHeight = 450; // Increased from 400 to accommodate TypeScript circle
   const centerX = containerWidth / 2;
   const centerY = containerHeight / 2;
   const capsuleHeight = 50;
-  const smallCircleRadius = 30;
+  const smallCircleRadius = Math.max(25, Math.min(30, containerWidth * 0.08)); // Larger minimum radius
+  const lineThickness = Math.max(3, containerWidth < 400 ? 4 : 3); // Thicker lines on mobile
 
   const getContainerWidth = (text) => {
     const baseWidth = 70;
@@ -84,13 +99,33 @@ const TreeChartsAnimation = () => {
   };
 
   const smallCircles = [
-    { x: centerX - 80, y: centerY - 90, icon: "React" },
-    { x: centerX + 90, y: centerY - 70, icon: "Vue" },
-    { x: centerX + 85, y: centerY + 85, icon: "Angular" },
-    { x: centerX - 85, y: centerY + 75, icon: "JS" },
+    {
+      x: centerX - containerWidth * 0.18,
+      y: centerY - containerWidth * 0.2,
+      icon: "React",
+    },
+    {
+      x: centerX + containerWidth * 0.2,
+      y: centerY - containerWidth * 0.16,
+      icon: "Vue",
+    },
+    {
+      x: centerX + containerWidth * 0.19,
+      y: centerY + containerWidth * 0.19,
+      icon: "Angular",
+    },
+    {
+      x: centerX - containerWidth * 0.19,
+      y: centerY + containerWidth * 0.17,
+      icon: "JS",
+    },
   ];
 
-  const typescriptCircle = { x: centerX - 15, y: centerY + 140, icon: "TS" };
+  const typescriptCircle = {
+    x: centerX - containerWidth * 0.03,
+    y: centerY + containerWidth * 0.32,
+    icon: "TS",
+  };
   const jsCircle = smallCircles[3];
 
   const IconComponent = ({ icon, x, y }) => {
@@ -144,9 +179,9 @@ const TreeChartsAnimation = () => {
   };
 
   return (
-    <div className="flex items-center justify-center w-full h-full">
+    <div className="flex items-center justify-center w-full h-full max-w-full overflow-hidden">
       <div
-        className="relative"
+        className="relative max-w-full mx-auto"
         style={{ width: containerWidth, height: containerHeight }}
       >
         {/* Small circles */}
@@ -176,9 +211,9 @@ const TreeChartsAnimation = () => {
               className="absolute bg-white"
               style={{
                 left: centerX,
-                top: centerY - 1.5,
+                top: centerY - lineThickness / 2,
                 width: distance - smallCircleRadius,
-                height: 3,
+                height: lineThickness,
                 transformOrigin: "0 50%",
                 transform: `rotate(${angle}deg)`,
               }}
@@ -209,9 +244,12 @@ const TreeChartsAnimation = () => {
               className="absolute bg-white"
               style={{
                 left: jsCircle.x + (dx / distance) * smallCircleRadius,
-                top: jsCircle.y + (dy / distance) * smallCircleRadius - 1.5,
+                top:
+                  jsCircle.y +
+                  (dy / distance) * smallCircleRadius -
+                  lineThickness / 2,
                 width: distance - smallCircleRadius * 2,
-                height: 3,
+                height: lineThickness,
                 transformOrigin: "0 50%",
                 transform: `rotate(${angle}deg)`,
               }}

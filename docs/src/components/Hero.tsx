@@ -20,7 +20,7 @@ export default function Hero() {
         <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[70vh]">
           {/* Left Column - Text Content */}
           <div className="text-center lg:text-left">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold mb-6">
               Beautiful <span className="text-primary">Tree</span>{" "}
               <span className="text-[#08CB00]">Visualizations</span>
               <br />
@@ -99,7 +99,7 @@ export default function Hero() {
           </div>
 
           {/* Right Column - TreeCharts Animation (layered on top of GameOfLife) */}
-          <div className="flex items-center justify-center h-[350px] lg:h-[350px] relative z-20">
+          <div className="flex items-center justify-center h-[400px] lg:h-[400px] relative z-20 w-full -ml-4 lg:ml-0">
             <TreeChartsAnimation />
           </div>
         </div>
