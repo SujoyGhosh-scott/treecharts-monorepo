@@ -35,7 +35,10 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center mb-12">
-              <Link href="/docs" className="btn btn-primary rounded-full px-6">
+              <Link
+                href="/docs"
+                className="btn btn-primary rounded-full btn-wide"
+              >
                 Get Started
                 <svg
                   className="w-5 h-5 ml-2"
@@ -52,7 +55,7 @@ export default function Hero() {
                 </svg>
               </Link>
 
-              <Link
+              {/* <Link
                 href="/playground"
                 className="btn btn-secondary rounded-full px-6"
               >
@@ -70,7 +73,7 @@ export default function Hero() {
                     d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m-9-4V8a3 3 0 616 0v2M3 18v-6a2 2 0 012-2h14a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2z"
                   />
                 </svg>
-              </Link>
+              </Link> */}
             </div>
 
             {/* Framework Support */}

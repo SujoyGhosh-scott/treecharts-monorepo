@@ -18,20 +18,20 @@ export default function Footer() {
       { name: "Changelog", href: "/changelog" },
       {
         name: "GitHub",
-        href: "https://github.com/SujoyGhosh-scott/treecharts-monorepo",
+        href: "https://github.com/SujoyGhosh-scott/treecharts-monorepo/tree/main/packages/treecharts",
       },
     ],
     Community: [
-      {
-        name: "GitHub Discussions",
-        href: "https://github.com/SujoyGhosh-scott/treecharts-monorepo/discussions",
-      },
+      // {
+      //   name: "GitHub Discussions",
+      //   href: "https://github.com/SujoyGhosh-scott/treecharts-monorepo/discussions",
+      // },
       {
         name: "Issues",
         href: "https://github.com/SujoyGhosh-scott/treecharts-monorepo/issues",
       },
-      { name: "Contributing", href: "/contributing" },
-      { name: "Code of Conduct", href: "/code-of-conduct" },
+      // { name: "Contributing", href: "/contributing" },
+      // { name: "Code of Conduct", href: "/code-of-conduct" },
       { name: "Contact Us", href: "/contact" },
     ],
   };

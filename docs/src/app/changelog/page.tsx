@@ -1,12 +1,14 @@
 import MarkdownContent from "@/components/docs/MarkdownContent";
-import { CHANGELOG_CONFIG } from "@/utils/changelog";
 
 async function fetchChangelogContent() {
   try {
-    const response = await fetch(CHANGELOG_CONFIG.url, {
-      // Revalidate based on config
-      next: { revalidate: CHANGELOG_CONFIG.revalidateInterval },
-    });
+    const response = await fetch(
+      "https://raw.githubusercontent.com/SujoyGhosh-scott/treecharts-monorepo/refs/heads/main/packages/treecharts/README.md",
+      {
+        // Revalidate based on config
+        next: { revalidate: 3600 },
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to fetch changelog: ${response.status}`);

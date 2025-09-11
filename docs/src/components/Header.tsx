@@ -32,8 +32,8 @@ export default function Header() {
             return (
               <li key={item.name}>
                 <Link href={item.href} className="btn btn-ghost btn-sm">
-                  <Icon size={16} />
-                  {item.name}
+                  <Icon className="" size={16} />
+                  <span className="mt-0.5">{item.name}</span>
                 </Link>
               </li>
             );
@@ -45,7 +45,7 @@ export default function Header() {
         {/* GitHub and Discord Links - Now visible on mobile too */}
         <div className="flex items-center gap-2">
           <a
-            href="https://github.com/SujoyGhosh-scott/treecharts-monorepo"
+            href="https://github.com/SujoyGhosh-scott/treecharts-monorepo/tree/main/packages/treecharts"
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-ghost btn-sm"
