@@ -7,19 +7,14 @@ export default function Footer() {
     Documentation: [
       { name: "Getting Started", href: "/docs" },
       { name: "Core Concepts", href: "/docs/core-concepts" },
-      { name: "Tree Types", href: "/docs/tree-types" },
+      { name: "Tree Types", href: "/docs/tree-options" },
       { name: "Node Types", href: "/docs/node-types" },
-      { name: "Customization", href: "/docs/customization" },
     ],
     Resources: [
       { name: "Examples", href: "/examples" },
       { name: "Playground", href: "/playground" },
-      { name: "Blog", href: "/blog" },
+      // { name: "Blog", href: "/blog" },
       { name: "Changelog", href: "/changelog" },
-      {
-        name: "GitHub",
-        href: "https://github.com/SujoyGhosh-scott/treecharts-monorepo/tree/main/packages/treecharts",
-      },
     ],
     Community: [
       // {
@@ -33,12 +28,16 @@ export default function Footer() {
       // { name: "Contributing", href: "/contributing" },
       // { name: "Code of Conduct", href: "/code-of-conduct" },
       { name: "Contact Us", href: "/contact" },
+      {
+        name: "GitHub",
+        href: "https://github.com/SujoyGhosh-scott/treecharts-monorepo/tree/main/packages/treecharts",
+      },
     ],
   };
 
   return (
-    <footer className="bg-base-300 text-base-content">
-      <div className="container mx-auto px-6 sm:px-8 lg:px-24 xl:px-32 py-12">
+    <footer className="bg-base-300 text-base-content pb-10 md:pb-0">
+      <div className="container mx-auto px-6 sm:px-8 lg:px-24 xl:px-40 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Brand */}
           <div className="lg:col-span-1">

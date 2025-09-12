@@ -146,7 +146,7 @@ export default function Features() {
         </div>
 
         {/* Quick Start */}
-        <div className="text-center mt-16">
+        {/* <div className="text-center mt-16">
           <div className="card bg-gradient-to-r from-primary/20 to-secondary/20 max-w-4xl mx-auto">
             <div className="card-body text-center">
               <h3 className="text-2xl font-bold mb-4">Ready to Get Started?</h3>
@@ -180,7 +180,7 @@ export default function Features() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

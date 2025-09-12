@@ -22,14 +22,14 @@ Choose the package that matches your setup:`,
       id: "installation-commands",
       showOutput: false,
       codes: {
-        javascript: `# Core Library (Vanilla JavaScript)
-
-# CDN Alternative
-# <script src="https://cdn.jsdelivr.net/npm/treecharts@latest/dist/treecharts.min.js"></script>`,
         react: `# React Wrapper
 npm install treecharts-react
 # or
 yarn add treecharts-react`,
+        javascript: `# Core Library (Vanilla JavaScript)
+
+# CDN Alternative
+# <script src="https://cdn.jsdelivr.net/npm/treecharts@latest/dist/treecharts.min.js"></script>`,
       },
     },
     {
@@ -45,26 +45,6 @@ Once installed, you can create your first tree chart in just a few lines:`,
       id: "quick-start-example",
       outputImage: "/docs/getting-started-example.svg",
       codes: {
-        javascript: `// Define your tree data structure
-const treeData = {
-  value: "Root Node",
-  child: [
-    { value: "Child 1", child: [] },
-    { value: "Child 2", child: [] }
-  ]
-};
-
-// Create the tree chart
-const chart = new TreeChart("container", {
-  type: "right-angle",
-  nodeConfig: {
-    color: "#90EE90",
-    width: 120,
-  }
-});
-
-// Render the tree
-chart.render(treeData);`,
         react: `import { TreeChart } from 'treecharts-react';
 
 const treeData = {
@@ -87,6 +67,26 @@ function MyComponent() {
     />
   );
 }`,
+        javascript: `// Define your tree data structure
+const treeData = {
+  value: "Root Node",
+  child: [
+    { value: "Child 1", child: [] },
+    { value: "Child 2", child: [] }
+  ]
+};
+
+// Create the tree chart
+const chart = new TreeChart("container", {
+  type: "right-angle",
+  nodeConfig: {
+    color: "#90EE90",
+    width: 120,
+  }
+});
+
+// Render the tree
+chart.render(treeData);`,
       },
     },
     {
