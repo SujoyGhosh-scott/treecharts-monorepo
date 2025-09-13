@@ -9,7 +9,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="navbar bg-base-100 border-b border-base-300 sticky top-0 z-50 backdrop-blur-sm bg-opacity-90 px-2 sm:px-8 lg:px-24 xl:px-32">
+    <header className="navbar bg-base-100 border-b border-base-300 sticky top-0 z-50 backdrop-blur-sm bg-opacity-90 px-2 sm:px-8">
       <div className="navbar-start">
         <div className="flex items-center">
           <Link
@@ -56,7 +56,7 @@ export default function Header() {
             </svg>
           </a>
           <a
-            href="https://discord.gg/treecharts"
+            href="https://discord.gg/8rNht8C6"
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-ghost btn-sm"

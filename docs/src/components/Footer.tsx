@@ -68,7 +68,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://discord.gg/treecharts"
+                href="https://discord.gg/8rNht8C6"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-circle btn-ghost btn-sm"
