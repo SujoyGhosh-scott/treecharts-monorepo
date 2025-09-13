@@ -12,7 +12,7 @@ export class ShapeNodeRenderer extends BaseNodeRenderer {
     const group = this.createGroup();
 
     // Create shadow if enabled
-    const shadow = this.createShadow(options);
+    const shadow = this.createShapeShadow(options);
     if (shadow) {
       group.appendChild(shadow);
     }
@@ -49,10 +49,38 @@ export class ShapeNodeRenderer extends BaseNodeRenderer {
   }
 
   /**
+   * Create shadow for shapes (uses appropriate shadow shape)
+   */
+  private createShapeShadow(options: Required<NodeOptions>): SVGElement | null {
+    if (!options.shadow) return null;
+
+    // Create the same shape as the main shape for shadow
+    const shadowOptions = {
+      ...options,
+      x: options.x + options.shadowOffset.x,
+      y: options.y + options.shadowOffset.y,
+    };
+
+    const shadowShape = this.createShape(shadowOptions);
+    shadowShape.setAttribute("fill", options.shadowColor);
+    shadowShape.setAttribute("stroke", "none");
+    shadowShape.setAttribute("stroke-width", "0");
+
+    // Only add opacity if shadowColor doesn't already include alpha channel
+    if (!options.shadowColor.includes("rgba")) {
+      shadowShape.setAttribute("opacity", "0.3");
+    }
+
+    return shadowShape;
+  }
+
+  /**
    * Create the appropriate shape based on the node type
    */
   private createShape(options: Required<NodeOptions>): SVGElement {
     switch (options.type) {
+      case "circle":
+        return this.createCircle(options);
       case "ellipse":
         return this.createEllipse(options);
       case "diamond":
@@ -73,6 +101,23 @@ export class ShapeNodeRenderer extends BaseNodeRenderer {
         // Fallback to ellipse for unknown shape types
         return this.createEllipse(options);
     }
+  }
+
+  /**
+   * Create a circle node
+   */
+  private createCircle(options: Required<NodeOptions>): SVGCircleElement {
+    const circle = document.createElementNS(SVG_NS, "circle");
+
+    const radius = Math.min(options.width, options.height) / 2;
+    const centerX = options.x + options.width / 2;
+    const centerY = options.y + options.height / 2;
+
+    circle.setAttribute("cx", centerX.toString());
+    circle.setAttribute("cy", centerY.toString());
+    circle.setAttribute("r", radius.toString());
+
+    return circle;
   }
 
   /**

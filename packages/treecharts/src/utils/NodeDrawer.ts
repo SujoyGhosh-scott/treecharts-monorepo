@@ -5,7 +5,6 @@ import {
   NodeWithDescriptionRenderer,
   CollapsibleNodeRenderer,
   RectangleNodeRenderer,
-  CircleNodeRenderer,
   ShapeNodeRenderer,
 } from "../nodeRenderers";
 
@@ -19,7 +18,6 @@ export class NodeDrawer {
   private nodeWithDescriptionRenderer: NodeWithDescriptionRenderer;
   private collapsibleNodeRenderer: CollapsibleNodeRenderer;
   private rectangleNodeRenderer: RectangleNodeRenderer;
-  private circleNodeRenderer: CircleNodeRenderer;
   private shapeNodeRenderer: ShapeNodeRenderer;
   private defaultOptions: Required<NodeOptions> = {
     type: "rectangle",
@@ -92,7 +90,6 @@ export class NodeDrawer {
     this.nodeWithDescriptionRenderer = new NodeWithDescriptionRenderer(svg);
     this.collapsibleNodeRenderer = new CollapsibleNodeRenderer(svg);
     this.rectangleNodeRenderer = new RectangleNodeRenderer(svg);
-    this.circleNodeRenderer = new CircleNodeRenderer(svg);
     this.shapeNodeRenderer = new ShapeNodeRenderer(svg);
   }
 
@@ -328,14 +325,26 @@ export class NodeDrawer {
     this.applyBasicStyling(shapeElement, finalOptions);
 
     // Add text if provided - only for legacy node types that don't use dedicated renderers
+    const typesWithDedicatedRenderers = [
+      "rectangle",
+      "circle",
+      "ellipse",
+      "diamond",
+      "hexagon",
+      "triangle",
+      "pentagon",
+      "octagon",
+      "star",
+      "custom",
+      "image",
+      "node-with-description",
+      "collapsible-node",
+    ];
+
     if (
       finalOptions.text &&
       finalOptions.text.trim() &&
-      finalOptions.type !== "rectangle" &&
-      finalOptions.type !== "circle" &&
-      finalOptions.type !== "image" &&
-      finalOptions.type !== "node-with-description" &&
-      finalOptions.type !== "collapsible-node"
+      !typesWithDedicatedRenderers.includes(finalOptions.type)
     ) {
       const textElement = this.createText(finalOptions);
       nodeElements.push(textElement);
@@ -361,28 +370,32 @@ export class NodeDrawer {
    * Create the main node shape based on type
    */
   private createNodeShape(options: Required<NodeOptions>): SVGElement {
-    switch (options.type) {
-      case "rectangle":
-        return this.createRectangleUsingRenderer(options);
-      case "circle":
-        return this.createCircleUsingRenderer(options);
-      case "ellipse":
-      case "diamond":
-      case "hexagon":
-      case "triangle":
-      case "pentagon":
-      case "octagon":
-      case "star":
-      case "custom":
-        return this.createShapeUsingRenderer(options);
-      case "node-with-description":
-        return this.createNodeWithDescriptionUsingRenderer(options);
-      case "collapsible-node":
-        return this.createCollapsibleNodeUsingRenderer(options);
-      case "image":
-        return this.createImageNodeUsingRenderer(options);
-      default:
-        return this.createRectangleUsingRenderer(options);
+    const shapeTypes = [
+      "ellipse",
+      "diamond",
+      "hexagon",
+      "triangle",
+      "pentagon",
+      "octagon",
+      "star",
+      "custom",
+    ];
+
+    if (options.type === "rectangle") {
+      return this.createRectangleUsingRenderer(options);
+    } else if (options.type === "circle") {
+      return this.createCircleUsingRenderer(options);
+    } else if (shapeTypes.includes(options.type)) {
+      return this.createShapeUsingRenderer(options);
+    } else if (options.type === "node-with-description") {
+      return this.createNodeWithDescriptionUsingRenderer(options);
+    } else if (options.type === "collapsible-node") {
+      return this.createCollapsibleNodeUsingRenderer(options);
+    } else if (options.type === "image") {
+      return this.createImageNodeUsingRenderer(options);
+    } else {
+      // Default to rectangle for unknown types
+      return this.createRectangleUsingRenderer(options);
     }
   }
 
@@ -436,12 +449,17 @@ export class NodeDrawer {
   }
 
   /**
-   * Create a circle node using the dedicated CircleNodeRenderer
+   * Create a circle node using the ShapeNodeRenderer
    */
   private createCircleUsingRenderer(
     options: Required<NodeOptions>
   ): SVGElement {
-    const result = this.circleNodeRenderer.render(options);
+    // Use shape renderer with circle type
+    const shapeOptions = {
+      ...options,
+      type: "circle" as const,
+    };
+    const result = this.shapeNodeRenderer.render(shapeOptions);
     return result.element;
   }
 

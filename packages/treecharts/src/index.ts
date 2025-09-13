@@ -24,10 +24,10 @@ export {
 export {
   BaseNodeRenderer,
   RectangleNodeRenderer,
-  CircleNodeRenderer,
   NodeWithDescriptionRenderer,
   CollapsibleNodeRenderer,
   ImageNodeRenderer,
+  ShapeNodeRenderer,
 } from "./nodeRenderers";
 
 // Default export
