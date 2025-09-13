@@ -18,13 +18,15 @@
   "files": [
     "dist",
     "README.md",
-    "CHANGELOG.MD"
+    "CHANGELOG.MD",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup",
     "dev": "vite serve dev",
     "dev:watch": "tsup --watch & vite serve dev",
     "lint": "eslint src/**/*.ts",
+    "test": "echo \"No tests specified\" && exit 0",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "prepublishOnly": "npm run build"
   },
@@ -34,14 +36,25 @@
     "visualization",
     "hierarchy",
     "svg",
-    "diagram"
+    "diagram",
+    "organizational-chart",
+    "family-tree",
+    "data-visualization",
+    "typescript"
   ],
   "author": "Sujoy Ghosh",
   "license": "MIT",
+  "homepage": "https://treecharts.netlify.app",
   "repository": {
     "type": "git",
     "url": "https://github.com/SujoyGhosh-scott/treecharts-monorepo",
     "directory": "packages/treecharts"
+  },
+  "bugs": {
+    "url": "https://github.com/SujoyGhosh-scott/treecharts-monorepo/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   },
   "sideEffects": false,
   "devDependencies": {

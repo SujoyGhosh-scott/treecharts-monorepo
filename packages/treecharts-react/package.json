@@ -15,13 +15,15 @@
   "files": [
     "dist",
     "README.md",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "test": "echo \"No tests specified\" && exit 0",
     "clean": "rm -rf dist node_modules .turbo"
   },
   "keywords": [
@@ -30,14 +32,26 @@
     "chart",
     "visualization",
     "component",
-    "treecharts"
+    "treecharts",
+    "organizational-chart",
+    "family-tree",
+    "data-visualization",
+    "typescript",
+    "react-component"
   ],
   "author": "Sujoy Ghosh",
   "license": "MIT",
+  "homepage": "https://github.com/SujoyGhosh-scott/treecharts-monorepo#readme",
   "repository": {
     "type": "git",
     "url": "https://github.com/SujoyGhosh-scott/treecharts-monorepo",
     "directory": "packages/treecharts-react"
+  },
+  "bugs": {
+    "url": "https://github.com/SujoyGhosh-scott/treecharts-monorepo/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   },
   "peerDependencies": {
     "react": ">=16.8.0",
