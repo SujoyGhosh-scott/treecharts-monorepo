@@ -1,4 +1,5 @@
 import { TreeNode, FormattedTree, NodePosition } from "../types";
+import { getNodeKey } from "./svgHelpers";
 
 /**
  * Converts a hierarchical tree structure into a level-by-level array representation
@@ -115,6 +116,38 @@ function reverseTreeForBottomToTop(
 }
 
 /**
+ * Creates a map of parent nodes to their child nodes for connection drawing
+ * This is specifically useful for renderers that need to group children by parent
+ *
+ * @param formattedTree The formatted tree
+ * @returns A map where keys are parent keys (level-position) and values are arrays of child node info
+ */
+export function createParentToChildrenMap(
+  formattedTree: FormattedTree
+): Record<string, Array<{ levelIndex: number; nodeIndex: number; node: any }>> {
+  const parentToChildren: Record<
+    string,
+    Array<{ levelIndex: number; nodeIndex: number; node: any }>
+  > = {};
+
+  formattedTree.forEach((level, levelIndex) => {
+    level.forEach((node, nodeIndex) => {
+      if (node.parent) {
+        const parent = JSON.parse(node.parent);
+        const parentKey = getNodeKey(parent.level, parent.position);
+
+        if (!parentToChildren[parentKey]) {
+          parentToChildren[parentKey] = [];
+        }
+        parentToChildren[parentKey].push({ levelIndex, nodeIndex, node });
+      }
+    });
+  });
+
+  return parentToChildren;
+}
+
+/**
  * Creates a map of parent nodes to their child nodes
  *
  * @param formattedTree The formatted tree
@@ -141,4 +174,19 @@ export function createParentChildMap(
   }
 
   return parentChildPair;
+}
+
+/**
+ * Calculate height offset for parent-child connections to avoid overlapping
+ * Uses a repeating pattern to create visual distinction between connection levels
+ *
+ * @param parentIndex The global index of the parent (across all levels)
+ * @param pattern Optional custom pattern array (defaults to [0, -10, 10, -20, 20, -5])
+ * @returns Height offset in pixels
+ */
+export function calculateHeightOffset(
+  parentIndex: number,
+  pattern: number[] = [0, -10, 10, -20, 20, -5]
+): number {
+  return pattern[parentIndex % pattern.length];
 }

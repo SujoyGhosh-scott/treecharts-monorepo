@@ -1,6 +1,9 @@
 import { BaseRenderer } from "./BaseRenderer";
 import { getNodeKey } from "../utils/svgHelpers";
-import { createParentChildMap } from "../utils/treeFormatter";
+import {
+  createParentToChildrenMap,
+  calculateHeightOffset,
+} from "../utils/treeFormatter";
 
 /**
  * RightAngleRenderer creates a tree with right-angle connections between nodes
@@ -12,33 +15,12 @@ export class RightAngleRenderer extends BaseRenderer {
   protected drawConnections(): void {
     const { horizontalAlign, verticalGap } = this.options;
 
-    // Use the same approach as DirectRenderer but draw right-angle connections
-    // and handle multiple children with horizontal connector lines
+    // Use utility function to collect parent-child relationships
+    const parentToChildren = createParentToChildrenMap(this.formattedTree);
 
-    // First, collect parent-child relationships to identify parents with multiple children
-    const parentToChildren: {
-      [parentKey: string]: Array<{
-        levelIndex: number;
-        nodeIndex: number;
-        node: any;
-      }>;
-    } = {};
+    // Now draw connections for each parent with a global height offset pattern
+    let globalParentIndex = 0; // Global counter for height offset pattern
 
-    this.formattedTree.forEach((level, levelIndex) => {
-      level.forEach((node, nodeIndex) => {
-        if (node.parent) {
-          const parent = JSON.parse(node.parent);
-          const parentKey = getNodeKey(parent.level, parent.position);
-
-          if (!parentToChildren[parentKey]) {
-            parentToChildren[parentKey] = [];
-          }
-          parentToChildren[parentKey].push({ levelIndex, nodeIndex, node });
-        }
-      });
-    });
-
-    // Now draw connections for each parent
     Object.keys(parentToChildren).forEach((parentKey) => {
       const children = parentToChildren[parentKey];
       const parentNode = this.nodeMap[parentKey];
@@ -64,8 +46,10 @@ export class RightAngleRenderer extends BaseRenderer {
           parentNode,
           children,
           horizontalAlign,
-          verticalGap
+          verticalGap,
+          globalParentIndex // Pass the global index for height offset
         );
+        globalParentIndex++; // Only increment for parents with multiple children
       }
     });
   }
@@ -109,7 +93,8 @@ export class RightAngleRenderer extends BaseRenderer {
     parentNode: any,
     children: any[],
     horizontalAlign: string,
-    verticalGap: number
+    verticalGap: number,
+    parentIndex: number
   ): void {
     // Get child nodes
     const childNodes = children
@@ -121,16 +106,20 @@ export class RightAngleRenderer extends BaseRenderer {
 
     if (childNodes.length === 0) return;
 
-    // Calculate connection points
+    // Calculate connection points with alternating height offset
     let parentY, childrenY, horizontalY;
+
+    // Use utility function to calculate height offset
+    const heightOffset = calculateHeightOffset(parentIndex);
+
     if (horizontalAlign === "bottom-to-top") {
       parentY = parentNode.topY!;
       childrenY = childNodes[0].nodeData.bottomY!;
-      horizontalY = childrenY + verticalGap / 2;
+      horizontalY = childrenY + verticalGap / 2 + heightOffset;
     } else {
       parentY = parentNode.bottomY!;
       childrenY = childNodes[0].nodeData.topY!;
-      horizontalY = childrenY - verticalGap / 2;
+      horizontalY = childrenY - verticalGap / 2 + heightOffset;
     }
 
     const parentPoint = { x: parentNode.centerX!, y: parentY };
