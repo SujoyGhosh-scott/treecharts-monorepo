@@ -13,6 +13,7 @@
 - **Gradient Rendering**: Fixed gradient styling not being applied to rectangle nodes where solid colors were overwriting gradient fills
 - **Custom Shape Support**: Fixed custom SVG path shapes not rendering correctly at proper positions, resolving missing customAttributes parameter passing and coordinate positioning
 - **Right-Angle Arrow Positioning**: Fixed arrows appearing on incorrect segments in right-angle connections, ensuring "source-to-target" and "target-to-source" arrows appear on the correct connection segments
+- **Right-Angle Arrow Directions**: Fixed "both" arrow direction showing arrows on both ends of every vertical edge instead of correctly placing one arrow pointing to parent and one pointing to child
 - **EdgeConfig Cleanup**: Removed unused `type` property from EdgeConfig interface that was duplicating the main TreeChart type configuration, simplifying the API
 - **ConnectionDrawer Optimization**: Cleaned up unused method parameters and improved curve rendering with proper curveRadius utilization
 - **Bottom-to-Top Alignment**: Fixed critical tree alignment bug where `horizontalAlign: "bottom-to-top"` incorrectly showed root at top instead of bottom by implementing proper tree level reversal

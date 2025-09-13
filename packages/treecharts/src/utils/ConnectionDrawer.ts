@@ -92,35 +92,56 @@ export class ConnectionDrawer {
     // Calculate midpoint for the horizontal segment
     const midY = parentPoint.y + (childPoint.y - parentPoint.y) / 2;
 
-    // Segment 1: Parent → Midpoint (vertical, no text)
+    // Determine arrow placement based on arrow direction
+    const showArrowOnParentSegment =
+      finalOptions.arrowDirection === "target-to-source" ||
+      finalOptions.arrowDirection === "both";
+    const showArrowOnChildSegment =
+      finalOptions.arrowDirection === "source-to-target" ||
+      finalOptions.arrowDirection === "both";
+
+    // Segment 1: Parent → Midpoint (vertical, arrows only for target-to-source or both)
     const segment1 = this.drawConnection(
       parentPoint,
       { x: parentPoint.x, y: midY },
       {
         ...finalOptions,
         edgeText: "", // No text on parent's vertical segment
+        showArrows: showArrowOnParentSegment,
+        arrowDirection: showArrowOnParentSegment
+          ? finalOptions.arrowDirection === "both"
+            ? "target-to-source"
+            : finalOptions.arrowDirection
+          : "source-to-target",
       }
     );
     elements.push(segment1);
 
-    // Segment 2: Horizontal line (no text)
+    // Segment 2: Horizontal line (no arrows, no text)
     const segment2 = this.drawConnection(
       { x: parentPoint.x, y: midY },
       { x: childPoint.x, y: midY },
       {
         ...finalOptions,
         edgeText: "", // No text on horizontal segment
+        showArrows: false, // Never show arrows on horizontal connector
       }
     );
     elements.push(segment2);
 
-    // Segment 3: Midpoint → Child (vertical, WITH TEXT - this connects to the child)
+    // Segment 3: Midpoint → Child (vertical, arrows only for source-to-target or both)
     const segment3 = this.drawConnection(
       { x: childPoint.x, y: midY },
       childPoint,
       {
         ...finalOptions,
-        edgeText: finalOptions.edgeText,
+        edgeText: finalOptions.edgeText, // Text goes on the final segment connecting to child
+        showArrows: showArrowOnChildSegment,
+        arrowDirection: showArrowOnChildSegment
+          ? finalOptions.arrowDirection === "both"
+            ? "source-to-target"
+            : finalOptions.arrowDirection
+          : "source-to-target",
       }
     );
     elements.push(segment3);
@@ -148,51 +169,49 @@ export class ConnectionDrawer {
     const minX = Math.min(...childXValues, parentPoint.x);
     const maxX = Math.max(...childXValues, parentPoint.x);
 
-    // Draw vertical line from parent to horizontal line (no text)
+    // Determine arrow placement based on arrow direction
+    const showArrowOnParentSegment =
+      finalOptions.arrowDirection === "target-to-source" ||
+      finalOptions.arrowDirection === "both";
+
+    // Draw vertical line from parent to horizontal line (arrows only for target-to-source or both)
     const parentToHorizontal = this.drawConnection(
       parentPoint,
       { x: parentPoint.x, y: horizontalY },
       {
         ...finalOptions,
         edgeText: "", // No text on parent's vertical segment
+        showArrows: showArrowOnParentSegment,
+        arrowDirection: showArrowOnParentSegment
+          ? finalOptions.arrowDirection === "both"
+            ? "target-to-source"
+            : finalOptions.arrowDirection
+          : "source-to-target",
       }
     );
     elements.push(parentToHorizontal);
 
-    // Draw horizontal connector line (no text)
+    // Draw horizontal connector line (no arrows, no text)
     const horizontalLine = this.drawConnection(
       { x: minX, y: horizontalY },
       { x: maxX, y: horizontalY },
       {
         ...finalOptions,
         edgeText: "", // No text on horizontal line
+        showArrows: false, // No arrows on structural lines
       }
     );
     elements.push(horizontalLine);
 
-    // Note: Individual child texts should be handled separately since each child
-    // can have different edge text. This method draws the structure,
-    // text should be added per-child by the caller.
-
-    // Draw vertical lines to each child (caller should add individual text)
-    childPoints.forEach((childPoint, index) => {
-      const childConnection = this.drawConnection(
-        { x: childPoint.x, y: horizontalY },
-        childPoint,
-        {
-          ...finalOptions,
-          edgeText: "", // Individual child text should be handled by caller
-        }
-      );
-      elements.push(childConnection);
-    });
+    // Note: Individual child connections are now handled by drawChildConnectionsWithText
+    // to avoid duplication and ensure proper arrow placement
 
     return elements;
   }
 
   /**
    * Draw individual child connections with text for multi-child right-angle systems
-   * This method should be called after drawMultiChildRightAngle to add text to individual child connections
+   * This method should be called after drawMultiChildRightAngle to add child connections with text and arrows
    */
   public drawChildConnectionsWithText(
     childPoints: Point[],
@@ -203,20 +222,32 @@ export class ConnectionDrawer {
     const finalOptions = { ...this.defaultOptions, ...options };
     const elements: SVGElement[] = [];
 
+    // Determine arrow placement based on arrow direction
+    const showArrowOnChildSegment =
+      finalOptions.arrowDirection === "source-to-target" ||
+      finalOptions.arrowDirection === "both";
+
     childPoints.forEach((childPoint, index) => {
       const edgeText = childTexts[index];
-      if (edgeText) {
-        // Draw the vertical connection to child with text
-        const childConnection = this.drawConnection(
-          { x: childPoint.x, y: horizontalY },
-          childPoint,
-          {
-            ...finalOptions,
-            edgeText: edgeText, // Text goes on the vertical segment connecting to this specific child
-          }
-        );
-        elements.push(childConnection);
-      }
+
+      // Draw the vertical connection to child with arrows and optional text
+      // Always draw from horizontal line to child (normal direction)
+      // The arrowDirection property will handle which end gets the arrow
+      const childConnection = this.drawConnection(
+        { x: childPoint.x, y: horizontalY },
+        childPoint,
+        {
+          ...finalOptions,
+          edgeText: edgeText || "", // Text goes on the vertical segment connecting to this specific child
+          showArrows: showArrowOnChildSegment, // Only show arrows when appropriate
+          arrowDirection: showArrowOnChildSegment
+            ? finalOptions.arrowDirection === "both"
+              ? "source-to-target"
+              : finalOptions.arrowDirection
+            : "source-to-target",
+        }
+      );
+      elements.push(childConnection);
     });
 
     return elements;

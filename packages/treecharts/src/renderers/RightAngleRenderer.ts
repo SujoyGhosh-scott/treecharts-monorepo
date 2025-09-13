@@ -167,6 +167,9 @@ export class RightAngleRenderer extends BaseRenderer {
         textSize: this.options.edgeConfig!.textSize,
         textColor: this.options.edgeConfig!.textColor,
         textBackgroundColor: this.options.edgeConfig!.textBackgroundColor,
+        showArrows: this.options.edgeConfig!.showArrows,
+        arrowDirection: this.options.edgeConfig!.arrowDirection,
+        arrowSize: this.options.edgeConfig!.arrowSize,
       }
     );
   }

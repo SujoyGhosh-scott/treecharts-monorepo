@@ -3,37 +3,160 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TreeCharts - Node Types Bug Fixes</title>
+    <title>TreeCharts - Arrow Direction & Tree Alignment Test</title>
     <style>
       body {
         font-family: Arial, sans-serif;
         margin: 20px;
         padding: 0;
+        background-color: #f5f5f5;
       }
 
-      h1,
-      h2 {
+      h1 {
         text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+      }
+
+      .controls-section {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .controls-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        align-items: end;
+      }
+
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .control-group label {
+        font-weight: 600;
+        color: #333;
+        font-size: 14px;
+      }
+
+      .control-group select {
+        padding: 10px 12px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        background-color: white;
+        cursor: pointer;
+        transition: border-color 0.2s;
+      }
+
+      .control-group select:hover {
+        border-color: #4caf50;
+      }
+
+      .control-group select:focus {
+        outline: none;
+        border-color: #4caf50;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
       }
 
       .chart-container {
         margin: 20px auto;
-        width: 1000px;
-        min-height: 500px;
-        border: 1px solid #ccc;
+        width: 1200px;
+        min-height: 600px;
+        border: 2px solid #ddd;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         overflow: auto;
-        margin-bottom: 40px;
+        padding: 20px;
+      }
+
+      .description {
+        background-color: #e8f4fd;
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        border-left: 4px solid #2196f3;
+      }
+
+      .description h3 {
+        margin-top: 0;
+        color: #1976d2;
+      }
+
+      .description p {
+        margin-bottom: 0;
+        color: #555;
+        line-height: 1.5;
+      }
+
+      .current-settings {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        border-radius: 6px;
+        margin-top: 15px;
+        font-size: 13px;
+        color: #666;
       }
     </style>
   </head>
   <body>
-    <h1>Node Types Bug Fixes</h1>
+    <h1>Arrow Direction & Tree Alignment Test</h1>
 
-    <h2>Node with Description</h2>
-    <div id="node-desc-container" class="chart-container"></div>
+    <div class="controls-section">
+      <h3 style="margin-top: 0; margin-bottom: 15px; color: #333">
+        Interactive Controls
+      </h3>
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="arrow-direction">Arrow Direction</label>
+          <select id="arrow-direction">
+            <option value="source-to-target">
+              Parent → Child (source-to-target)
+            </option>
+            <option value="target-to-source">
+              Child → Parent (target-to-source)
+            </option>
+            <option value="both">Both Directions (both)</option>
+          </select>
+        </div>
 
-    <h2>Collapsible Node</h2>
-    <div id="collapsible-container" class="chart-container"></div>
+        <div class="control-group">
+          <label for="tree-alignment">Tree Flow Direction</label>
+          <select id="tree-alignment">
+            <option value="top-to-bottom">Top to Bottom</option>
+            <option value="bottom-to-top">Bottom to Top</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="current-settings">
+        <strong>Current Settings:</strong>
+        <span id="current-settings-text">Parent → Child, Top to Bottom</span>
+      </div>
+    </div>
+
+    <div class="description">
+      <h3>Test Purpose</h3>
+      <p>
+        This test focuses on right-angle tree connections with interactive
+        controls to test arrow directions and tree flow alignment. Use the
+        dropdowns above to test different combinations and verify that arrows
+        appear only on the final connections to child nodes (not on structural
+        connector lines).
+      </p>
+    </div>
+
+    <div id="right-angle-container" class="chart-container"></div>
 
     <script type="module" src="./bugfixes.js"></script>
   </body>

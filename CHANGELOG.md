@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Right-Angle Arrow Positioning**: Fixed arrows appearing on incorrect segments in right-angle connections
   - Fixed "source-to-target" arrows appearing on horizontal segments instead of final vertical segments
   - Fixed "target-to-source" arrows appearing on all segments instead of only initial vertical segments
+  - Fixed "both" arrow direction showing arrows on both ends of every vertical edge instead of correctly placing directional arrows
   - Arrows now correctly target the appropriate connection segments based on direction
   - Both arrow directions now work correctly for all right-angle connection types
 - **EdgeConfig Cleanup**: Removed unused `type` property from EdgeConfig interface
