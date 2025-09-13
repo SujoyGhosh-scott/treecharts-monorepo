@@ -16,10 +16,7 @@ export abstract class BaseNodeRenderer implements NodeRenderer {
   /**
    * Abstract method that subclasses must implement to create their specific shape
    */
-  abstract render(
-    options: Required<NodeOptions>,
-    svg: SVGSVGElement
-  ): NodeRenderResult;
+  abstract render(options: Required<NodeOptions>): NodeRenderResult;
 
   /**
    * Apply common styling to an SVG element
@@ -145,7 +142,7 @@ export abstract class BaseNodeRenderer implements NodeRenderer {
   /**
    * Measure text width using canvas context
    */
-  protected measureText(
+  public measureText(
     text: string,
     fontSize: number,
     fontFamily: string
@@ -161,7 +158,7 @@ export abstract class BaseNodeRenderer implements NodeRenderer {
   /**
    * Calculate lines needed for text wrapping
    */
-  protected calculateTextLines(
+  public calculateTextLines(
     text: string,
     maxWidth: number,
     fontSize: number,
@@ -273,56 +270,19 @@ export abstract class BaseNodeRenderer implements NodeRenderer {
     lineHeight: number = NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT,
     textAnchor: "start" | "middle" | "end" = "middle"
   ): SVGElement[] {
-    const elements: SVGElement[] = [];
-
-    // Create canvas for text measurement
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-
-    if (!context) return elements;
-
-    context.font = `${fontSize}px ${fontFamily}`;
-
-    // Wrap text using simple word wrapping
-    const words = description.split(" ");
-    const lines: string[] = [];
-    let currentLine = "";
-
-    for (const word of words) {
-      const testLine = currentLine ? currentLine + " " + word : word;
-      const testWidth = context.measureText(testLine).width;
-
-      if (testWidth > maxTextWidth && currentLine) {
-        lines.push(currentLine);
-        currentLine = word;
-      } else {
-        currentLine = testLine;
-      }
-    }
-    if (currentLine) {
-      lines.push(currentLine);
-    }
-
-    // Create text elements for each line
-    lines.forEach((line, index) => {
-      const lineY = startY + index * fontSize * lineHeight;
-
-      const descriptionText = document.createElementNS(SVG_NS, "text");
-      descriptionText.setAttribute("x", x.toString());
-      descriptionText.setAttribute("y", lineY.toString());
-      descriptionText.setAttribute("font-family", fontFamily);
-      descriptionText.setAttribute("font-size", fontSize.toString());
-      descriptionText.setAttribute("font-weight", "normal");
-      descriptionText.setAttribute("fill", fillColor);
-      descriptionText.setAttribute("stroke", "none");
-      descriptionText.setAttribute("stroke-width", "0");
-      descriptionText.setAttribute("text-anchor", textAnchor);
-      descriptionText.setAttribute("dominant-baseline", "alphabetic");
-      descriptionText.textContent = line;
-      elements.push(descriptionText);
-    });
-
-    return elements;
+    return this.createAutoWrappedText(
+      description,
+      maxTextWidth,
+      fontSize,
+      fontFamily,
+      x,
+      startY,
+      fillColor,
+      lineHeight,
+      textAnchor,
+      "normal",
+      "alphabetic"
+    );
   }
 
   /**
@@ -339,53 +299,63 @@ export abstract class BaseNodeRenderer implements NodeRenderer {
     lineHeight: number = 1.2,
     textAnchor: "start" | "middle" | "end" = "middle"
   ): SVGElement[] {
-    const elements: SVGElement[] = [];
+    return this.createAutoWrappedText(
+      title,
+      maxTextWidth,
+      fontSize,
+      fontFamily,
+      x,
+      startY,
+      fillColor,
+      lineHeight,
+      textAnchor,
+      "bold",
+      "alphabetic"
+    );
+  }
 
-    // Create canvas for text measurement
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-
-    if (!context) return elements;
-
-    context.font = `bold ${fontSize}px ${fontFamily}`;
-
-    // Wrap text using simple word wrapping
-    const words = title.split(" ");
-    const lines: string[] = [];
-    let currentLine = "";
-
-    for (const word of words) {
-      const testLine = currentLine ? currentLine + " " + word : word;
-      const testWidth = context.measureText(testLine).width;
-
-      if (testWidth > maxTextWidth && currentLine) {
-        lines.push(currentLine);
-        currentLine = word;
-      } else {
-        currentLine = testLine;
-      }
-    }
-    if (currentLine) {
-      lines.push(currentLine);
-    }
+  /**
+   * Create canvas-based text wrapping with automatic line calculation
+   */
+  protected createAutoWrappedText(
+    text: string,
+    maxTextWidth: number,
+    fontSize: number,
+    fontFamily: string,
+    x: number,
+    startY: number,
+    fillColor: string,
+    lineHeight: number = NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT,
+    textAnchor: "start" | "middle" | "end" = "middle",
+    fontWeight: string = "normal",
+    dominantBaseline: string = "alphabetic"
+  ): SVGElement[] {
+    // Use the existing calculateTextLines method to avoid duplication
+    const lines = this.calculateTextLines(
+      text,
+      maxTextWidth,
+      fontSize,
+      fontFamily
+    );
 
     // Create text elements for each line
+    const elements: SVGElement[] = [];
     lines.forEach((line, index) => {
       const lineY = startY + index * fontSize * lineHeight;
 
-      const titleText = document.createElementNS(SVG_NS, "text");
-      titleText.setAttribute("x", x.toString());
-      titleText.setAttribute("y", lineY.toString());
-      titleText.setAttribute("font-family", fontFamily);
-      titleText.setAttribute("font-size", fontSize.toString());
-      titleText.setAttribute("font-weight", "bold");
-      titleText.setAttribute("fill", fillColor);
-      titleText.setAttribute("stroke", "none");
-      titleText.setAttribute("stroke-width", "0");
-      titleText.setAttribute("text-anchor", textAnchor);
-      titleText.setAttribute("dominant-baseline", "alphabetic");
-      titleText.textContent = line;
-      elements.push(titleText);
+      const textElement = document.createElementNS(SVG_NS, "text");
+      textElement.setAttribute("x", x.toString());
+      textElement.setAttribute("y", lineY.toString());
+      textElement.setAttribute("font-family", fontFamily);
+      textElement.setAttribute("font-size", fontSize.toString());
+      textElement.setAttribute("font-weight", fontWeight);
+      textElement.setAttribute("fill", fillColor);
+      textElement.setAttribute("stroke", "none");
+      textElement.setAttribute("stroke-width", "0");
+      textElement.setAttribute("text-anchor", textAnchor);
+      textElement.setAttribute("dominant-baseline", dominantBaseline);
+      textElement.textContent = line;
+      elements.push(textElement);
     });
 
     return elements;
@@ -401,31 +371,14 @@ export abstract class BaseNodeRenderer implements NodeRenderer {
     fontFamily: string,
     lineHeight: number = 1.2
   ): number {
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-
-    if (!context) return fontSize;
-
-    context.font = `bold ${fontSize}px ${fontFamily}`;
-
-    // Calculate number of lines needed
-    const words = title.split(" ");
-    let lines = 1;
-    let currentLine = "";
-
-    for (const word of words) {
-      const testLine = currentLine ? currentLine + " " + word : word;
-      const testWidth = context.measureText(testLine).width;
-
-      if (testWidth > maxTextWidth && currentLine) {
-        lines++;
-        currentLine = word;
-      } else {
-        currentLine = testLine;
-      }
-    }
-
-    return lines * fontSize * lineHeight;
+    // Use the existing calculateTextLines method to avoid duplication
+    const lines = this.calculateTextLines(
+      title,
+      maxTextWidth,
+      fontSize,
+      fontFamily
+    );
+    return lines.length * fontSize * lineHeight;
   }
 
   /**
@@ -437,28 +390,9 @@ export abstract class BaseNodeRenderer implements NodeRenderer {
     fontSize: number,
     fontFamily: string
   ): number {
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-
-    if (!context) return 1;
-
-    context.font = `${fontSize}px ${fontFamily}`;
-
-    const words = text.split(" ");
-    let lines = 1;
-    let currentLineWidth = 0;
-
-    for (const word of words) {
-      const wordWidth = context.measureText(word + " ").width;
-      if (currentLineWidth + wordWidth > maxWidth && currentLineWidth > 0) {
-        lines++;
-        currentLineWidth = wordWidth;
-      } else {
-        currentLineWidth += wordWidth;
-      }
-    }
-
-    return lines;
+    // Use the existing calculateTextLines method to avoid duplication
+    const lines = this.calculateTextLines(text, maxWidth, fontSize, fontFamily);
+    return lines.length;
   }
 
   /**

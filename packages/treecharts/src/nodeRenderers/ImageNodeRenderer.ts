@@ -101,26 +101,22 @@ export class ImageNodeRenderer extends BaseNodeRenderer {
       NODE_CONSTANTS.DEFAULT_TITLE_FONT_SIZE;
     const subtitleFontSize =
       imageSubtitleConfig.fontSize || NODE_CONSTANTS.DEFAULT_SUBTITLE_FONT_SIZE;
+    const fontFamily = nodeConfig.fontFamily || "Arial";
 
-    // Calculate text dimensions using canvas measurement
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
+    // Calculate text dimensions using inherited method to avoid duplication
     let maxTextWidth = 0;
 
-    if (context && (title || subtitle)) {
-      if (title) {
-        context.font = `${titleFontSize}px ${nodeConfig.fontFamily || "Arial"}`;
-        maxTextWidth = Math.max(maxTextWidth, context.measureText(title).width);
-      }
-      if (subtitle) {
-        context.font = `${subtitleFontSize}px ${
-          nodeConfig.fontFamily || "Arial"
-        }`;
-        maxTextWidth = Math.max(
-          maxTextWidth,
-          context.measureText(subtitle).width
-        );
-      }
+    if (title) {
+      maxTextWidth = Math.max(
+        maxTextWidth,
+        this.measureText(title, titleFontSize, fontFamily)
+      );
+    }
+    if (subtitle) {
+      maxTextWidth = Math.max(
+        maxTextWidth,
+        this.measureText(subtitle, subtitleFontSize, fontFamily)
+      );
     }
 
     // Calculate text height

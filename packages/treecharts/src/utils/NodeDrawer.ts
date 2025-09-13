@@ -6,6 +6,7 @@ import {
   CollapsibleNodeRenderer,
   RectangleNodeRenderer,
   CircleNodeRenderer,
+  ShapeNodeRenderer,
 } from "../nodeRenderers";
 
 /**
@@ -19,6 +20,7 @@ export class NodeDrawer {
   private collapsibleNodeRenderer: CollapsibleNodeRenderer;
   private rectangleNodeRenderer: RectangleNodeRenderer;
   private circleNodeRenderer: CircleNodeRenderer;
+  private shapeNodeRenderer: ShapeNodeRenderer;
   private defaultOptions: Required<NodeOptions> = {
     type: "rectangle",
     width: 80,
@@ -91,40 +93,41 @@ export class NodeDrawer {
     this.collapsibleNodeRenderer = new CollapsibleNodeRenderer(svg);
     this.rectangleNodeRenderer = new RectangleNodeRenderer(svg);
     this.circleNodeRenderer = new CircleNodeRenderer(svg);
+    this.shapeNodeRenderer = new ShapeNodeRenderer(svg);
   }
 
   /**
-   * Create canvas context for text measurement
-   * @private
-   */
-  private createTextMeasurementContext(): CanvasRenderingContext2D {
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-
-    if (!context) {
-      throw new Error("Failed to get canvas 2D context for text measurement");
-    }
-
-    return context;
-  }
-
-  /**
-   * Measure text width with given font settings
+   * Measure text width using BaseNodeRenderer utilities
    * @private
    */
   private measureText(
     text: string,
     fontSize: number,
-    fontFamily: string = "Arial, sans-serif",
-    fontWeight: string = "normal"
+    fontFamily: string = "Arial, sans-serif"
   ): number {
-    const context = this.createTextMeasurementContext();
-    context.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
-    return context.measureText(text).width;
+    return this.rectangleNodeRenderer.measureText(text, fontSize, fontFamily);
   }
 
   /**
-   * Calculate text wrapping for given constraints
+   * Calculate text lines using BaseNodeRenderer utilities
+   * @private
+   */
+  private calculateTextLines(
+    text: string,
+    maxWidth: number,
+    fontSize: number,
+    fontFamily: string = "Arial, sans-serif"
+  ): string[] {
+    return this.rectangleNodeRenderer.calculateTextLines(
+      text,
+      maxWidth,
+      fontSize,
+      fontFamily
+    );
+  }
+
+  /**
+   * Calculate text wrapping with line width information
    * @private
    */
   private calculateTextWrapping(
@@ -133,41 +136,13 @@ export class NodeDrawer {
     fontSize: number,
     fontFamily: string = "Arial, sans-serif"
   ): { lines: string[]; totalWidth: number } {
-    const context = this.createTextMeasurementContext();
-    context.font = `${fontSize}px ${fontFamily}`;
+    const lines = this.calculateTextLines(text, maxWidth, fontSize, fontFamily);
 
-    const words = text.split(" ");
-    const lines: string[] = [];
-    let currentLine = "";
+    // Calculate the maximum line width
     let maxLineWidth = 0;
-
-    for (const word of words) {
-      const testLine = currentLine + (currentLine ? " " : "") + word;
-      const testWidth = context.measureText(testLine).width;
-
-      if (testWidth <= maxWidth) {
-        currentLine = testLine;
-        maxLineWidth = Math.max(maxLineWidth, testWidth);
-      } else {
-        if (currentLine) {
-          lines.push(currentLine);
-          currentLine = word;
-          maxLineWidth = Math.max(
-            maxLineWidth,
-            context.measureText(word).width
-          );
-        } else {
-          lines.push(word);
-          maxLineWidth = Math.max(
-            maxLineWidth,
-            context.measureText(word).width
-          );
-        }
-      }
-    }
-
-    if (currentLine) {
-      lines.push(currentLine);
+    for (const line of lines) {
+      const lineWidth = this.measureText(line, fontSize, fontFamily);
+      maxLineWidth = Math.max(maxLineWidth, lineWidth);
     }
 
     return { lines, totalWidth: maxLineWidth };
@@ -220,12 +195,7 @@ export class NodeDrawer {
     const fontFamily = nodeConfig.fontFamily || "Arial, sans-serif";
 
     // Measure main text
-    const textWidth = this.measureText(
-      node.value || "",
-      fontSize,
-      fontFamily,
-      "bold"
-    );
+    const textWidth = this.measureText(node.value || "", fontSize, fontFamily);
     let maxRequiredWidth = textWidth;
 
     // Handle description if present
@@ -397,27 +367,20 @@ export class NodeDrawer {
       case "circle":
         return this.createCircleUsingRenderer(options);
       case "ellipse":
-        return this.createEllipse(options);
       case "diamond":
-        return this.createDiamond(options);
       case "hexagon":
-        return this.createHexagon(options);
       case "triangle":
-        return this.createTriangle(options);
       case "pentagon":
-        return this.createPentagon(options);
       case "octagon":
-        return this.createOctagon(options);
       case "star":
-        return this.createStar(options);
+      case "custom":
+        return this.createShapeUsingRenderer(options);
       case "node-with-description":
         return this.createNodeWithDescriptionUsingRenderer(options);
       case "collapsible-node":
         return this.createCollapsibleNodeUsingRenderer(options);
       case "image":
         return this.createImageNodeUsingRenderer(options);
-      case "custom":
-        return this.createCustomShape(options);
       default:
         return this.createRectangleUsingRenderer(options);
     }
@@ -483,165 +446,11 @@ export class NodeDrawer {
   }
 
   /**
-   * Create an ellipse node
+   * Create a shape node using the dedicated ShapeNodeRenderer
    */
-  private createEllipse(options: Required<NodeOptions>): SVGEllipseElement {
-    const ellipse = document.createElementNS(SVG_NS, "ellipse");
-    const centerX = options.x + options.width / 2;
-    const centerY = options.y + options.height / 2;
-
-    ellipse.setAttribute("cx", centerX.toString());
-    ellipse.setAttribute("cy", centerY.toString());
-    ellipse.setAttribute("rx", (options.width / 2).toString());
-    ellipse.setAttribute("ry", (options.height / 2).toString());
-
-    return ellipse;
-  }
-
-  /**
-   * Create a diamond node
-   */
-  private createDiamond(options: Required<NodeOptions>): SVGPolygonElement {
-    const diamond = document.createElementNS(SVG_NS, "polygon");
-    const centerX = options.x + options.width / 2;
-    const centerY = options.y + options.height / 2;
-    const halfWidth = options.width / 2;
-    const halfHeight = options.height / 2;
-
-    const points = [
-      `${centerX},${options.y}`, // top
-      `${options.x + options.width},${centerY}`, // right
-      `${centerX},${options.y + options.height}`, // bottom
-      `${options.x},${centerY}`, // left
-    ].join(" ");
-
-    diamond.setAttribute("points", points);
-    return diamond;
-  }
-
-  /**
-   * Create a hexagon node
-   */
-  private createHexagon(options: Required<NodeOptions>): SVGPolygonElement {
-    const hexagon = document.createElementNS(SVG_NS, "polygon");
-    const centerX = options.x + options.width / 2;
-    const centerY = options.y + options.height / 2;
-    const halfWidth = options.width / 2;
-    const halfHeight = options.height / 2;
-
-    const points = [
-      `${centerX - halfWidth * 0.5},${options.y}`, // top left
-      `${centerX + halfWidth * 0.5},${options.y}`, // top right
-      `${options.x + options.width},${centerY}`, // right
-      `${centerX + halfWidth * 0.5},${options.y + options.height}`, // bottom right
-      `${centerX - halfWidth * 0.5},${options.y + options.height}`, // bottom left
-      `${options.x},${centerY}`, // left
-    ].join(" ");
-
-    hexagon.setAttribute("points", points);
-    return hexagon;
-  }
-
-  /**
-   * Create a triangle node
-   */
-  private createTriangle(options: Required<NodeOptions>): SVGPolygonElement {
-    const triangle = document.createElementNS(SVG_NS, "polygon");
-    const centerX = options.x + options.width / 2;
-
-    const points = [
-      `${centerX},${options.y}`, // top
-      `${options.x + options.width},${options.y + options.height}`, // bottom right
-      `${options.x},${options.y + options.height}`, // bottom left
-    ].join(" ");
-
-    triangle.setAttribute("points", points);
-    return triangle;
-  }
-
-  /**
-   * Create a pentagon node
-   */
-  private createPentagon(options: Required<NodeOptions>): SVGPolygonElement {
-    const pentagon = document.createElementNS(SVG_NS, "polygon");
-    const centerX = options.x + options.width / 2;
-    const centerY = options.y + options.height / 2;
-    const radius = Math.min(options.width, options.height) / 2;
-
-    const points = [];
-    for (let i = 0; i < 5; i++) {
-      const angle = (i * 2 * Math.PI) / 5 - Math.PI / 2; // Start from top
-      const x = centerX + radius * Math.cos(angle);
-      const y = centerY + radius * Math.sin(angle);
-      points.push(`${x},${y}`);
-    }
-
-    pentagon.setAttribute("points", points.join(" "));
-    return pentagon;
-  }
-
-  /**
-   * Create an octagon node
-   */
-  private createOctagon(options: Required<NodeOptions>): SVGPolygonElement {
-    const octagon = document.createElementNS(SVG_NS, "polygon");
-    const centerX = options.x + options.width / 2;
-    const centerY = options.y + options.height / 2;
-    const radius = Math.min(options.width, options.height) / 2;
-
-    const points = [];
-    for (let i = 0; i < NODE_CONSTANTS.STAR_POINTS; i++) {
-      const angle =
-        (i * 2 * Math.PI) / NODE_CONSTANTS.STAR_POINTS - Math.PI / 2; // Start from top
-      const x = centerX + radius * Math.cos(angle);
-      const y = centerY + radius * Math.sin(angle);
-      points.push(`${x},${y}`);
-    }
-
-    octagon.setAttribute("points", points.join(" "));
-    return octagon;
-  }
-
-  /**
-   * Create a star node
-   */
-  private createStar(options: Required<NodeOptions>): SVGPolygonElement {
-    const star = document.createElementNS(SVG_NS, "polygon");
-    const centerX = options.x + options.width / 2;
-    const centerY = options.y + options.height / 2;
-    const outerRadius = Math.min(options.width, options.height) / 2;
-    const innerRadius = outerRadius * 0.4;
-
-    const points = [];
-    for (let i = 0; i < NODE_CONSTANTS.CIRCLE_POINTS; i++) {
-      const angle = (i * Math.PI) / 5 - Math.PI / 2; // Start from top
-      const radius = i % 2 === 0 ? outerRadius : innerRadius;
-      const x = centerX + radius * Math.cos(angle);
-      const y = centerY + radius * Math.sin(angle);
-      points.push(`${x},${y}`);
-    }
-
-    star.setAttribute("points", points.join(" "));
-    return star;
-  }
-
-  /**
-   * Create a custom shape node
-   */
-  private createCustomShape(options: Required<NodeOptions>): SVGElement {
-    // For custom shapes, users can provide custom attributes
-    // Default to rectangle if no custom path is provided
-    if (options.customAttributes.d) {
-      const path = document.createElementNS(SVG_NS, "path");
-      path.setAttribute("d", String(options.customAttributes.d));
-
-      // Apply transformation to position the path correctly
-      path.setAttribute("transform", `translate(${options.x}, ${options.y})`);
-
-      return path;
-    }
-
-    return this.createRectangleUsingRenderer(options);
+  private createShapeUsingRenderer(options: Required<NodeOptions>): SVGElement {
+    const result = this.shapeNodeRenderer.render(options);
+    return result.element;
   }
 
   /**

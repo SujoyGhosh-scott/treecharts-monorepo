@@ -29,6 +29,17 @@
 
 This release resolves visual corruption issues that made shadow-enabled charts unusable.
 
+### 🔧 Code Quality Improvements
+
+#### Refactored
+
+- **NodeDrawer Code Optimization**: Major refactoring to eliminate code duplication and improve maintainability
+  - **50% Code Reduction**: Simplified `calculateDynamicNodeWidth` and `calculateDynamicNodeHeight` methods from 120+ lines to 60 lines
+  - **Extracted Utility Methods**: Created reusable `createTextMeasurementContext()`, `measureText()`, `calculateTextWrapping()`, and `delegateCalculation()` methods
+  - **Eliminated Duplication**: Removed 4+ instances of duplicate canvas creation and text measurement logic
+  - **Improved Error Handling**: Added proper fallback mechanisms for text measurement failures
+  - **Enhanced Maintainability**: Centralized common operations into single-responsibility utility methods
+
 ## [0.3.0] - 2025-08-20
 
 ### 🚀 Advanced Node Types & Architecture Overhaul

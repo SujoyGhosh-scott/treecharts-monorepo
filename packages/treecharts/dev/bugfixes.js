@@ -1,5 +1,83 @@
 import { TreeChart } from "../src/index";
 
+// Test data for node-with-description
+const nodeWithDescriptionTestData = {
+  value:
+    "Root Node with Very Long Title That Should Wrap Across Multiple Lines",
+  description:
+    "This is a very long description that should wrap across multiple lines to test the text wrapping functionality in node-with-description type. Let's make it even longer to ensure proper testing of the text wrapping algorithm.",
+  nodeConfig: {
+    type: "node-with-description",
+    width: 200,
+    color: "#E8F4FD",
+  },
+  child: [
+    {
+      value:
+        "Child Node A with Extremely Long Title That Will Definitely Need Text Wrapping",
+      description:
+        "Another very long description for the child node. This description is intentionally verbose to test the text wrapping capabilities. It should wrap nicely across multiple lines within the specified node width.",
+      nodeConfig: {
+        type: "node-with-description",
+        width: 180,
+        color: "#FFF2CC",
+      },
+      child: [],
+    },
+    {
+      value: "Child Node B with Another Long Title for Testing",
+      description:
+        "This is the second child node with its own long description. The text wrapping should work consistently across all nodes in the tree.",
+      nodeConfig: {
+        type: "node-with-description",
+        width: 220,
+        color: "#D5E8D4",
+      },
+      child: [],
+    },
+  ],
+};
+
+// Test data for collapsible nodes
+const collapsibleNodeTestData = {
+  value:
+    "Collapsible Root Node with Long Title for Testing Text Wrapping Feature",
+  description:
+    "This is a collapsible root node with a long description. When expanded, this description should be visible and properly wrapped. When collapsed, only the title should be visible with expand/collapse functionality.",
+  nodeConfig: {
+    type: "collapsible-node",
+    width: 220,
+    color: "#E1D5E7",
+    collapsible: true,
+  },
+  child: [
+    {
+      value: "Collapsible Child A with Very Long Title That Needs Wrapping",
+      description:
+        "This collapsible child node has a detailed description that should wrap properly. You can expand and collapse this node to test the functionality.",
+      nodeConfig: {
+        type: "collapsible-node",
+        width: 200,
+        color: "#FFE6CC",
+        collapsible: true,
+      },
+      child: [],
+    },
+    {
+      value: "Collapsible Child B with Another Long Title for Testing",
+      description:
+        "Another collapsible child node with its own description. The expand/collapse feature should work independently for each node.",
+      nodeConfig: {
+        type: "collapsible-node",
+        width: 190,
+        color: "#F8CECC",
+        collapsible: true,
+      },
+      child: [],
+    },
+  ],
+};
+
 // Tree data with clear parent-child directional flow
 const rightAngleTestData = {
   value: "Root",
@@ -150,6 +228,57 @@ function updateSettingsDisplay(arrowDirection, treeAlignment) {
 window.addEventListener("DOMContentLoaded", () => {
   // Render initial chart
   rightAngleChart.render(rightAngleTestData);
+
+  // Create and render node-with-description test chart
+  const nodeWithDescriptionChart = new TreeChart(
+    "node-with-description-container",
+    {
+      nodeConfig: {
+        width: 180,
+        height: 40,
+        color: "#f0f0f0",
+        borderColor: "#333",
+        borderWidth: 1,
+        borderRadius: 5,
+        fontSize: 14,
+        fontColor: "#333",
+        padding: 8,
+      },
+      edgeConfig: {
+        color: "#666",
+        width: 2,
+      },
+      containerConfig: {
+        backgroundColor: "#ffffff",
+        padding: 20,
+      },
+    }
+  );
+  nodeWithDescriptionChart.render(nodeWithDescriptionTestData);
+
+  // Create and render collapsible node test chart
+  const collapsibleNodeChart = new TreeChart("collapsible-node-container", {
+    nodeConfig: {
+      width: 180,
+      height: 40,
+      color: "#f0f0f0",
+      borderColor: "#333",
+      borderWidth: 1,
+      borderRadius: 5,
+      fontSize: 14,
+      fontColor: "#333",
+      padding: 8,
+    },
+    edgeConfig: {
+      color: "#666",
+      width: 2,
+    },
+    containerConfig: {
+      backgroundColor: "#ffffff",
+      padding: 20,
+    },
+  });
+  collapsibleNodeChart.render(collapsibleNodeTestData);
 
   // Add event listeners to dropdowns
   document

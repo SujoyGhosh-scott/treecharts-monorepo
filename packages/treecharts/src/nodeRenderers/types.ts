@@ -22,7 +22,7 @@ export interface NodeRenderer {
   /**
    * Render the node and return the SVG element with bounds information
    */
-  render(options: Required<NodeOptions>, svg: SVGSVGElement): NodeRenderResult;
+  render(options: Required<NodeOptions>): NodeRenderResult;
 
   /**
    * Calculate dynamic width for nodes that auto-size based on content

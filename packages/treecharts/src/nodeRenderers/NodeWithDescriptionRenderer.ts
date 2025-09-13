@@ -58,49 +58,36 @@ export class NodeWithDescriptionRenderer extends BaseNodeRenderer {
     const fontSize = nodeConfig.fontSize || NODE_CONSTANTS.DEFAULT_FONT_SIZE;
     const descriptionFontSize =
       nodeConfig.descriptionFontSize || NODE_CONSTANTS.DESCRIPTION_FONT_SIZE;
+    const fontFamily = nodeConfig.fontFamily || "Arial, sans-serif";
 
-    // Create canvas for text measurement
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-
-    if (!context) {
-      return maxNodeWidth; // Fallback to max width
-    }
-
-    // Measure main text
-    context.font = `${fontSize}px ${
-      nodeConfig.fontFamily || "Arial, sans-serif"
-    }`;
-    const textWidth = context.measureText(node.value || "").width;
+    // Measure main text using inherited method
+    const textWidth = this.measureText(node.value || "", fontSize, fontFamily);
     let maxRequiredWidth = textWidth;
 
     // Handle description if present
     if (node.description && node.description.trim()) {
-      context.font = `${descriptionFontSize}px ${
-        nodeConfig.fontFamily || "Arial, sans-serif"
-      }`;
-
       // Calculate available width for description
       const availableWidth = maxNodeWidth - padding * 2;
 
-      // Simple word wrapping to estimate width needed
-      const words = node.description.split(" ");
-      let currentLineWidth = 0;
-      let maxLineWidth = 0;
+      // Use inherited method for text line calculation
+      const lines = this.calculateTextLines(
+        node.description,
+        availableWidth,
+        descriptionFontSize,
+        fontFamily
+      );
 
-      for (const word of words) {
-        const wordWidth = context.measureText(word + " ").width;
-        if (
-          currentLineWidth + wordWidth > availableWidth &&
-          currentLineWidth > 0
-        ) {
-          maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
-          currentLineWidth = wordWidth;
-        } else {
-          currentLineWidth += wordWidth;
-        }
+      // Find the maximum line width
+      let maxLineWidth = 0;
+      for (const line of lines) {
+        const lineWidth = this.measureText(
+          line,
+          descriptionFontSize,
+          fontFamily
+        );
+        maxLineWidth = Math.max(maxLineWidth, lineWidth);
       }
-      maxLineWidth = Math.max(maxLineWidth, currentLineWidth);
+
       maxRequiredWidth = Math.max(maxRequiredWidth, maxLineWidth);
     }
 
@@ -213,7 +200,7 @@ export class NodeWithDescriptionRenderer extends BaseNodeRenderer {
 
     // Create wrapped title text
     const titleStartY = options.y + padding + options.fontSize;
-    const titleElements = this.createWrappedTitleText(
+    const titleElements = this.createAutoWrappedText(
       options.text,
       maxTitleWidth,
       options.fontSize,
@@ -222,7 +209,9 @@ export class NodeWithDescriptionRenderer extends BaseNodeRenderer {
       titleStartY,
       options.fontColor,
       1.2,
-      "middle"
+      "middle",
+      "bold",
+      "alphabetic"
     );
     elements.push(...titleElements);
 
@@ -252,7 +241,7 @@ export class NodeWithDescriptionRenderer extends BaseNodeRenderer {
       const centerX = options.x + options.width / 2;
 
       // Use base class method for text wrapping
-      const descriptionElements = this.createWrappedDescriptionText(
+      const descriptionElements = this.createAutoWrappedText(
         options.description,
         maxTextWidth,
         options.descriptionFontSize,
@@ -261,7 +250,9 @@ export class NodeWithDescriptionRenderer extends BaseNodeRenderer {
         textStartY,
         options.descriptionFontColor,
         NODE_CONSTANTS.DESCRIPTION_LINE_HEIGHT,
-        "middle"
+        "middle",
+        "normal",
+        "alphabetic"
       );
 
       elements.push(...descriptionElements);
