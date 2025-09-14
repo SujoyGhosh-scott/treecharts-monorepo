@@ -153,12 +153,21 @@ let chartConfig = {
   edgeConfig: {
     color: "#4CAF50", // Changed to green to match theme
     width: 2,
-    showArrows: true,
+    showArrows: true, // ENABLED for testing the enhancement
     arrowDirection: "source-to-target", // Will be updated by dropdown
   },
+  actionConfig: {
+    download: {
+      enabled: true,
+      position: "top-right",
+      filename: "arrow-direction-test-chart.svg",
+    },
+  },
   titleConfig: {
-    title: "Arrow Direction & Tree Alignment Test",
-    description: "Interactive testing of arrow directions and tree flow",
+    title:
+      "Interactive Arrow Direction & Tree Alignment Testing Dashboard with Advanced Configuration Options",
+    description:
+      "This comprehensive interactive testing environment allows you to dynamically configure and test various arrow directions and tree flow alignments. Use the dropdown controls below to experiment with different arrow directions (parent-to-child, child-to-parent, or bidirectional) combined with tree flow orientations (top-to-bottom or bottom-to-top). The chart will automatically update to reflect your selections, providing real-time visual feedback for testing and validation purposes. This tool is particularly useful for developers and designers who need to understand how different arrow configurations affect the visual hierarchy and flow of organizational charts, family trees, decision trees, and other hierarchical data structures.",
     position: {
       horizontal: "center",
       vertical: "top",

@@ -31,6 +31,7 @@ export abstract class BaseRenderer {
   protected nodeFactory: NodeFactory;
   protected containerElement?: HTMLElement;
   protected onTreeUpdate?: () => void;
+  protected titleSpace?: { top: number; bottom: number };
 
   /**
    * Constructor for BaseRenderer
@@ -86,17 +87,17 @@ export abstract class BaseRenderer {
     });
 
     // Calculate proper SVG dimensions
-    const titleSpace = this.titleDrawer.calculateTitleSpace();
     const svgWidth = calculateSvgWidth(
       this.formattedTree,
       this.options,
       this.nodeDrawer
     );
+    this.titleSpace = this.titleDrawer.calculateTitleSpace(svgWidth);
     const svgHeight = calculateSvgHeight(
       this.formattedTree,
       this.options,
       this.nodeDrawer,
-      titleSpace
+      this.titleSpace
     );
 
     // Update SVG with correct dimensions
@@ -172,6 +173,6 @@ export abstract class BaseRenderer {
     const svgWidth = parseInt(this.svg.getAttribute("width") || "0");
     const svgHeight = parseInt(this.svg.getAttribute("height") || "0");
 
-    this.titleDrawer.drawTitle(svgWidth, svgHeight);
+    this.titleDrawer.drawTitle(svgWidth, svgHeight, this.titleSpace);
   }
 }

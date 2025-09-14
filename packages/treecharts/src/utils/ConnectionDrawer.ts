@@ -92,13 +92,15 @@ export class ConnectionDrawer {
     // Calculate midpoint for the horizontal segment
     const midY = parentPoint.y + (childPoint.y - parentPoint.y) / 2;
 
-    // Determine arrow placement based on arrow direction
+    // Determine arrow placement based on arrow direction AND if arrows are enabled
     const showArrowOnParentSegment =
-      finalOptions.arrowDirection === "target-to-source" ||
-      finalOptions.arrowDirection === "both";
+      finalOptions.showArrows &&
+      (finalOptions.arrowDirection === "target-to-source" ||
+        finalOptions.arrowDirection === "both");
     const showArrowOnChildSegment =
-      finalOptions.arrowDirection === "source-to-target" ||
-      finalOptions.arrowDirection === "both";
+      finalOptions.showArrows &&
+      (finalOptions.arrowDirection === "source-to-target" ||
+        finalOptions.arrowDirection === "both");
 
     // Segment 1: Parent → Midpoint (vertical, arrows only for target-to-source or both)
     const segment1 = this.drawConnection(
@@ -222,10 +224,11 @@ export class ConnectionDrawer {
     const finalOptions = { ...this.defaultOptions, ...options };
     const elements: SVGElement[] = [];
 
-    // Determine arrow placement based on arrow direction
+    // Determine arrow placement based on arrow direction AND if arrows are enabled
     const showArrowOnChildSegment =
-      finalOptions.arrowDirection === "source-to-target" ||
-      finalOptions.arrowDirection === "both";
+      finalOptions.showArrows &&
+      (finalOptions.arrowDirection === "source-to-target" ||
+        finalOptions.arrowDirection === "both");
 
     childPoints.forEach((childPoint, index) => {
       const edgeText = childTexts[index];

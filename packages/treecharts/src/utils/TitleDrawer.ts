@@ -30,6 +30,60 @@ export class TitleDrawer {
   }
 
   /**
+   * Measure text width using canvas context (similar to BaseNodeRenderer)
+   */
+  private measureText(
+    text: string,
+    fontSize: number,
+    fontFamily: string
+  ): number {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    if (!context) return text.length * fontSize * 0.6; // Fallback estimation
+
+    context.font = `${fontSize}px ${fontFamily}`;
+    return context.measureText(text).width;
+  }
+
+  /**
+   * Calculate lines needed for text wrapping (similar to BaseNodeRenderer)
+   */
+  private calculateTextLines(
+    text: string,
+    maxWidth: number,
+    fontSize: number,
+    fontFamily: string
+  ): string[] {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    if (!context) return [text]; // Fallback
+
+    context.font = `${fontSize}px ${fontFamily}`;
+
+    const words = text.split(" ");
+    const lines: string[] = [];
+    let currentLine = "";
+
+    for (const word of words) {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      const testWidth = context.measureText(testLine).width;
+
+      if (testWidth > maxWidth && currentLine) {
+        lines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
+
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+
+    return lines;
+  }
+
+  /**
    * Draw the title and description on the SVG
    * @param svgWidth - Width of the SVG
    * @param svgHeight - Height of the SVG
@@ -37,7 +91,8 @@ export class TitleDrawer {
    */
   public drawTitle(
     svgWidth: number,
-    svgHeight: number
+    svgHeight: number,
+    titleSpace?: { top: number; bottom: number }
   ): { titleHeight: number; descriptionHeight: number } {
     let titleHeight = 0;
     let descriptionHeight = 0;
@@ -58,50 +113,65 @@ export class TitleDrawer {
       titleY = this.titleConfig.titleStyle.margin;
     } else {
       // Position title within the reserved space at the bottom
-      const titleSpace = this.calculateTitleSpace();
+      const computedTitleSpace =
+        titleSpace || this.calculateTitleSpace(svgWidth);
       titleY =
-        svgHeight - titleSpace.bottom + this.titleConfig.titleStyle.margin;
+        svgHeight -
+        computedTitleSpace.bottom +
+        this.titleConfig.titleStyle.margin;
     }
 
     // Create title group
     const titleGroup = document.createElementNS(SVG_NS, "g");
     titleGroup.setAttribute("class", "chart-title-group");
 
+    let currentY = titleY;
+
     // Draw title if provided
     if (this.titleConfig.title) {
-      const titleElement = this.createTextElement(
+      const titleElements = this.createWrappedTextElements(
         this.titleConfig.title,
         titleX,
-        titleY,
+        currentY,
         this.titleConfig.titleStyle,
-        horizontal
+        horizontal,
+        svgWidth
       );
-      titleGroup.appendChild(titleElement);
-      titleHeight =
-        this.titleConfig.titleStyle.fontSize +
-        this.titleConfig.titleStyle.margin;
+
+      titleElements.forEach((element: SVGTextElement) =>
+        titleGroup.appendChild(element)
+      );
+
+      // Calculate actual title height based on number of lines
+      const lineHeight = this.titleConfig.titleStyle.fontSize * 1.2;
+      titleHeight = titleElements.length * lineHeight;
 
       // Adjust position for description (keep them close together)
       if (vertical === "top") {
-        titleY += this.titleConfig.titleStyle.fontSize + 5; // Small gap between title and description
+        currentY += titleHeight + 5; // Small gap between title and description
       } else {
-        titleY -= this.titleConfig.titleStyle.fontSize + 5; // Small gap between title and description
+        currentY -= titleHeight + 5; // Small gap between title and description
       }
     }
 
     // Draw description if provided
     if (this.titleConfig.description) {
-      const descriptionElement = this.createTextElement(
+      const descriptionElements = this.createWrappedTextElements(
         this.titleConfig.description,
         titleX,
-        titleY,
+        currentY,
         this.titleConfig.descriptionStyle,
-        horizontal
+        horizontal,
+        svgWidth
       );
-      titleGroup.appendChild(descriptionElement);
-      descriptionHeight =
-        this.titleConfig.descriptionStyle.fontSize +
-        this.titleConfig.descriptionStyle.margin;
+
+      descriptionElements.forEach((element: SVGTextElement) =>
+        titleGroup.appendChild(element)
+      );
+
+      // Calculate actual description height based on number of lines
+      const lineHeight = this.titleConfig.descriptionStyle.fontSize * 1.2;
+      descriptionHeight = descriptionElements.length * lineHeight;
     }
 
     // Insert title group at the beginning (so it appears on top/bottom)
@@ -130,6 +200,49 @@ export class TitleDrawer {
       default:
         return svgWidth / 2;
     }
+  }
+
+  /**
+   * Create wrapped text elements for title or description
+   */
+  private createWrappedTextElements(
+    text: string,
+    x: number,
+    startY: number,
+    style:
+      | Required<TitleConfig>["titleStyle"]
+      | Required<TitleConfig>["descriptionStyle"],
+    horizontal: "left" | "center" | "right",
+    svgWidth: number
+  ): SVGTextElement[] {
+    // Calculate available width for text wrapping
+    const padding = NODE_CONSTANTS.SMALL_MARGIN;
+    const maxWidth = svgWidth - padding * 2;
+
+    // Calculate text lines using our wrapping method
+    const lines = this.calculateTextLines(
+      text,
+      maxWidth,
+      style.fontSize,
+      style.fontFamily
+    );
+
+    // Create text elements for each line
+    const textElements: SVGTextElement[] = [];
+    const lineHeight = style.fontSize * 1.2;
+
+    lines.forEach((line, index) => {
+      const textElement = this.createTextElement(
+        line,
+        x,
+        startY + index * lineHeight,
+        style,
+        horizontal
+      );
+      textElements.push(textElement);
+    });
+
+    return textElements;
   }
 
   /**
@@ -177,7 +290,10 @@ export class TitleDrawer {
   /**
    * Calculate total height needed for titles (useful for adjusting chart layout)
    */
-  public calculateTitleSpace(): { top: number; bottom: number } {
+  public calculateTitleSpace(svgWidth?: number): {
+    top: number;
+    bottom: number;
+  } {
     let topSpace = 0;
     let bottomSpace = 0;
 
@@ -188,16 +304,39 @@ export class TitleDrawer {
     const { vertical } = this.titleConfig.position;
     const extraSpacing = NODE_CONSTANTS.EXTRA_TITLE_SPACING; // Additional space between entire title section and tree
 
+    // Get SVG width for text wrapping calculations
+    const actualSvgWidth =
+      svgWidth || parseFloat(this.svg.getAttribute("width") || "800");
+    const padding = NODE_CONSTANTS.SMALL_MARGIN;
+    const maxWidth = actualSvgWidth - padding * 2;
+
     if (vertical === "top") {
       // Add space for title margin (space above title)
       if (this.titleConfig.title) {
-        topSpace +=
-          this.titleConfig.titleStyle.margin +
-          this.titleConfig.titleStyle.fontSize;
+        // Calculate actual title height based on text wrapping
+        const titleLines = this.calculateTextLines(
+          this.titleConfig.title,
+          maxWidth,
+          this.titleConfig.titleStyle.fontSize,
+          this.titleConfig.titleStyle.fontFamily
+        );
+        const titleHeight =
+          titleLines.length * this.titleConfig.titleStyle.fontSize * 1.2;
+        topSpace += this.titleConfig.titleStyle.margin + titleHeight;
       }
       // Add space for description (close to title, no extra margin)
       if (this.titleConfig.description) {
-        topSpace += 5 + this.titleConfig.descriptionStyle.fontSize; // Small gap + font height
+        const descriptionLines = this.calculateTextLines(
+          this.titleConfig.description,
+          maxWidth,
+          this.titleConfig.descriptionStyle.fontSize,
+          this.titleConfig.descriptionStyle.fontFamily
+        );
+        const descriptionHeight =
+          descriptionLines.length *
+          this.titleConfig.descriptionStyle.fontSize *
+          1.2;
+        topSpace += 5 + descriptionHeight; // Small gap + font height
       }
       // Add extra spacing between entire title section and tree
       if (this.titleConfig.title || this.titleConfig.description) {
@@ -206,12 +345,28 @@ export class TitleDrawer {
     } else {
       // Similar logic for bottom positioning
       if (this.titleConfig.title) {
-        bottomSpace +=
-          this.titleConfig.titleStyle.margin +
-          this.titleConfig.titleStyle.fontSize;
+        const titleLines = this.calculateTextLines(
+          this.titleConfig.title,
+          maxWidth,
+          this.titleConfig.titleStyle.fontSize,
+          this.titleConfig.titleStyle.fontFamily
+        );
+        const titleHeight =
+          titleLines.length * this.titleConfig.titleStyle.fontSize * 1.2;
+        bottomSpace += this.titleConfig.titleStyle.margin + titleHeight;
       }
       if (this.titleConfig.description) {
-        bottomSpace += 5 + this.titleConfig.descriptionStyle.fontSize;
+        const descriptionLines = this.calculateTextLines(
+          this.titleConfig.description,
+          maxWidth,
+          this.titleConfig.descriptionStyle.fontSize,
+          this.titleConfig.descriptionStyle.fontFamily
+        );
+        const descriptionHeight =
+          descriptionLines.length *
+          this.titleConfig.descriptionStyle.fontSize *
+          1.2;
+        bottomSpace += 5 + descriptionHeight;
       }
       // Add extra spacing between entire title section and tree
       if (this.titleConfig.title || this.titleConfig.description) {

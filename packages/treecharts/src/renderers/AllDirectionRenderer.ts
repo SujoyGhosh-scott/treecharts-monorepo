@@ -28,7 +28,7 @@ export class AllDirectionRenderer extends BaseRenderer {
     const { svgWidth, svgHeight } = this.calculateDynamicDimensions();
 
     // Calculate title space to adjust the chart positioning
-    const titleSpace = this.titleDrawer.calculateTitleSpace();
+    const titleSpace = this.titleDrawer.calculateTitleSpace(svgWidth);
 
     this.centerX = svgWidth / 2;
     // Position chart center in the available space after accounting for titles

@@ -76,9 +76,10 @@ export class ActionDrawer {
       NODE_CONSTANTS.ACTION_BUTTON_SIZE.toString()
     );
     buttonBg.setAttribute("rx", "4");
-    buttonBg.setAttribute("fill", "#f8f9fa");
+    buttonBg.setAttribute("fill", "#ffffff");
     buttonBg.setAttribute("stroke", "#dee2e6");
     buttonBg.setAttribute("stroke-width", "1");
+    buttonBg.setAttribute("filter", "drop-shadow(0px 1px 3px rgba(0,0,0,0.1))");
     buttonBg.style.transition = "all 0.2s ease";
 
     // Download icon (simple arrow down with line)
@@ -140,13 +141,21 @@ export class ActionDrawer {
 
     // Add hover effects
     buttonGroup.addEventListener("mouseenter", () => {
-      buttonBg.setAttribute("fill", "#e9ecef");
+      buttonBg.setAttribute("fill", "#f8f9fa");
       buttonBg.setAttribute("stroke", "#adb5bd");
+      buttonBg.setAttribute(
+        "filter",
+        "drop-shadow(0px 2px 6px rgba(0,0,0,0.15))"
+      );
     });
 
     buttonGroup.addEventListener("mouseleave", () => {
-      buttonBg.setAttribute("fill", "#f8f9fa");
+      buttonBg.setAttribute("fill", "#ffffff");
       buttonBg.setAttribute("stroke", "#dee2e6");
+      buttonBg.setAttribute(
+        "filter",
+        "drop-shadow(0px 1px 3px rgba(0,0,0,0.1))"
+      );
     });
 
     // Add click handler
@@ -179,19 +188,20 @@ export class ActionDrawer {
     const svgWidth = parseFloat(this.svg.getAttribute("width") || "0");
     const svgHeight = parseFloat(this.svg.getAttribute("height") || "0");
 
-    const padding = 12; // Distance from edges
+    // Position at the very edge to avoid overlap with title text
+    const buttonSize = NODE_CONSTANTS.ACTION_BUTTON_SIZE;
 
     switch (position) {
       case "top-left":
-        return { x: padding, y: padding };
+        return { x: 0, y: 0 };
       case "top-right":
-        return { x: svgWidth - 24 - padding, y: padding };
+        return { x: svgWidth - buttonSize, y: 0 };
       case "bottom-left":
-        return { x: padding, y: svgHeight - 24 - padding };
+        return { x: 0, y: svgHeight - buttonSize };
       case "bottom-right":
-        return { x: svgWidth - 24 - padding, y: svgHeight - 24 - padding };
+        return { x: svgWidth - buttonSize, y: svgHeight - buttonSize };
       default:
-        return { x: svgWidth - 24 - padding, y: padding };
+        return { x: svgWidth - buttonSize, y: 0 };
     }
   }
 

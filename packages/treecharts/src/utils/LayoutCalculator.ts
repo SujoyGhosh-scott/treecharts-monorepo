@@ -28,7 +28,7 @@ export class LayoutCalculator {
       this.options,
       this.nodeDrawer
     );
-    const titleSpace = this.titleDrawer.calculateTitleSpace();
+    const titleSpace = this.titleDrawer.calculateTitleSpace(totalWidth);
     const totalHeight = calculateSvgHeight(
       this.formattedTree,
       this.options,
