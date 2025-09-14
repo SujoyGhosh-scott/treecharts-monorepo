@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileBottomNavigation from "@/components/MobileBottomNavigation";
 import React from "react";
-// import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const macondo = Macondo({
   weight: ["400"],
@@ -93,7 +93,7 @@ export default function RootLayout({
         <MobileBottomNavigation />
         <Footer />
       </body>
-      {/**<GoogleAnalytics gaId="G-B8R30YTC6V" />*/}
+      <GoogleAnalytics gaId="G-4BKLJ9HHTZ" />
     </html>
   );
 }
