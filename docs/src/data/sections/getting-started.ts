@@ -7,9 +7,13 @@ export const gettingStartedSection: DocSection = {
   content: [
     {
       type: "markdown",
-      value: `# Getting Started
+      value: `TreeCharts is a powerful, flexible library for creating interactive tree visualizations. It supports React and vanilla JavaScript with a highly customizable and lightweight architecture.
 
-TreeCharts is a powerful, flexible library for creating interactive tree visualizations. It supports React and vanilla JavaScript with a highly customizable and lightweight architecture.
+## 📋 Quick Links
+
+- **🎯 Live Examples**: [https://treecharts.netlify.app/examples](https://treecharts.netlify.app/examples)
+- **📦 NPM Packages**: [treecharts](https://www.npmjs.com/package/treecharts), [treecharts-react](https://www.npmjs.com/package/treecharts-react)
+- **🐛 Issues & Support**: [GitHub Issues](https://github.com/SujoyGhosh-scott/treecharts-monorepo/issues)
 
 ## Installation
 
@@ -22,11 +26,18 @@ Choose the package that matches your setup:`,
       id: "installation-commands",
       showOutput: false,
       codes: {
-        react: `# React Wrapper
+        react: `# React Wrapper (includes core library)
 npm install treecharts-react
 # or
-yarn add treecharts-react`,
+yarn add treecharts-react
+
+# NPM: https://www.npmjs.com/package/treecharts-react`,
         javascript: `# Core Library (Vanilla JavaScript)
+npm install treecharts
+# or  
+yarn add treecharts
+
+# NPM: https://www.npmjs.com/package/treecharts
 
 # CDN Alternative
 # <script src="https://cdn.jsdelivr.net/npm/treecharts@latest/dist/treecharts.min.js"></script>`,

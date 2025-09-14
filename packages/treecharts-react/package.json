@@ -58,7 +58,7 @@
     "react-dom": ">=16.8.0"
   },
   "dependencies": {
-    "treecharts": "*"
+    "treecharts": "^0.4.0"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^9.0.8",

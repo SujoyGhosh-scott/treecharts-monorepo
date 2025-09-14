@@ -2,15 +2,24 @@
 
 A monorepo for TreeCharts, a flexible tree visualization library and its framework adapters.
 
+## 📋 Quick Links
+
+- **📖 Documentation**: [https://treecharts.netlify.app](https://treecharts.netlify.app)
+- **🎯 Examples**: [https://treecharts.netlify.app/examples](https://treecharts.netlify.app/examples)
+- **📦 NPM Packages**:
+  - Core Library: [treecharts](https://www.npmjs.com/package/treecharts)
+  - React Wrapper: [treecharts-react](https://www.npmjs.com/package/treecharts-react)
+- **🐛 Issues**: [GitHub Issues](https://github.com/SujoyGhosh-scott/treecharts-monorepo/issues)
+
 ## Repository Structure
 
 This monorepo contains the following packages:
 
-- `packages/treecharts`: Core tree visualization library (✅ Complete)
-- `packages/treecharts-react`: React wrapper for TreeCharts (🚧 In Development)
+- `packages/treecharts`: Core tree visualization library (🚧 In Development)
+- `apps/docs`: Documentation website (🚧 In Development)
+- `packages/treecharts-react`: React wrapper for TreeCharts (✅ Complete)
 - `packages/treecharts-angular`: Angular wrapper for TreeCharts (📋 Planned)
 - `packages/treecharts-vue`: Vue wrapper for TreeCharts (📋 Planned)
-- `apps/docs`: Documentation website (📋 Planned)
 
 ## Getting Started
 
