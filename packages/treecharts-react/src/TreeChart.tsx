@@ -9,82 +9,8 @@ import {
   TreeNode,
   TreeChartOptions,
 } from "treecharts";
+import { TreeChartProps, TreeChartRef } from "./types";
 
-export interface TreeChartProps extends TreeChartOptions {
-  /**
-   * Tree data to visualize
-   */
-  data: TreeNode;
-
-  /**
-   * CSS class name for the container
-   */
-  className?: string;
-
-  /**
-   * Inline styles for the container
-   */
-  style?: React.CSSProperties;
-
-  /**
-   * Container width
-   */
-  width?: number | string;
-
-  /**
-   * Container height
-   */
-  height?: number | string;
-
-  /**
-   * Callback fired when the chart is rendered
-   */
-  onRender?: (svg: SVGSVGElement) => void;
-
-  /**
-   * Callback fired when the chart data is updated
-   */
-  onUpdate?: (svg: SVGSVGElement) => void;
-}
-
-export interface TreeChartRef {
-  /**
-   * Get the TreeChart instance
-   */
-  getInstance: () => CoreTreeChart | null;
-
-  /**
-   * Get the rendered SVG element
-   */
-  getSvg: () => SVGSVGElement | null;
-
-  /**
-   * Update the chart with new data
-   */
-  update: (data: TreeNode) => void;
-
-  /**
-   * Set new options for the chart
-   */
-  setOptions: (options: TreeChartOptions) => void;
-
-  /**
-   * Change the visualization type
-   */
-  setType: (type: TreeChartOptions["type"]) => void;
-
-  /**
-   * Resize the chart
-   */
-  resize: (width: number, height: number) => void;
-}
-
-/**
- * React wrapper for TreeCharts library
- *
- * Provides a React component interface for creating tree visualizations
- * with all the features and customization options of the core library.
- */
 export const TreeChart = forwardRef<TreeChartRef, TreeChartProps>(
   (
     {
@@ -105,7 +31,6 @@ export const TreeChart = forwardRef<TreeChartRef, TreeChartProps>(
       `treechart-${Math.random().toString(36).substr(2, 9)}`
     );
 
-    // Expose methods via ref
     useImperativeHandle(
       ref,
       () => ({
@@ -136,45 +61,58 @@ export const TreeChart = forwardRef<TreeChartRef, TreeChartProps>(
       [onUpdate]
     );
 
-    // Initialize chart on mount
     useEffect(() => {
       if (containerRef.current) {
-        // Set the container ID
         containerRef.current.id = containerIdRef.current;
 
-        // Create chart instance
         chartInstanceRef.current = new CoreTreeChart(
           containerIdRef.current,
           chartOptions
         );
 
-        // Render initial data
         const svg = chartInstanceRef.current.render(data);
+        applyAutoScaling(svg);
         onRender?.(svg);
       }
 
-      // Cleanup on unmount
       return () => {
         if (containerRef.current) {
           containerRef.current.innerHTML = "";
         }
         chartInstanceRef.current = null;
       };
-    }, []); // Only run on mount
+    }, []);
 
-    // Update chart when data or options change
     useEffect(() => {
       if (chartInstanceRef.current) {
-        // Update options if they changed
         chartInstanceRef.current.setOptions(chartOptions);
-
-        // Re-render with new data
         const svg = chartInstanceRef.current.render(data);
+        applyAutoScaling(svg);
         onUpdate?.(svg);
       }
     }, [data, chartOptions, onUpdate]);
 
-    // Calculate container styles
+    const applyAutoScaling = (svg: SVGSVGElement) => {
+      if (!svg || !containerRef.current) return;
+
+      const originalWidth = svg.getAttribute("width");
+      const originalHeight = svg.getAttribute("height");
+
+      if (originalWidth && originalHeight) {
+        svg.setAttribute("viewBox", `0 0 ${originalWidth} ${originalHeight}`);
+        svg.setAttribute("width", "100%");
+        svg.setAttribute("height", "100%");
+        svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+        svg.style.maxWidth = `${originalWidth}px`;
+        svg.style.maxHeight = `${originalHeight}px`;
+
+        // Center the SVG when it's at natural size
+        containerRef.current.style.display = "flex";
+        containerRef.current.style.alignItems = "center";
+        containerRef.current.style.justifyContent = "center";
+      }
+    };
+
     const containerStyle: React.CSSProperties = {
       width: width || "100%",
       height: height || "auto",

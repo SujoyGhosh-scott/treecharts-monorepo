@@ -1,6 +1,6 @@
 // Export main React component
 export { TreeChart, default } from "./TreeChart";
-export type { TreeChartProps, TreeChartRef } from "./TreeChart";
+export type { TreeChartProps, TreeChartRef } from "./types";
 
 // Re-export types from core library for convenience
 export type {
