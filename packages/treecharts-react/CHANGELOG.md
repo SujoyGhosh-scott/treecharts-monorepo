@@ -5,7 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2024-12-09
+## [0.1.1] - 2025-15-09
+
+### Added
+
+- Auto-scaling container fitting: Charts automatically scale down to fit containers, stay at natural size when containers are larger
+- Automatic centering in containers
+
+### Changed
+
+- Moved TypeScript interfaces to separate `types.ts` file
+- Cleaned up component code and removed unnecessary comments
+
+## [0.1.0] - 2024-14-09
 
 ### Added
 

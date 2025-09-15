@@ -1,6 +1,6 @@
 {
   "name": "treecharts-react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React components for TreeCharts visualization library",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -44,7 +44,7 @@
   "homepage": "https://treecharts.netlify.app",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SujoyGhosh-scott/treecharts-monorepo",
+    "url": "git+https://github.com/SujoyGhosh-scott/treecharts-monorepo.git",
     "directory": "packages/treecharts-react"
   },
   "bugs": {
