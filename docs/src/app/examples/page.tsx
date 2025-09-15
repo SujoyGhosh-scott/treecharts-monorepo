@@ -32,7 +32,7 @@ export const metadata = {
     siteName: "TreeCharts",
     images: [
       {
-        url: "https://treecharts.netlify.app/og-image.jpg",
+        url: "https://treecharts.netlify.app/logo1.png",
         width: 1200,
         height: 630,
         alt: "TreeCharts Examples - Real-World Use Cases",
@@ -46,7 +46,7 @@ export const metadata = {
     title: "TreeCharts Examples - Real-World Use Cases",
     description:
       "Explore real-world examples and use cases for TreeCharts. Discover how to implement org charts, family trees, decision trees, and more.",
-    images: ["https://treecharts.netlify.app/og-image.jpg"],
+    images: ["https://treecharts.netlify.app/logo1.png"],
   },
 };
 

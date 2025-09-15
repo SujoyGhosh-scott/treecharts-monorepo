@@ -32,7 +32,7 @@ export const metadata = {
     siteName: "TreeCharts",
     images: [
       {
-        url: "https://treecharts.netlify.app/og-image.jpg",
+        url: "https://treecharts.netlify.app/logo1.png",
         width: 1200,
         height: 630,
         alt: "TreeCharts Playground - Visual Tree Builder",
@@ -46,7 +46,7 @@ export const metadata = {
     title: "TreeCharts Playground - Visual Tree Builder",
     description:
       "Interactive TreeCharts playground. Create, customize, and export beautiful tree visualizations for your presentations and documents.",
-    images: ["https://treecharts.netlify.app/og-image.jpg"],
+    images: ["https://treecharts.netlify.app/logo1.png"],
   },
 };
 

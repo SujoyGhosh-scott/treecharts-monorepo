@@ -78,7 +78,7 @@ export const metadata = {
     siteName: "TreeCharts",
     images: [
       {
-        url: "https://treecharts.netlify.app/og-image.jpg",
+        url: "https://treecharts.netlify.app/logo1.png",
         width: 1200,
         height: 630,
         alt: "TreeCharts Changelog - Latest Updates & Features",
@@ -92,6 +92,6 @@ export const metadata = {
     title: "TreeCharts Changelog - Latest Updates & Features",
     description:
       "Track all changes, updates, and improvements to TreeCharts library. Stay updated with new features, bug fixes, and enhancements.",
-    images: ["https://treecharts.netlify.app/og-image.jpg"],
+    images: ["https://treecharts.netlify.app/logo1.png"],
   },
 };

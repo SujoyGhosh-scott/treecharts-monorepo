@@ -34,7 +34,7 @@ export const metadata = {
     siteName: "TreeCharts",
     images: [
       {
-        url: "https://treecharts.netlify.app/og-image.jpg",
+        url: "https://treecharts.netlify.app/logo1.png",
         width: 1200,
         height: 630,
         alt: "TreeCharts Documentation - Complete Guide",
@@ -48,7 +48,7 @@ export const metadata = {
     title: "TreeCharts Documentation - Complete Guide",
     description:
       "Complete documentation for TreeCharts library. Learn how to create beautiful tree visualizations with React and JavaScript.",
-    images: ["https://treecharts.netlify.app/og-image.jpg"],
+    images: ["https://treecharts.netlify.app/logo1.png"],
   },
 };
 

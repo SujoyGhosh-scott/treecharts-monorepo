@@ -65,7 +65,7 @@ export async function generateMetadata({ params }: PageProps) {
         siteName: "TreeCharts",
         images: [
           {
-            url: "https://treecharts.netlify.app/og-image.jpg",
+            url: "https://treecharts.netlify.app/logo1.png",
             width: 1200,
             height: 630,
             alt: sectionTitle,
@@ -78,7 +78,7 @@ export async function generateMetadata({ params }: PageProps) {
         card: "summary_large_image",
         title: sectionTitle,
         description: sectionDescription,
-        images: ["https://treecharts.netlify.app/og-image.jpg"],
+        images: ["https://treecharts.netlify.app/logo1.png"],
       },
     };
   }
@@ -132,7 +132,7 @@ export async function generateMetadata({ params }: PageProps) {
         siteName: "TreeCharts",
         images: [
           {
-            url: "https://treecharts.netlify.app/og-image.jpg",
+            url: "https://treecharts.netlify.app/logo1.png",
             width: 1200,
             height: 630,
             alt: topicTitle,
@@ -145,7 +145,7 @@ export async function generateMetadata({ params }: PageProps) {
         card: "summary_large_image",
         title: topicTitle,
         description: topicDescription,
-        images: ["https://treecharts.netlify.app/og-image.jpg"],
+        images: ["https://treecharts.netlify.app/logo1.png"],
       },
     };
   }

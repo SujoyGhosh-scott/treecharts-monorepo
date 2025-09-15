@@ -51,7 +51,7 @@ export default function CodeDisplay({
   const renderHighlightedCode = (code: string, highlightLines?: number[]) => {
     if (!highlightLines || highlightLines.length === 0) {
       return (
-        <pre className="text-sm overflow-x-auto">
+        <pre className="text-sm overflow-x-auto whitespace-pre-wrap break-words max-w-full">
           <code>{code}</code>
         </pre>
       );
@@ -59,7 +59,7 @@ export default function CodeDisplay({
 
     const lines = code.split("\n");
     return (
-      <pre className="text-sm overflow-x-auto">
+      <pre className="text-sm overflow-x-auto whitespace-pre-wrap break-words max-w-full">
         <code>
           {lines.map((line, index) => {
             const lineNumber = index + 1;
@@ -84,7 +84,7 @@ export default function CodeDisplay({
   };
 
   return (
-    <div className="my-8" id={example.id}>
+    <div className="my-8 w-full max-w-full overflow-hidden" id={example.id}>
       {/* Section Header */}
       <div className="mb-6">
         <h3 className="text-2xl font-semibold mb-3 scroll-mt-20 group flex items-center gap-2">
@@ -136,14 +136,14 @@ export default function CodeDisplay({
       </div>
 
       <div
-        className={`grid gap-6 ${
+        className={`grid gap-4 sm:gap-6 w-full max-w-full ${
           showOutput ? "lg:grid-cols-2" : "lg:grid-cols-1"
         }`}
       >
         {/* Code Section */}
-        <div className="order-2 lg:order-1">
+        <div className="order-2 lg:order-1 w-full max-w-full min-w-0">
           {/* Tab Navigation */}
-          <div className="flex flex-wrap gap-1 mb-4">
+          <div className="flex flex-wrap gap-1 mb-4 overflow-x-auto">
             {availableTabs.map((tab) => (
               <button
                 key={tab}
@@ -160,8 +160,8 @@ export default function CodeDisplay({
           </div>
 
           {/* Code Block */}
-          <div className="relative">
-            <div className="bg-base-200 rounded-lg border border-base-300">
+          <div className="relative w-full max-w-full">
+            <div className="bg-base-200 rounded-lg border border-base-300 w-full max-w-full overflow-hidden">
               {/* Code Header with Copy Button */}
               <div className="flex items-center justify-between px-4 py-2 border-b border-base-300">
                 <span className="text-sm text-base-content/60 font-mono">
@@ -203,7 +203,7 @@ export default function CodeDisplay({
               </div>
 
               {/* Code Content */}
-              <div className="p-4 font-mono text-sm bg-secondary text-white rounded-b-lg overflow-x-auto">
+              <div className="p-4 font-mono text-sm bg-secondary text-white rounded-b-lg overflow-x-auto max-w-full">
                 {renderHighlightedCode(
                   example.codes[activeTab] || "",
                   example.highlightLines?.[activeTab]
@@ -215,13 +215,13 @@ export default function CodeDisplay({
 
         {/* Output Section */}
         {showOutput && (
-          <div className="order-1 lg:order-2">
+          <div className="order-1 lg:order-2 w-full max-w-full min-w-0">
             <div className="sticky top-20">
               <h4 className="text-lg font-medium mb-3 text-primary">
                 Expected Output
               </h4>
               <div
-                className="rounded-lg border border-base-300 p-6 min-h-[300px] flex items-center justify-center"
+                className="rounded-lg border border-base-300 p-6 min-h-[300px] flex items-center justify-center w-full max-w-full overflow-hidden"
                 style={{ backgroundColor: "#eee" }}
               >
                 {example.outputImage ? (

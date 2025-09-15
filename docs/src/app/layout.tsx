@@ -20,6 +20,11 @@ export const metadata = {
   },
   description:
     "A powerful and flexible library for creating beautiful tree visualizations in React and vanilla JavaScript. Build stunning org charts, family trees, and hierarchical diagrams with ease.",
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
   keywords: [
     "tree visualization",
     "tree charts",
@@ -64,7 +69,7 @@ export const metadata = {
       "A powerful and flexible library for creating beautiful tree visualizations in React and vanilla JavaScript. Build stunning org charts, family trees, and hierarchical diagrams with ease.",
     images: [
       {
-        url: "https://treecharts.netlify.app/og-image.jpg",
+        url: "https://treecharts.netlify.app/logo1.png",
         width: 1200,
         height: 630,
         alt: "TreeCharts - Beautiful Tree Visualizations for Web",
@@ -76,7 +81,7 @@ export const metadata = {
     title: "TreeCharts - Beautiful Tree Visualizations for Web",
     description:
       "A powerful and flexible library for creating beautiful tree visualizations in React and vanilla JavaScript. Build stunning org charts, family trees, and hierarchical diagrams with ease.",
-    images: ["https://treecharts.netlify.app/og-image.jpg"],
+    images: ["https://treecharts.netlify.app/logo1.png"],
   },
 };
 
