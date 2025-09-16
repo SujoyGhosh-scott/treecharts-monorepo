@@ -6,7 +6,6 @@ A React wrapper for the TreeCharts visualization library, providing a declarativ
 
 - **📖 Documentation**: [https://treecharts.netlify.app](https://treecharts.netlify.app)
 - **🎯 Examples**: [https://treecharts.netlify.app/examples](https://treecharts.netlify.app/examples)
-- **📦 NPM Package**: [https://www.npmjs.com/package/treecharts-react](https://www.npmjs.com/package/treecharts-react)
 - **🔧 Core Library**: [treecharts](https://www.npmjs.com/package/treecharts)
 - **🐛 Issues**: [GitHub Issues](https://github.com/SujoyGhosh-scott/treecharts-monorepo/issues)
 
