@@ -9,9 +9,12 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   minify: true,
-  globalName: "TreeCharts",
+  globalName: "TreeChart",
   outExtension({ format }) {
     if (format === "iife") return { js: ".global.js" };
     return {};
+  },
+  footer: {
+    js: "if (typeof TreeChart !== 'undefined' && TreeChart.default) { TreeChart = TreeChart.default; }",
   },
 });
