@@ -23,7 +23,7 @@
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.1",
     "remark-html": "^16.0.1",
-    "treecharts-react": "^0.1.0"
+    "treecharts-react": "^0.1.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

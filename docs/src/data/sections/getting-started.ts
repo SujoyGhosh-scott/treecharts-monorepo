@@ -26,21 +26,11 @@ Choose the package that matches your setup:`,
       id: "installation-commands",
       showOutput: false,
       codes: {
-        react: `# React Wrapper (includes core library)
-npm install treecharts-react
+        react: `npm install treecharts-react
 # or
-yarn add treecharts-react
-
-# NPM: https://www.npmjs.com/package/treecharts-react`,
-        javascript: `# Core Library (Vanilla JavaScript)
-npm install treecharts
-# or  
-yarn add treecharts
-
-# NPM: https://www.npmjs.com/package/treecharts
-
-# CDN Alternative
-# <script src="https://cdn.jsdelivr.net/npm/treecharts@latest/dist/treecharts.min.js"></script>`,
+yarn add treecharts-react`,
+        javascript: `# CDN
+# <script src="https://unpkg.com/treecharts@latest/dist/index.global.js"></script>`,
       },
     },
     {
@@ -78,26 +68,44 @@ function MyComponent() {
     />
   );
 }`,
-        javascript: `// Define your tree data structure
-const treeData = {
-  value: "Root Node",
-  child: [
-    { value: "Child 1", child: [] },
-    { value: "Child 2", child: [] }
-  ]
-};
+        javascript: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreeCharts Quick Start Example</title>
+</head>
+<body>
+  <!-- Container for the tree chart -->
+  <div id="container" style="width: 600px; height: 400px; margin: 20px auto;"></div>
 
-// Create the tree chart
-const chart = new TreeChart("container", {
-  type: "right-angle",
-  nodeConfig: {
-    color: "#90EE90",
-    width: 120,
-  }
-});
+  <!-- Include TreeCharts library from CDN -->
+  <script src="https://unpkg.com/treecharts@latest/dist/index.global.js"></script>
+  
+  <script>
+    // Define your tree data structure
+    const treeData = {
+      value: "Root Node",
+      child: [
+        { value: "Child 1", child: [] },
+        { value: "Child 2", child: [] }
+      ]
+    };
 
-// Render the tree
-chart.render(treeData);`,
+    // Create the tree chart
+    const chart = new TreeChart("container", {
+      type: "right-angle",
+      nodeConfig: {
+        color: "#90EE90",
+        width: 120,
+      }
+    });
+
+    // Render the tree
+    chart.render(treeData);
+  </script>
+</body>
+</html>`,
       },
     },
     {
