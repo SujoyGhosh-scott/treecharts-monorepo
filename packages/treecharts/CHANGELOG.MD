@@ -1,6 +1,6 @@
 # Changelog - TreeCharts Core
 
-## [0.4.0] - 2025-08-30
+## [0.4.0] - 2025-09-15
 
 ### 🐛 Critical Bug Fixes
 
