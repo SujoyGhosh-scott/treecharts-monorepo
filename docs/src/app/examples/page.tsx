@@ -86,16 +86,16 @@ export default function ExamplesPage() {
 
           {/* Examples Grid */}
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-80 md:max-w-none mx-auto">
               {examplesData.examples.map((example, index) => (
                 <Link
                   key={example.slug}
                   href={`/examples/${example.slug}`}
                   className="group block"
                 >
-                  <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
+                  <div className="bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:bg-white/15 transition-all duration-300 overflow-hidden">
                     {/* Output Image */}
-                    <div className="aspect-video bg-gray-200 rounded-lg mb-4 overflow-hidden">
+                    <div className="aspect-video bg-gray-200">
                       <Image
                         src={example.output}
                         alt={example.title}
@@ -105,31 +105,34 @@ export default function ExamplesPage() {
                       />
                     </div>
 
-                    {/* Title */}
-                    <h2 className="text-lg font-bold text-white mb-2 group-hover:text-primary transition-colors">
-                      {example.title}
-                    </h2>
+                    {/* Content with padding */}
+                    <div className="p-6">
+                      {/* Title */}
+                      <h2 className="text-lg font-bold text-white mb-2 group-hover:text-primary transition-colors">
+                        {example.title}
+                      </h2>
 
-                    {/* Description */}
-                    <p className="text-sm text-gray-300 mb-3 line-clamp-3">
-                      {example.description}
-                    </p>
+                      {/* Description */}
+                      <p className="text-sm text-gray-300 mb-3 line-clamp-3">
+                        {example.description}
+                      </p>
 
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2">
-                      {example.tags.slice(0, 2).map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-3 py-1 bg-primary/20 text-primary text-xs font-medium rounded-full"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                      {example.tags.length > 2 && (
-                        <span className="px-3 py-1 bg-gray-500/20 text-gray-300 text-xs font-medium rounded-full">
-                          +{example.tags.length - 2}
-                        </span>
-                      )}
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-2">
+                        {example.tags.slice(0, 2).map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-3 py-1 bg-primary/20 text-primary text-xs font-medium rounded-full"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                        {example.tags.length > 2 && (
+                          <span className="px-3 py-1 bg-gray-500/20 text-gray-300 text-xs font-medium rounded-full">
+                            +{example.tags.length - 2}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </Link>

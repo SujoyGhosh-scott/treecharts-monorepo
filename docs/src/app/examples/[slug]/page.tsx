@@ -1,5 +1,8 @@
 import { examplesData } from "@/data/examples";
 import { notFound } from "next/navigation";
+import Breadcrumb from "@/components/docs/Breadcrumb";
+import ExampleCodeDisplay from "@/components/examples/ExampleCodeDisplay";
+import ExampleMobileNavigation from "@/components/examples/ExampleMobileNavigation";
 
 interface ExamplePageProps {
   params: {
@@ -57,73 +60,62 @@ export default function ExamplePage({ params }: ExamplePageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10">
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto">
-          {/* Back Button */}
-          <div className="mb-8">
-            <a
-              href="/examples"
-              className="inline-flex items-center text-primary hover:text-primary/80 transition-colors"
-            >
-              <svg
-                className="w-5 h-5 mr-2"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              Back to Examples
-            </a>
-          </div>
-
-          {/* Example Header */}
-          <div className="bg-white/10 backdrop-blur-md rounded-xl p-8 border border-white/20 mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              {example.title}
-            </h1>
-            <p className="text-xl text-gray-300 mb-6">{example.description}</p>
-
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {example.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 bg-primary/20 text-primary text-sm font-medium rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            {/* Metadata */}
-            <div className="flex flex-wrap gap-4 text-sm text-gray-400">
-              <span>Version: {example.versionUsed}</span>
-              <span>Code: {example.code.map((c) => c.type).join(", ")}</span>
-              {example.relatedDocs.length > 0 && (
-                <span>Related Docs: {example.relatedDocs.length} topics</span>
-              )}
-            </div>
-          </div>
-
-          {/* Placeholder for future implementation */}
-          <div className="bg-white/10 backdrop-blur-md rounded-xl p-8 border border-white/20 text-center">
-            <h2 className="text-2xl font-bold text-white mb-4">
-              Example Details Coming Soon
-            </h2>
-            <p className="text-gray-300 mb-6">
-              This page will show the complete code implementation, live
-              preview, and detailed explanation.
+    <div className="min-h-screen bg-base-100">
+      <div className="flex h-screen">
+        {/* Sidebar - Desktop */}
+        <div className="hidden lg:block w-80 border-r border-base-300 bg-base-50 overflow-hidden">
+          {/* Empty sidebar space for now */}
+          <div className="p-6">
+            <h3 className="text-lg font-semibold text-base-content/70 mb-4">
+              Related Content
+            </h3>
+            <p className="text-sm text-base-content/50">
+              Sidebar content coming soon...
             </p>
-            <div className="bg-gray-800/50 rounded-lg p-4 text-left">
-              <code className="text-green-400 text-sm">
-                Slug: {params.slug}
-              </code>
-            </div>
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="flex-1 min-w-0 overflow-y-auto bg-base-200">
+          {/* Mobile Navigation Component */}
+          <ExampleMobileNavigation />
+
+          <div className="max-w-4xl mx-auto">
+            <main className="px-6 py-8">
+              <div>
+                <Breadcrumb
+                  items={[
+                    { label: "Examples", href: "/examples" },
+                    { label: example.title },
+                  ]}
+                />
+
+                {/* Example Header */}
+                <div className="not-prose mb-8">
+                  <h1 className="text-4xl font-bold mb-4 font-macondo">
+                    {example.title}
+                  </h1>
+                  <p className="text-xl text-base-content/70 leading-relaxed">
+                    {example.description}
+                  </p>
+                </div>
+
+                {/* Code Implementation */}
+                <ExampleCodeDisplay example={example} showOutput={true} />
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mt-8">
+                  {example.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="badge badge-primary badge-outline"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </main>
           </div>
         </div>
       </div>
