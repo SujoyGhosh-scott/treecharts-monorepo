@@ -5,6 +5,7 @@ import ExampleCodeDisplay from "@/components/examples/ExampleCodeDisplay";
 import ExampleMobileNavigation from "@/components/examples/ExampleMobileNavigation";
 import ExampleSidebar from "@/components/examples/ExampleSidebar";
 import { getDocsLinksByTags } from "@/utils/docs-filter";
+import { getRelatedExamples } from "@/utils/related-examples";
 
 interface ExamplePageProps {
   params: {
@@ -64,18 +65,27 @@ export default function ExamplePage({ params }: ExamplePageProps) {
   // Get related documentation links based on example tags
   const relatedDocs = getDocsLinksByTags(example.tags);
 
+  // Get related examples based on shared tags
+  const relatedExamples = getRelatedExamples(example, examplesData.examples, 5);
+
   return (
     <div className="min-h-screen bg-base-100">
       <div className="flex h-screen">
         {/* Sidebar - Desktop */}
         <div className="hidden lg:block w-80 border-r border-base-300 bg-base-50 overflow-y-auto">
-          <ExampleSidebar relatedDocs={relatedDocs} />
+          <ExampleSidebar
+            relatedDocs={relatedDocs}
+            relatedExamples={relatedExamples}
+          />
         </div>
 
         {/* Main Content */}
         <div className="flex-1 min-w-0 overflow-y-auto bg-base-200">
           {/* Mobile Navigation Component */}
-          <ExampleMobileNavigation relatedDocs={relatedDocs} />
+          <ExampleMobileNavigation
+            relatedDocs={relatedDocs}
+            relatedExamples={relatedExamples}
+          />
 
           <div className="max-w-4xl mx-auto">
             <main className="px-6 py-8">

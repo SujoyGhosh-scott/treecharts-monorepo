@@ -5,12 +5,11 @@ export const trainStationExample: Example = {
   description:
     "A metro transit network visualization using all-directional tree layout with travel times on connections, perfect for transportation systems and network diagrams.",
   slug: "train-station",
-  tags: ["all-directional", "edge-customization", "download-feature"],
+  tags: ["all-directional", "edge-customization"],
   versionUsed: "1.0.0",
   relatedDocs: [
     "/docs/tree-options/all-directional",
     "/docs/edge-customization",
-    "/docs/download-feature",
   ],
   output: "/examples/train-station-network.svg",
   code: [

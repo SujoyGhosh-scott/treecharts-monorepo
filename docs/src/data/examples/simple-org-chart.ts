@@ -5,12 +5,11 @@ export const simpleOrgChartExample: Example = {
   description:
     "A clean and straightforward organizational chart using right-angle connections with green styling, perfect for small to medium companies.",
   slug: "simple-org-chart",
-  tags: ["right-angle", "regular-nodes", "download-feature"],
+  tags: ["right-angle", "regular-nodes"],
   versionUsed: "1.0.0",
   relatedDocs: [
     "/docs/tree-options/right-angle",
     "/docs/node-types/regular-nodes",
-    "/docs/download-feature",
   ],
   output: "/examples/simple-org-chart.svg",
   code: [

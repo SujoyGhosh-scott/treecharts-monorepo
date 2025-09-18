@@ -5,12 +5,11 @@ export const familyTreeExample: Example = {
   description:
     "A genealogical family tree using nodes with descriptions to display family relationships across multiple generations with detailed information.",
   slug: "family-tree",
-  tags: ["right-angle", "node-with-description", "download-feature"],
+  tags: ["right-angle", "node-with-description"],
   versionUsed: "1.0.0",
   relatedDocs: [
     "/docs/tree-options/right-angle",
     "/docs/node-types/node-with-description",
-    "/docs/download-feature",
   ],
   output: "/examples/simple-family-tree.svg",
   code: [

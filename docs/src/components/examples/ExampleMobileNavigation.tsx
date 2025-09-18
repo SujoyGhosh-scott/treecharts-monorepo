@@ -2,14 +2,17 @@
 
 import { useState } from "react";
 import { DocLink } from "@/utils/docs-filter";
+import { Example } from "@/types/examples";
 import ExampleSidebar from "./ExampleSidebar";
 
 interface ExampleMobileNavigationProps {
   relatedDocs: DocLink[];
+  relatedExamples: Example[];
 }
 
 export default function ExampleMobileNavigation({
   relatedDocs,
+  relatedExamples,
 }: ExampleMobileNavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -72,7 +75,10 @@ export default function ExampleMobileNavigation({
 
             {/* Sidebar Content */}
             <div className="flex-1 overflow-y-auto bg-base-50">
-              <ExampleSidebar relatedDocs={relatedDocs} />
+              <ExampleSidebar
+                relatedDocs={relatedDocs}
+                relatedExamples={relatedExamples}
+              />
             </div>
           </div>
         </div>

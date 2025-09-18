@@ -5,12 +5,11 @@ export const evolutionTreeExample: Example = {
   description:
     "An interactive evolutionary tree showing human ancestry with collapsible nodes to explore different branches of human evolution and related species.",
   slug: "evolution-tree",
-  tags: ["right-angle", "collapsible-node", "download-feature"],
+  tags: ["right-angle", "collapsible-node"],
   versionUsed: "1.0.0",
   relatedDocs: [
     "/docs/tree-options/right-angle",
     "/docs/node-types/collapsible-node",
-    "/docs/download-feature",
   ],
   output: "/examples/evolution-tree.svg",
   code: [

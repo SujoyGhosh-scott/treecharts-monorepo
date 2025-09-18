@@ -5,12 +5,11 @@ export const universityCourseExample: Example = {
   description:
     "An academic curriculum visualization using image nodes to display course progression from foundation to specialization tracks with instructor photos and course details.",
   slug: "university-course",
-  tags: ["right-angle", "image-node", "download-feature"],
+  tags: ["right-angle", "image-node"],
   versionUsed: "1.0.0",
   relatedDocs: [
     "/docs/tree-options/right-angle",
     "/docs/node-types/image-node",
-    "/docs/download-feature",
   ],
   output: "/examples/university-course-structure.svg",
   code: [

@@ -5,12 +5,11 @@ export const projectStructureExample: Example = {
   description:
     "A visual representation of a React project's folder structure using custom-shaped nodes with file and folder icons, perfect for documenting project architecture.",
   slug: "project-structure",
-  tags: ["right-angle", "custom-shape", "download-feature"],
+  tags: ["right-angle", "custom-shape"],
   versionUsed: "1.0.0",
   relatedDocs: [
     "/docs/tree-options/right-angle",
     "/docs/node-types/custom-shape",
-    "/docs/download-feature",
   ],
   output: "/examples/project-structure-tree.svg",
   code: [
