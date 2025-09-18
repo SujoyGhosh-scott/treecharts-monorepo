@@ -34,6 +34,7 @@ export function generateMetadata({ params }: ExamplePageProps) {
     title: `${example.title} - TreeCharts Examples`,
     description: example.description,
     keywords: [...example.tags, "treecharts", "tree visualization", "example"],
+    viewport: "width=device-width, initial-scale=1",
     openGraph: {
       title: `${example.title} - TreeCharts Examples`,
       description: example.description,
@@ -41,7 +42,7 @@ export function generateMetadata({ params }: ExamplePageProps) {
       siteName: "TreeCharts",
       images: [
         {
-          url: `https://treecharts.netlify.app${example.output}`,
+          url: example.output,
           width: 1200,
           height: 630,
           alt: example.title,
@@ -49,6 +50,16 @@ export function generateMetadata({ params }: ExamplePageProps) {
       ],
       locale: "en_US",
       type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${example.title} - TreeCharts Examples`,
+      description: example.description,
+      images: [example.output],
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   };
 }
