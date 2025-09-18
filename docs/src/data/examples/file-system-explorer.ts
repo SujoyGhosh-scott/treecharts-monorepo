@@ -5,7 +5,7 @@ export const fileSystemExample: Example = {
   description:
     "A dynamic file system visualization using curved connections, showcasing collapsible nodes and custom styling for different file types.",
   slug: "file-system-explorer",
-  tags: ["file-system", "curved", "interactive", "collapsible"],
+  tags: ["core-concepts", "collapsible-node", "curved"],
   versionUsed: "1.0.0",
   relatedDocs: [
     "/docs/tree-options/curved",

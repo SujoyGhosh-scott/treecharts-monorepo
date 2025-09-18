@@ -14,7 +14,7 @@ export default function Sidebar({ isMobile = false }: SidebarProps) {
         isMobile ? "p-4" : "h-full overflow-y-auto custom-scrollbar p-6"
       }`}
     >
-      <div className="space-y-8">
+      <div className="space-y-6">
         {docsNavigation.sections.map((section) => (
           <div key={section.id}>
             <div className="mb-4">

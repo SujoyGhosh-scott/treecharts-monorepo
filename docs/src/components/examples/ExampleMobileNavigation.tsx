@@ -1,8 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { DocLink } from "@/utils/docs-filter";
+import ExampleSidebar from "./ExampleSidebar";
 
-export default function ExampleMobileNavigation() {
+interface ExampleMobileNavigationProps {
+  relatedDocs: DocLink[];
+}
+
+export default function ExampleMobileNavigation({
+  relatedDocs,
+}: ExampleMobileNavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
@@ -64,14 +72,7 @@ export default function ExampleMobileNavigation() {
 
             {/* Sidebar Content */}
             <div className="flex-1 overflow-y-auto bg-base-50">
-              <div className="p-6">
-                <h3 className="text-lg font-semibold text-base-content/70 mb-4">
-                  Related Content
-                </h3>
-                <p className="text-sm text-base-content/50">
-                  Sidebar content coming soon...
-                </p>
-              </div>
+              <ExampleSidebar relatedDocs={relatedDocs} />
             </div>
           </div>
         </div>

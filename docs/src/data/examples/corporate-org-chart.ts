@@ -5,7 +5,7 @@ export const rightAngleExample: Example = {
   description:
     "A professional organizational chart using right-angle connections, perfect for displaying corporate hierarchies with clean, structured layouts.",
   slug: "corporate-org-chart",
-  tags: ["organizational-chart", "corporate", "right-angle", "professional"],
+  tags: ["core-concepts", "regular-nodes", "right-angle"],
   versionUsed: "1.0.0",
   relatedDocs: [
     "/docs/tree-options/right-angle",

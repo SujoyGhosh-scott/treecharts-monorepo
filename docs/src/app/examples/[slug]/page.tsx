@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import Breadcrumb from "@/components/docs/Breadcrumb";
 import ExampleCodeDisplay from "@/components/examples/ExampleCodeDisplay";
 import ExampleMobileNavigation from "@/components/examples/ExampleMobileNavigation";
+import ExampleSidebar from "@/components/examples/ExampleSidebar";
+import { getDocsLinksByTags } from "@/utils/docs-filter";
 
 interface ExamplePageProps {
   params: {
@@ -59,26 +61,21 @@ export default function ExamplePage({ params }: ExamplePageProps) {
     notFound();
   }
 
+  // Get related documentation links based on example tags
+  const relatedDocs = getDocsLinksByTags(example.tags);
+
   return (
     <div className="min-h-screen bg-base-100">
       <div className="flex h-screen">
         {/* Sidebar - Desktop */}
-        <div className="hidden lg:block w-80 border-r border-base-300 bg-base-50 overflow-hidden">
-          {/* Empty sidebar space for now */}
-          <div className="p-6">
-            <h3 className="text-lg font-semibold text-base-content/70 mb-4">
-              Related Content
-            </h3>
-            <p className="text-sm text-base-content/50">
-              Sidebar content coming soon...
-            </p>
-          </div>
+        <div className="hidden lg:block w-80 border-r border-base-300 bg-base-50 overflow-y-auto">
+          <ExampleSidebar relatedDocs={relatedDocs} />
         </div>
 
         {/* Main Content */}
         <div className="flex-1 min-w-0 overflow-y-auto bg-base-200">
           {/* Mobile Navigation Component */}
-          <ExampleMobileNavigation />
+          <ExampleMobileNavigation relatedDocs={relatedDocs} />
 
           <div className="max-w-4xl mx-auto">
             <main className="px-6 py-8">
