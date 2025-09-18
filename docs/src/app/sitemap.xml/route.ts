@@ -21,6 +21,13 @@ const staticPaths = [
   "https://treecharts.netlify.app/docs/download-feature",
   "https://treecharts.netlify.app/playground",
   "https://treecharts.netlify.app/examples",
+  "https://treecharts.netlify.app/examples/simple-org-chart",
+  "https://treecharts.netlify.app/examples/family-tree",
+  "https://treecharts.netlify.app/examples/evolution-tree",
+  "https://treecharts.netlify.app/examples/project-structure",
+  "https://treecharts.netlify.app/examples/tournament-bracket",
+  "https://treecharts.netlify.app/examples/train-station",
+  "https://treecharts.netlify.app/examples/university-course",
   "https://treecharts.netlify.app/blog",
   "https://treecharts.netlify.app/changelog",
 ];
