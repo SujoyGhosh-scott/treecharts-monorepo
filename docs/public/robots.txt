@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Host
+Host: https://treecharts.netlify.app
+
+# Sitemaps
+Sitemap: https://treecharts.netlify.app/sitemap.xml
