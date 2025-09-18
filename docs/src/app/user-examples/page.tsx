@@ -1,14 +1,7 @@
 // app/user-examples/page.tsx
 // import GameOfLifeVisualization from "@/components/GameOfLifeVisualization";
-import SimpleOrgChart from "@/components/examples/SimpleOrgChart";
 import FlowchartExample from "@/components/examples/FlowchartExample";
 import OrderProcessingFlowchart from "@/components/examples/OrderProcessingFlowchart";
-import FamilyTreeExample from "@/components/examples/FamilyTreeExample";
-import EvolutionTreeExample from "@/components/examples/EvolutionTreeExample";
-import ProjectStructureExample from "@/components/examples/ProjectStructureExample";
-import TournamentBracketExample from "@/components/examples/TournamentBracketExample";
-import TrainStationExample from "@/components/examples/TrainStationExample";
-import UniversityCourseExample from "@/components/examples/UniversityCourseExample";
 import SocialNetworkExample from "@/components/examples/SocialNetworkExample";
 import KnowledgeGraphExample from "@/components/examples/KnowledgeGraphExample";
 import BasicTreeChart from "@/components/examples/BasicTreeChart";
@@ -92,22 +85,6 @@ export default function UserExamplesPage() {
 
             {/* Examples Grid */}
             <div className="grid gap-12">
-              {/* Simple Organization Chart Example */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                <div className="mb-6">
-                  <h2 className="text-3xl font-bold text-white mb-3">
-                    Simple Organization Chart
-                  </h2>
-                  <p className="text-gray-300 text-lg">
-                    A basic organizational chart showing company hierarchy with
-                    clean right-angle connections and professional styling.
-                  </p>
-                </div>
-                <div className="bg-white rounded-xl p-6">
-                  <SimpleOrgChart />
-                </div>
-              </div>
-
               {/* Flowchart Example */}
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
                 <div className="mb-6">
@@ -141,114 +118,6 @@ export default function UserExamplesPage() {
                 </div>
                 <div className="bg-white rounded-xl p-6">
                   <OrderProcessingFlowchart />
-                </div>
-              </div>
-
-              {/* Family Tree Example */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                <div className="mb-6">
-                  <h2 className="text-3xl font-bold text-white mb-3">
-                    Johnson Family Tree
-                  </h2>
-                  <p className="text-gray-300 text-lg">
-                    A traditional family tree showing three generations of the
-                    Johnson family. Demonstrates hierarchical relationships with
-                    detailed information including birth years and professions,
-                    using color coding to distinguish between generations.
-                  </p>
-                </div>
-                <div className="bg-white rounded-xl p-6">
-                  <FamilyTreeExample />
-                </div>
-              </div>
-
-              {/* Evolution Tree Example */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                <div className="mb-6">
-                  <h2 className="text-3xl font-bold text-white mb-3">
-                    Human Evolution Tree
-                  </h2>
-                  <p className="text-gray-300 text-lg">
-                    An interactive collapsible tree showing human evolution from
-                    our common ancestor with great apes to modern humans. Click
-                    the ▼ buttons to expand detailed information about each
-                    evolutionary stage and species.
-                  </p>
-                </div>
-                <div className="bg-white rounded-xl p-6">
-                  <EvolutionTreeExample />
-                </div>
-              </div>
-
-              {/* Project Structure Example */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                <div className="mb-6">
-                  <h2 className="text-3xl font-bold text-white mb-3">
-                    React Project Structure
-                  </h2>
-                  <p className="text-gray-300 text-lg">
-                    A visual representation of a modern React application folder
-                    structure using custom folder and file icons. Blue folders
-                    represent directories, while colored files indicate
-                    different file types (React components, HTML, CSS, config
-                    files).
-                  </p>
-                </div>
-                <div className="bg-white rounded-xl p-6">
-                  <ProjectStructureExample />
-                </div>
-              </div>
-
-              {/* Tournament Bracket Example */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                <div className="mb-6">
-                  <h2 className="text-3xl font-bold text-white mb-3">
-                    🏆 World Cup Tournament Bracket
-                  </h2>
-                  <p className="text-gray-300 text-lg">
-                    Track tournament progression through elimination rounds.
-                    Gold for the winner, green/blue for advancing teams, and
-                    gray for eliminated teams. Shows quarter-finals,
-                    semi-finals, and final with match scores and results.
-                  </p>
-                </div>
-                <div className="bg-white rounded-xl p-6">
-                  <TournamentBracketExample />
-                </div>
-              </div>
-
-              {/* Train Station Example */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                <div className="mb-6">
-                  <h2 className="text-3xl font-bold text-white mb-3">
-                    🚇 Metro Line Network
-                  </h2>
-                  <p className="text-gray-300 text-lg">
-                    Visualize train station connections with travel times.
-                    Different colored circles represent various districts and
-                    station types, with the terminal highlighted as a diamond
-                    shape.
-                  </p>
-                </div>
-                <div className="bg-white rounded-xl p-6">
-                  <TrainStationExample />
-                </div>
-              </div>
-
-              {/* University Course Example */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                <div className="mb-6">
-                  <h2 className="text-3xl font-bold text-white mb-3">
-                    🎓 Computer Science Curriculum
-                  </h2>
-                  <p className="text-gray-300 text-lg">
-                    Academic pathway from prerequisites to specializations.
-                    Hexagon for degree, rectangles for course groups, diamonds
-                    for tracks, and stars for capstone projects.
-                  </p>
-                </div>
-                <div className="bg-white rounded-xl p-6">
-                  <UniversityCourseExample />
                 </div>
               </div>
 
