@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BookOpen, FileText, Play } from "lucide-react";
+import SearchButton from "./SearchButton";
 
 export default function Header() {
   const navigation = [
@@ -20,7 +21,7 @@ export default function Header() {
             <span className="text-base-content -ml-2">charts</span>
           </Link>
           <span className="mt-1 text-xs text-base-content/50 bg-base-200 px-2 py-1 rounded-full font-medium">
-            v0.4.0
+            v0.4.1
           </span>
         </div>
       </div>
@@ -42,6 +43,9 @@ export default function Header() {
       </div>
 
       <div className="navbar-end gap-2">
+        {/* Search Button */}
+        <SearchButton />
+
         {/* GitHub and Discord Links - Now visible on mobile too */}
         <div className="flex items-center gap-2">
           <a
