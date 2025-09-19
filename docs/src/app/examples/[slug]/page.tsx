@@ -30,6 +30,8 @@ export function generateMetadata({ params }: ExamplePageProps) {
     };
   }
 
+  console.log("Example Output:", example.output);
+
   return {
     title: `${example.title} - TreeCharts Examples`,
     description: example.description,
@@ -42,7 +44,7 @@ export function generateMetadata({ params }: ExamplePageProps) {
       siteName: "TreeCharts",
       images: [
         {
-          url: example.output,
+          url: `https://treecharts.netlify.app${example.output}`,
           width: 1200,
           height: 630,
           alt: example.title,

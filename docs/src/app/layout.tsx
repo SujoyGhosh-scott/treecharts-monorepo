@@ -70,7 +70,7 @@ export const metadata = {
       "A powerful and flexible library for creating beautiful tree visualizations in React and vanilla JavaScript. Build stunning org charts, family trees, and hierarchical diagrams with ease.",
     images: [
       {
-        url: "/og-img.png",
+        url: "/logo2.png",
         width: 1200,
         height: 630,
         alt: "TreeCharts - Beautiful Tree Visualizations for Web",
@@ -82,7 +82,7 @@ export const metadata = {
     title: "TreeCharts - Beautiful Tree Visualizations for Web",
     description:
       "A powerful and flexible library for creating beautiful tree visualizations in React and vanilla JavaScript. Build stunning org charts, family trees, and hierarchical diagrams with ease.",
-    images: ["/og-img.png"],
+    images: ["/logo2.png"],
   },
 };
 
