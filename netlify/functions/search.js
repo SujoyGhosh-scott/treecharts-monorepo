@@ -1,24 +1,36 @@
-import { NextRequest, NextResponse } from "next/server";
-import { docsNavigation } from "@/data/docs";
-import { examplesData } from "@/data/examples";
+// Import your data - adjust paths as needed
+const docsNavigation = require("../../docs/src/data/docs").docsNavigation;
+const examplesData = require("../../docs/src/data/examples").examplesData;
 
-export interface SearchResult {
-  type: "page" | "doc" | "example";
-  title: string;
-  description: string;
-  path: string;
-  sectionTitle?: string; // For doc topics to show which section they belong to
-}
+exports.handler = async (event, context) => {
+  // Enable CORS
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Content-Type": "application/json",
+  };
 
-export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const query = searchParams.get("q")?.toLowerCase().trim();
-
-  if (!query || query.length < 2) {
-    return NextResponse.json({ results: [] });
+  // Handle preflight requests
+  if (event.httpMethod === "OPTIONS") {
+    return {
+      statusCode: 200,
+      headers,
+      body: "",
+    };
   }
 
-  const results: SearchResult[] = [];
+  // Get query parameter
+  const query = event.queryStringParameters?.q?.toLowerCase().trim();
+
+  if (!query || query.length < 2) {
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({ results: [] }),
+    };
+  }
+
+  const results = [];
 
   // Search through documentation sections and topics
   docsNavigation.sections.forEach((section) => {
@@ -127,7 +139,7 @@ export async function GET(request: NextRequest) {
     }
   });
 
-  // Sort results by relevance (exact matches first, then partial matches)
+  // Sort results by relevance
   const sortedResults = results.sort((a, b) => {
     const aExactMatch = a.title.toLowerCase() === query;
     const bExactMatch = b.title.toLowerCase() === query;
@@ -144,8 +156,12 @@ export async function GET(request: NextRequest) {
     return a.title.localeCompare(b.title);
   });
 
-  // Limit results to avoid overwhelming the UI
+  // Limit results to 10
   const limitedResults = sortedResults.slice(0, 10);
 
-  return NextResponse.json({ results: limitedResults });
-}
+  return {
+    statusCode: 200,
+    headers,
+    body: JSON.stringify({ results: limitedResults }),
+  };
+};

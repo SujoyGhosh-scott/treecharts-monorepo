@@ -56,7 +56,7 @@ export default function SearchBar({ isOpen, onClose }: SearchBarProps) {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `/api/search?q=${encodeURIComponent(searchQuery)}`
+        `/.netlify/functions/search?q=${encodeURIComponent(searchQuery)}`
       );
       const data = await response.json();
       setResults(data.results || []);

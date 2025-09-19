@@ -1,0 +1,7 @@
+[build]
+  base = "docs"
+  command = "npm run build"
+  publish = "out"  # Since you're using static export
+
+[functions]
+  directory = "netlify/functions"
