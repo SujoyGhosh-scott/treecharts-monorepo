@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // Search result interface (same as your Next.js version)
 // interface SearchResult {
@@ -13,91 +13,121 @@ const path = require('path');
 // Helper function to find the src/data directory
 function findSrcDataPath() {
   const possiblePaths = [
+    // Copied data files (production) - most likely correct path
+    path.resolve(__dirname, "data"),
+    // Production path (Netlify) - if src files are available
+    path.resolve(process.cwd(), "docs/src/data"),
     // Development paths
-    path.resolve(__dirname, '../../src/data'),
-    path.resolve(process.cwd(), 'src/data'),
-    path.resolve(__dirname, '../../../src/data'),
-    path.resolve(__dirname, '../../../../src/data'),
-    // Production paths (Netlify)
-    path.resolve(__dirname, '../../src/data'),
-    path.resolve('/var/task/src/data'),
-    path.resolve('/opt/build/repo/docs/src/data'),
-    path.resolve('/opt/build/repo/src/data'),
+    path.resolve(__dirname, "../../src/data"),
+    path.resolve(process.cwd(), "src/data"),
+    path.resolve(__dirname, "../../../src/data"),
+    path.resolve(__dirname, "../../../../src/data"),
+    // Additional production paths (Netlify)
+    path.resolve("/var/task/src/data"),
+    path.resolve("/opt/build/repo/docs/src/data"),
+    path.resolve("/opt/build/repo/src/data"),
     // Additional production paths
-    path.resolve(process.cwd(), '../src/data'),
-    path.resolve(process.cwd(), 'docs/src/data'),
+    path.resolve(process.cwd(), "../src/data"),
+    path.resolve(process.cwd(), "docs/src/data"),
   ];
-  
-  console.log('Searching for src/data directory...');
-  console.log('Current working directory:', process.cwd());
-  console.log('__dirname:', __dirname);
-  
+
+  console.log("Searching for src/data directory...");
+  console.log("Current working directory:", process.cwd());
+  console.log("__dirname:", __dirname);
+
   for (const possiblePath of possiblePaths) {
-    console.log('Trying path:', possiblePath);
+    console.log("Trying path:", possiblePath);
     if (fs.existsSync(possiblePath)) {
-      console.log('Found src/data at:', possiblePath);
+      console.log("Found src/data at:", possiblePath);
       return possiblePath;
     }
   }
-  
+
   // If we still can't find it, let's explore the current directory structure
-  console.log('Could not find src/data. Exploring current directory structure...');
+  console.log(
+    "Could not find src/data. Exploring current directory structure..."
+  );
   try {
     const currentDir = process.cwd();
-    console.log('Contents of current directory:', fs.readdirSync(currentDir));
-    
+    console.log("Contents of current directory:", fs.readdirSync(currentDir));
+
+    // Check if there's a docs directory in current directory
+    const docsPath = path.resolve(currentDir, "docs");
+    if (fs.existsSync(docsPath)) {
+      console.log("Found docs directory. Contents:", fs.readdirSync(docsPath));
+      const docsSrcPath = path.resolve(docsPath, "src");
+      if (fs.existsSync(docsSrcPath)) {
+        console.log(
+          "Found src directory in docs. Contents:",
+          fs.readdirSync(docsSrcPath)
+        );
+        const docsDataPath = path.resolve(docsSrcPath, "data");
+        if (fs.existsSync(docsDataPath)) {
+          console.log("Found data directory in docs/src!");
+          return docsDataPath;
+        }
+      }
+    }
+
     // Check if there's a src directory
-    const srcPath = path.resolve(currentDir, 'src');
+    const srcPath = path.resolve(currentDir, "src");
     if (fs.existsSync(srcPath)) {
-      console.log('Found src directory. Contents:', fs.readdirSync(srcPath));
-      const dataPath = path.resolve(srcPath, 'data');
+      console.log("Found src directory. Contents:", fs.readdirSync(srcPath));
+      const dataPath = path.resolve(srcPath, "data");
       if (fs.existsSync(dataPath)) {
-        console.log('Found data directory in src!');
+        console.log("Found data directory in src!");
         return dataPath;
       }
     }
-    
+
     // Check parent directories
-    const parentDir = path.resolve(currentDir, '..');
-    console.log('Contents of parent directory:', fs.readdirSync(parentDir));
-    
-    const parentSrcPath = path.resolve(parentDir, 'src');
+    const parentDir = path.resolve(currentDir, "..");
+    console.log("Contents of parent directory:", fs.readdirSync(parentDir));
+
+    const parentSrcPath = path.resolve(parentDir, "src");
     if (fs.existsSync(parentSrcPath)) {
-      console.log('Found src directory in parent. Contents:', fs.readdirSync(parentSrcPath));
-      const parentDataPath = path.resolve(parentSrcPath, 'data');
+      console.log(
+        "Found src directory in parent. Contents:",
+        fs.readdirSync(parentSrcPath)
+      );
+      const parentDataPath = path.resolve(parentSrcPath, "data");
       if (fs.existsSync(parentDataPath)) {
-        console.log('Found data directory in parent/src!');
+        console.log("Found data directory in parent/src!");
         return parentDataPath;
       }
     }
   } catch (error) {
-    console.error('Error exploring directory structure:', error);
+    console.error("Error exploring directory structure:", error);
   }
-  
-  throw new Error(`Could not find src/data directory. Tried paths: ${possiblePaths.join(', ')}`);
+
+  throw new Error(
+    `Could not find src/data directory. Tried paths: ${possiblePaths.join(
+      ", "
+    )}`
+  );
 }
 
 // Parse examples data from TypeScript files
 function parseExamplesData(srcDataPath) {
-  const examplesDir = path.resolve(srcDataPath, 'examples');
+  const examplesDir = path.resolve(srcDataPath, "examples");
   const examples = [];
-  
+
   // List of example files
   const exampleFiles = [
-    'simple-org-chart.ts',
-    'family-tree.ts', 
-    'evolution-tree.ts',
-    'project-structure.ts',
-    'tournament-bracket.ts',
-    'train-station.ts',
-    'university-course.ts'
+    "simple-org-chart.ts",
+    "family-tree.ts",
+    "evolution-tree.ts",
+    "project-structure.ts",
+    "tournament-bracket.ts",
+    "train-station.ts",
+    "university-course.ts",
   ];
-  
-  exampleFiles.forEach(file => {
+
+  exampleFiles.forEach((file) => {
     try {
       const filePath = path.resolve(examplesDir, file);
       if (fs.existsSync(filePath)) {
-        const content = fs.readFileSync(filePath, 'utf8');
+        const content = fs.readFileSync(filePath, "utf8");
         const example = extractExampleFromContent(content);
         if (example) {
           examples.push(example);
@@ -107,31 +137,31 @@ function parseExamplesData(srcDataPath) {
       console.error(`Error reading example file ${file}:`, error);
     }
   });
-  
+
   return examples;
 }
 
 // Parse docs sections and topics
 function parseDocsData(srcDataPath) {
-  const sectionsDir = path.resolve(srcDataPath, 'sections');
+  const sectionsDir = path.resolve(srcDataPath, "sections");
   const sections = [];
-  
+
   // List of section files
   const sectionFiles = [
-    'getting-started.ts',
-    'core-concepts.ts', 
-    'tree-options.ts',
-    'node-types.ts',
-    'edge-customization.ts',
-    'tree-alignment.ts',
-    'download-feature.ts'
+    "getting-started.ts",
+    "core-concepts.ts",
+    "tree-options.ts",
+    "node-types.ts",
+    "edge-customization.ts",
+    "tree-alignment.ts",
+    "download-feature.ts",
   ];
-  
-  sectionFiles.forEach(file => {
+
+  sectionFiles.forEach((file) => {
     try {
       const filePath = path.resolve(sectionsDir, file);
       if (fs.existsSync(filePath)) {
-        const content = fs.readFileSync(filePath, 'utf8');
+        const content = fs.readFileSync(filePath, "utf8");
         const section = extractSectionFromContent(content, srcDataPath);
         if (section) {
           sections.push(section);
@@ -141,7 +171,7 @@ function parseDocsData(srcDataPath) {
       console.error(`Error reading section file ${file}:`, error);
     }
   });
-  
+
   return sections;
 }
 
@@ -150,32 +180,36 @@ function extractExampleFromContent(content) {
   try {
     // Extract title
     const titleMatch = content.match(/title:\s*["']([^"']+)["']/);
-    const title = titleMatch ? titleMatch[1] : '';
-    
+    const title = titleMatch ? titleMatch[1] : "";
+
     // Extract description - handle multiline descriptions
-    const descMatch = content.match(/description:\s*["']([^"']+)["']/s) || 
-                     content.match(/description:\s*`([^`]+)`/s);
-    const description = descMatch ? descMatch[1] : '';
-    
+    const descMatch =
+      content.match(/description:\s*["']([^"']+)["']/s) ||
+      content.match(/description:\s*`([^`]+)`/s);
+    const description = descMatch ? descMatch[1] : "";
+
     // Extract slug
     const slugMatch = content.match(/slug:\s*["']([^"']+)["']/);
-    const slug = slugMatch ? slugMatch[1] : '';
-    
+    const slug = slugMatch ? slugMatch[1] : "";
+
     // Extract tags array
     const tagsMatch = content.match(/tags:\s*\[(.*?)\]/s);
     let tags = [];
     if (tagsMatch) {
       const tagsContent = tagsMatch[1];
-      tags = tagsContent.match(/["']([^"']+)["']/g)?.map(tag => tag.replace(/["']/g, '')) || [];
+      tags =
+        tagsContent
+          .match(/["']([^"']+)["']/g)
+          ?.map((tag) => tag.replace(/["']/g, "")) || [];
     }
-    
+
     if (title && slug) {
       return { title, description, slug, tags };
     }
-    
+
     return null;
   } catch (error) {
-    console.error('Error extracting example from content:', error);
+    console.error("Error extracting example from content:", error);
     return null;
   }
 }
@@ -185,27 +219,29 @@ function extractSectionFromContent(content, srcDataPath) {
   try {
     // Extract section metadata
     const idMatch = content.match(/id:\s*["']([^"']+)["']/);
-    const id = idMatch ? idMatch[1] : '';
-    
+    const id = idMatch ? idMatch[1] : "";
+
     const titleMatch = content.match(/title:\s*["']([^"']+)["']/);
-    const title = titleMatch ? titleMatch[1] : '';
-    
+    const title = titleMatch ? titleMatch[1] : "";
+
     const descMatch = content.match(/description:\s*["']([^"']+)["']/);
-    const description = descMatch ? descMatch[1] : '';
-    
+    const description = descMatch ? descMatch[1] : "";
+
     if (!id || !title) return null;
-    
+
     const section = { id, title, description, topics: [] };
-    
+
     // Check if this section has topics in a subfolder
-    const sectionSubDir = path.resolve(srcDataPath, 'sections', id);
+    const sectionSubDir = path.resolve(srcDataPath, "sections", id);
     if (fs.existsSync(sectionSubDir)) {
-      const topicFiles = fs.readdirSync(sectionSubDir).filter(file => file.endsWith('.ts'));
-      
-      topicFiles.forEach(topicFile => {
+      const topicFiles = fs
+        .readdirSync(sectionSubDir)
+        .filter((file) => file.endsWith(".ts"));
+
+      topicFiles.forEach((topicFile) => {
         try {
           const topicPath = path.resolve(sectionSubDir, topicFile);
-          const topicContent = fs.readFileSync(topicPath, 'utf8');
+          const topicContent = fs.readFileSync(topicPath, "utf8");
           const topic = extractTopicFromContent(topicContent, id);
           if (topic) {
             section.topics.push(topic);
@@ -215,10 +251,10 @@ function extractSectionFromContent(content, srcDataPath) {
         }
       });
     }
-    
+
     return section;
   } catch (error) {
-    console.error('Error extracting section from content:', error);
+    console.error("Error extracting section from content:", error);
     return null;
   }
 }
@@ -228,25 +264,25 @@ function extractTopicFromContent(content, sectionId) {
   try {
     // Extract topic metadata
     const idMatch = content.match(/id:\s*["']([^"']+)["']/);
-    const id = idMatch ? idMatch[1] : '';
-    
+    const id = idMatch ? idMatch[1] : "";
+
     const titleMatch = content.match(/title:\s*["']([^"']+)["']/);
-    const title = titleMatch ? titleMatch[1] : '';
-    
+    const title = titleMatch ? titleMatch[1] : "";
+
     const descMatch = content.match(/description:\s*["']([^"']+)["']/);
-    const description = descMatch ? descMatch[1] : '';
-    
+    const description = descMatch ? descMatch[1] : "";
+
     if (!id || !title) return null;
-    
+
     return {
       id,
       title,
       description,
       path: `/docs/${sectionId}/${id}`,
-      content: [] // We could extract content blocks here if needed for deeper search
+      content: [], // We could extract content blocks here if needed for deeper search
     };
   } catch (error) {
-    console.error('Error extracting topic from content:', error);
+    console.error("Error extracting topic from content:", error);
     return null;
   }
 }
@@ -254,7 +290,7 @@ function extractTopicFromContent(content, sectionId) {
 // Main search function (matches your Next.js implementation)
 function performSearch(query, data) {
   const results = [];
-  
+
   // Search through documentation sections and topics
   data.docs.forEach((section) => {
     // Search section title and description
@@ -265,7 +301,7 @@ function performSearch(query, data) {
       results.push({
         type: "doc",
         title: section.title,
-        description: section.description || '',
+        description: section.description || "",
         path: `/docs/${section.id}`,
       });
     }
@@ -299,7 +335,7 @@ function performSearch(query, data) {
         results.push({
           type: "doc",
           title: topic.title,
-          description: topic.description || '',
+          description: topic.description || "",
           path: topic.path,
           sectionTitle: section.title,
         });
@@ -394,21 +430,22 @@ exports.handler = async (event, context) => {
       "Access-Control-Allow-Methods": "GET, OPTIONS",
     };
 
-    if (event.httpMethod === 'OPTIONS') {
-      return { statusCode: 200, headers, body: '' };
+    if (event.httpMethod === "OPTIONS") {
+      return { statusCode: 200, headers, body: "" };
     }
 
-    if (event.httpMethod !== 'GET') {
+    if (event.httpMethod !== "GET") {
       return {
         statusCode: 405,
         headers,
-        body: JSON.stringify({ error: 'Method not allowed' }),
+        body: JSON.stringify({ error: "Method not allowed" }),
       };
     }
 
     // Get search query
-    const query = event.queryStringParameters?.q || event.queryStringParameters?.query;
-    
+    const query =
+      event.queryStringParameters?.q || event.queryStringParameters?.query;
+
     if (!query || query.length < 2) {
       return {
         statusCode: 200,
@@ -425,19 +462,18 @@ exports.handler = async (event, context) => {
       examples: parseExamplesData(srcDataPath),
       docs: parseDocsData(srcDataPath),
     };
-    
+
     // Perform search
     const results = performSearch(normalizedQuery, data);
-    
+
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({ results }),
     };
-
   } catch (error) {
-    console.error('Error in search function:', error);
-    
+    console.error("Error in search function:", error);
+
     return {
       statusCode: 500,
       headers: {
@@ -445,8 +481,8 @@ exports.handler = async (event, context) => {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        error: 'Internal Server Error',
-        message: error.message
+        error: "Internal Server Error",
+        message: error.message,
       }),
     };
   }

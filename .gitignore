@@ -11,3 +11,6 @@ storybook-static
 
 # Local Netlify folder
 .netlify
+
+# Copied data files for Netlify functions (generated during build)
+docs/netlify/functions/data/
