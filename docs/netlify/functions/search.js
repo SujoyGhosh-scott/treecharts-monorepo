@@ -13,16 +13,65 @@ const path = require('path');
 // Helper function to find the src/data directory
 function findSrcDataPath() {
   const possiblePaths = [
+    // Development paths
     path.resolve(__dirname, '../../src/data'),
     path.resolve(process.cwd(), 'src/data'),
     path.resolve(__dirname, '../../../src/data'),
     path.resolve(__dirname, '../../../../src/data'),
+    // Production paths (Netlify)
+    path.resolve(__dirname, '../../src/data'),
+    path.resolve('/var/task/src/data'),
+    path.resolve('/opt/build/repo/docs/src/data'),
+    path.resolve('/opt/build/repo/src/data'),
+    // Additional production paths
+    path.resolve(process.cwd(), '../src/data'),
+    path.resolve(process.cwd(), 'docs/src/data'),
   ];
   
+  console.log('Searching for src/data directory...');
+  console.log('Current working directory:', process.cwd());
+  console.log('__dirname:', __dirname);
+  
   for (const possiblePath of possiblePaths) {
+    console.log('Trying path:', possiblePath);
     if (fs.existsSync(possiblePath)) {
+      console.log('Found src/data at:', possiblePath);
       return possiblePath;
     }
+  }
+  
+  // If we still can't find it, let's explore the current directory structure
+  console.log('Could not find src/data. Exploring current directory structure...');
+  try {
+    const currentDir = process.cwd();
+    console.log('Contents of current directory:', fs.readdirSync(currentDir));
+    
+    // Check if there's a src directory
+    const srcPath = path.resolve(currentDir, 'src');
+    if (fs.existsSync(srcPath)) {
+      console.log('Found src directory. Contents:', fs.readdirSync(srcPath));
+      const dataPath = path.resolve(srcPath, 'data');
+      if (fs.existsSync(dataPath)) {
+        console.log('Found data directory in src!');
+        return dataPath;
+      }
+    }
+    
+    // Check parent directories
+    const parentDir = path.resolve(currentDir, '..');
+    console.log('Contents of parent directory:', fs.readdirSync(parentDir));
+    
+    const parentSrcPath = path.resolve(parentDir, 'src');
+    if (fs.existsSync(parentSrcPath)) {
+      console.log('Found src directory in parent. Contents:', fs.readdirSync(parentSrcPath));
+      const parentDataPath = path.resolve(parentSrcPath, 'data');
+      if (fs.existsSync(parentDataPath)) {
+        console.log('Found data directory in parent/src!');
+        return parentDataPath;
+      }
+    }
+  } catch (error) {
+    console.error('Error exploring directory structure:', error);
   }
   
   throw new Error(`Could not find src/data directory. Tried paths: ${possiblePaths.join(', ')}`);
