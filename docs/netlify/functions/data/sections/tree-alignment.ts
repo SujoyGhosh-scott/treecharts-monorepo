@@ -1,0 +1,145 @@
+import { DocSection } from "@/types/docs";
+
+export const treeAlignmentSection: DocSection = {
+  id: "tree-alignment",
+  title: "Tree Alignment",
+  description:
+    "Control the positioning and flow direction of your tree layouts",
+  topics: [],
+  content: [
+    {
+      type: "markdown",
+      value: `TreeCharts provides powerful alignment options to control both the horizontal positioning of nodes within each level and the vertical flow direction of your entire tree structure.`,
+    },
+    {
+      type: "image-grid",
+      images: [
+        {
+          src: "/docs/alignment/horizontal-left-alignment.svg",
+          alt: "Left alignment - nodes positioned to the left within each level",
+          description: "Left alignment positioning",
+        },
+        {
+          src: "/docs/alignment/combined-left-bottom-alignment.svg",
+          alt: "Combined alignment - left positioning with bottom-to-top flow",
+          description: "Combined alignment options",
+        },
+        {
+          src: "/docs/alignment/horizontal-right-alignment.svg",
+          alt: "Right alignment - nodes positioned to the right within each level",
+          description: "Right alignment positioning",
+        },
+      ],
+      gridConfig: {
+        desktop: 3,
+        mobile: 2,
+        gap: "1.5rem",
+        maxWidth: "900px",
+      },
+    },
+    {
+      type: "markdown",
+      value: `## Alignment Options
+
+TreeCharts offers two alignment properties that work together to control your tree layout:
+
+| Property | Values | Default | Description |
+|----------|--------|---------|-------------|
+| \`verticalAlign\` | \`left\`, \`center\`, \`right\` | \`center\` | Controls horizontal positioning of nodes within each level |
+| \`horizontalAlign\` | \`top-to-bottom\`, \`bottom-to-top\` | \`top-to-bottom\` | Controls vertical flow direction of the tree |
+
+**Note:** The property names might seem counterintuitive - \`verticalAlign\` controls horizontal positioning because it aligns nodes along the vertical axis, and \`horizontalAlign\` controls vertical flow direction.`,
+    },
+    {
+      type: "code",
+      title: "Alignment Examples",
+      description: "Examples demonstrating different alignment combinations",
+      outputImage: "/docs/alignment-example.svg",
+      codes: {
+        react: `import { TreeChart } from 'treecharts-react';
+
+const sampleData = {
+  value: "Root",
+  child: [
+    {
+      value: "A",
+      child: [
+        { value: "A1", child: [] },
+        { value: "A2", child: [] },
+      ],
+    },
+    {
+      value: "B",
+      child: [{ value: "B1", child: [] }],
+    },
+    {
+      value: "C",
+      child: [],
+    },
+  ],
+};
+
+function TreeAlignmentExample() {
+  return (
+    <TreeChart
+      data={sampleData}
+      type="direct"
+      verticalAlign="right"
+      horizontalAlign="bottom-to-top"
+      width={600}
+      height={400}
+    />
+  );
+}
+
+export default TreeAlignmentExample;`,
+        javascript: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreeCharts Tree Alignment Example</title>
+</head>
+<body>
+  <!-- Container for the tree chart -->
+  <div id="alignment-container" style="width: 600px; height: 400px; margin: 20px auto;"></div>
+
+  <!-- Include TreeCharts library from CDN -->
+  <script src="https://unpkg.com/treecharts@latest/dist/index.global.js"></script>
+  
+  <script>
+    const chart = new TreeChart("alignment-container", {
+      type: "direct",
+      verticalAlign: "right",
+      horizontalAlign: "bottom-to-top",
+    });
+
+    const sampleData = {
+      value: "Root",
+      child: [
+        {
+          value: "A",
+          child: [
+            { value: "A1", child: [] },
+            { value: "A2", child: [] },
+          ],
+        },
+        {
+          value: "B",
+          child: [{ value: "B1", child: [] }],
+        },
+        {
+          value: "C",
+          child: [],
+        },
+      ],
+    };
+
+    chart.render(sampleData);
+  </script>
+</body>
+</html>`,
+      },
+    },
+  ],
+};
