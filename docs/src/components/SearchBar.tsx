@@ -55,8 +55,13 @@ export default function SearchBar({ isOpen, onClose }: SearchBarProps) {
 
     setIsLoading(true);
     try {
+      // Use direct Netlify function URL when in development, API redirect when in production
+      const baseUrl =
+        process.env.NODE_ENV === "development" ? "http://localhost:8888" : "";
       const response = await fetch(
-        `/api/search?q=${encodeURIComponent(searchQuery)}`
+        `${baseUrl}/.netlify/functions/search?q=${encodeURIComponent(
+          searchQuery
+        )}`
       );
       const data = await response.json();
       setResults(data.results || []);
@@ -257,7 +262,7 @@ export default function SearchBar({ isOpen, onClose }: SearchBarProps) {
                             </>
                           )}
                         </div>
-                        <p className="text-xs text-base-content opacity-70 line-clamp-2 font-mono font-thin">
+                        <p className="text-xs text-base-content opacity-70 line-clamp-1 font-mono font-thin">
                           {result.description}
                         </p>
                       </div>
