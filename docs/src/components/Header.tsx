@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BookOpen, FileText, Play } from "lucide-react";
+import SearchButton from "./SearchButton";
 
 export default function Header() {
   const navigation = [
@@ -42,6 +43,9 @@ export default function Header() {
       </div>
 
       <div className="navbar-end gap-2">
+        {/* Search Button */}
+        <SearchButton />
+
         {/* GitHub and Discord Links - Now visible on mobile too */}
         <div className="flex items-center gap-2">
           <a

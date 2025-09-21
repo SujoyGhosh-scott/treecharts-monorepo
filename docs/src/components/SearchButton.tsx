@@ -30,7 +30,7 @@ export default function SearchButton() {
         title="Search (Ctrl+K)"
       >
         <Search className="w-4 h-4" />
-        <span className="hidden sm:inline text-xs opacity-60">Ctrl+K</span>
+        <span className="hidden sm:inline text-xs opacity-60 mt-1">Ctrl+K</span>
       </button>
 
       {/* Search Modal */}
