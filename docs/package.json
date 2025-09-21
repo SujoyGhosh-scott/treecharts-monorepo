@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:netlify": "netlify dev --dir . --functions netlify/functions",
+    "dev:functions-only": "netlify functions:serve --port 9999",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

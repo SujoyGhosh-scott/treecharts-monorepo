@@ -1,0 +1,29 @@
+[build]
+  base = "docs"
+  publish = "out"
+  command = "npm run build"
+  
+[dev]
+  command = "npm run dev"
+  port = 8888
+  targetPort = 3000
+  framework = "#custom"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type"

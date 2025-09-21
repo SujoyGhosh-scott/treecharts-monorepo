@@ -8,3 +8,6 @@ build
 out
 *storybook.log
 storybook-static
+
+# Local Netlify folder
+.netlify
