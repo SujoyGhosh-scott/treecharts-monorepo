@@ -55,14 +55,15 @@ export default function SearchBar({ isOpen, onClose }: SearchBarProps) {
 
     setIsLoading(true);
     try {
-      // Use direct Netlify function URL when in development, API redirect when in production
-      const baseUrl =
-        process.env.NODE_ENV === "development" ? "http://localhost:8888" : "";
-      const response = await fetch(
-        `${baseUrl}/.netlify/functions/search?q=${encodeURIComponent(
-          searchQuery
-        )}`
-      );
+      // Use API redirect in production, direct Netlify function URL in development
+      const endpoint =
+        process.env.NODE_ENV === "development"
+          ? `http://localhost:8888/.netlify/functions/search?q=${encodeURIComponent(
+              searchQuery
+            )}`
+          : `/api/search?q=${encodeURIComponent(searchQuery)}`;
+
+      const response = await fetch(endpoint);
       const data = await response.json();
       setResults(data.results || []);
     } catch (error) {
