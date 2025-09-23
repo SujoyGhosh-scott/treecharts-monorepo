@@ -1,313 +1,186 @@
 const fs = require("fs");
 const path = require("path");
 
-// Search result interface (same as your Next.js version)
-// interface SearchResult {
-//   type: "page" | "doc" | "example";
-//   title: string;
-//   description: string;
-//   path: string;
-//   sectionTitle?: string; // For doc topics to show which section they belong to
-// }
-
-// Helper function to find the src/data directory
-function findSrcDataPath() {
-  const possiblePaths = [
-    // Copied data files (production) - most likely correct path
-    path.resolve(__dirname, "data"),
-    // Netlify production path - based on logs showing docs directory in current directory
-    path.resolve(process.cwd(), "docs/netlify/functions/data"),
-    // Production path (Netlify) - if src files are available
-    path.resolve(process.cwd(), "docs/src/data"),
-    // Development paths
-    path.resolve(__dirname, "../../src/data"),
-    path.resolve(process.cwd(), "src/data"),
-    path.resolve(__dirname, "../../../src/data"),
-    path.resolve(__dirname, "../../../../src/data"),
-    // Additional production paths (Netlify)
-    path.resolve("/var/task/src/data"),
-    path.resolve("/opt/build/repo/docs/src/data"),
-    path.resolve("/opt/build/repo/src/data"),
-    // Additional production paths
-    path.resolve(process.cwd(), "../src/data"),
-    path.resolve(process.cwd(), "docs/src/data"),
-  ];
-
-  console.log("Searching for src/data directory...");
-  console.log("Current working directory:", process.cwd());
-  console.log("__dirname:", __dirname);
-
-  for (const possiblePath of possiblePaths) {
-    console.log("Trying path:", possiblePath);
-    if (fs.existsSync(possiblePath)) {
-      console.log("Found src/data at:", possiblePath);
-      return possiblePath;
+// Embedded data - generated from TypeScript files
+const SEARCH_DATA = {
+  "examples": [
+    {
+      "title": "Simple Organizational Chart",
+      "description": "A clean and straightforward organizational chart using right-angle connections with green styling, perfect for small to medium companies.",
+      "slug": "simple-org-chart",
+      "tags": [
+        "right-angle",
+        "regular-nodes"
+      ]
+    },
+    {
+      "title": "Family Tree Visualization",
+      "description": "A genealogical family tree using nodes with descriptions to display family relationships across multiple generations with detailed information.",
+      "slug": "family-tree",
+      "tags": [
+        "right-angle",
+        "node-with-description"
+      ]
+    },
+    {
+      "title": "Human Evolution Tree",
+      "description": "An interactive evolutionary tree showing human ancestry with collapsible nodes to explore different branches of human evolution and related species.",
+      "slug": "evolution-tree",
+      "tags": [
+        "right-angle",
+        "collapsible-node"
+      ]
+    },
+    {
+      "title": "Project Structure Visualization",
+      "description": "A visual representation of a React project",
+      "slug": "project-structure",
+      "tags": [
+        "right-angle",
+        "custom-shape"
+      ]
+    },
+    {
+      "title": "Tournament Bracket Visualization",
+      "description": "A sports tournament bracket showing semi-finals and final matches with scores, using nodes with descriptions and edge text to display match results.",
+      "slug": "tournament-bracket",
+      "tags": [
+        "right-angle",
+        "node-with-description",
+        "edge-customization"
+      ]
+    },
+    {
+      "title": "Metro Network Hub",
+      "description": "A metro transit network visualization using all-directional tree layout with travel times on connections, perfect for transportation systems and network diagrams.",
+      "slug": "train-station",
+      "tags": [
+        "all-directional",
+        "edge-customization"
+      ]
+    },
+    {
+      "title": "University Course Structure",
+      "description": "An academic curriculum visualization using image nodes to display course progression from foundation to specialization tracks with instructor photos and course details.",
+      "slug": "university-course",
+      "tags": [
+        "right-angle",
+        "image-node"
+      ]
     }
-  }
-
-  // If we still can't find it, let's explore the current directory structure
-  console.log(
-    "Could not find src/data. Exploring current directory structure..."
-  );
-  try {
-    const currentDir = process.cwd();
-    console.log("Contents of current directory:", fs.readdirSync(currentDir));
-
-    // Check if there's a docs directory in current directory
-    const docsPath = path.resolve(currentDir, "docs");
-    if (fs.existsSync(docsPath)) {
-      console.log("Found docs directory. Contents:", fs.readdirSync(docsPath));
-      
-      // Check for netlify functions in docs
-      const docsNetlifyPath = path.resolve(docsPath, "netlify");
-      if (fs.existsSync(docsNetlifyPath)) {
-        console.log("Found netlify directory in docs. Contents:", fs.readdirSync(docsNetlifyPath));
-        
-        const docsFunctionsPath = path.resolve(docsNetlifyPath, "functions");
-        if (fs.existsSync(docsFunctionsPath)) {
-          console.log("Found functions directory. Contents:", fs.readdirSync(docsFunctionsPath));
-          
-          const docsDataPath = path.resolve(docsFunctionsPath, "data");
-          if (fs.existsSync(docsDataPath)) {
-            console.log("Found data directory in docs/netlify/functions/data!");
-            return docsDataPath;
-          }
+  ],
+  "docs": [
+    {
+      "id": "getting-started",
+      "title": "Getting Started",
+      "description": "Learn how to install and use TreeCharts in your project",
+      "topics": []
+    },
+    {
+      "id": "core-concepts",
+      "title": "Core Concepts",
+      "description": "Understanding the fundamentals of TreeCharts",
+      "topics": []
+    },
+    {
+      "id": "tree-options",
+      "title": "Tree Options",
+      "description": "Different tree layout and connection types",
+      "topics": [
+        {
+          "id": "all-directional",
+          "title": "All Directional",
+          "description": "Multi-directional tree layouts",
+          "path": "/docs/tree-options/all-directional",
+          "content": []
+        },
+        {
+          "id": "curved",
+          "title": "Curved Connection",
+          "description": "Smooth curved connections for organic tree layouts",
+          "path": "/docs/tree-options/curved",
+          "content": []
+        },
+        {
+          "id": "direct",
+          "title": "Direct Connection",
+          "description": "Simple straight-line connections between nodes",
+          "path": "/docs/tree-options/direct",
+          "content": []
+        },
+        {
+          "id": "right-angle",
+          "title": "Right Angle",
+          "description": "90-degree angle connections for structured layouts",
+          "path": "/docs/tree-options/right-angle",
+          "content": []
         }
-      }
-      
-      const docsSrcPath = path.resolve(docsPath, "src");
-      if (fs.existsSync(docsSrcPath)) {
-        console.log(
-          "Found src directory in docs. Contents:",
-          fs.readdirSync(docsSrcPath)
-        );
-        const docsDataPath = path.resolve(docsSrcPath, "data");
-        if (fs.existsSync(docsDataPath)) {
-          console.log("Found data directory in docs/src!");
-          return docsDataPath;
+      ]
+    },
+    {
+      "id": "node-types",
+      "title": "Node Types",
+      "description": "Different node styles and configurations",
+      "topics": [
+        {
+          "id": "collapsible-node",
+          "title": "Collapsible Node",
+          "description": "Interactive nodes with expandable/collapsible descriptions",
+          "path": "/docs/node-types/collapsible-node",
+          "content": []
+        },
+        {
+          "id": "custom-shape",
+          "title": "Custom Shape",
+          "description": "Geometric shapes and SVG paths for visual distinction",
+          "path": "/docs/node-types/custom-shape",
+          "content": []
+        },
+        {
+          "id": "image-node",
+          "title": "Image Node",
+          "description": "Visual nodes with images, titles, and subtitles",
+          "path": "/docs/node-types/image-node",
+          "content": []
+        },
+        {
+          "id": "node-with-description",
+          "title": "Node with Description",
+          "description": "Enhanced nodes with additional descriptive text content",
+          "path": "/docs/node-types/node-with-description",
+          "content": []
+        },
+        {
+          "id": "regular-nodes",
+          "title": "Regular Nodes (style and configuration)",
+          "description": "Standard geometric shapes for displaying text content",
+          "path": "/docs/node-types/regular-nodes",
+          "content": []
         }
-      }
+      ]
+    },
+    {
+      "id": "edge-customization",
+      "title": "Edge Customization",
+      "description": "Comprehensive styling and configuration options for connections between nodes",
+      "topics": []
+    },
+    {
+      "id": "tree-alignment",
+      "title": "Tree Alignment",
+      "description": "Control the positioning and flow direction of your tree layouts",
+      "topics": []
+    },
+    {
+      "id": "download-feature",
+      "title": "Download Feature",
+      "description": "Export your tree visualizations as SVG files with customizable download options",
+      "topics": []
     }
+  ]
+};
 
-    // Check if there's a src directory
-    const srcPath = path.resolve(currentDir, "src");
-    if (fs.existsSync(srcPath)) {
-      console.log("Found src directory. Contents:", fs.readdirSync(srcPath));
-      const dataPath = path.resolve(srcPath, "data");
-      if (fs.existsSync(dataPath)) {
-        console.log("Found data directory in src!");
-        return dataPath;
-      }
-    }
-
-    // Check parent directories
-    const parentDir = path.resolve(currentDir, "..");
-    console.log("Contents of parent directory:", fs.readdirSync(parentDir));
-
-    const parentSrcPath = path.resolve(parentDir, "src");
-    if (fs.existsSync(parentSrcPath)) {
-      console.log(
-        "Found src directory in parent. Contents:",
-        fs.readdirSync(parentSrcPath)
-      );
-      const parentDataPath = path.resolve(parentSrcPath, "data");
-      if (fs.existsSync(parentDataPath)) {
-        console.log("Found data directory in parent/src!");
-        return parentDataPath;
-      }
-    }
-  } catch (error) {
-    console.error("Error exploring directory structure:", error);
-  }
-
-  throw new Error(
-    `Could not find src/data directory. Tried paths: ${possiblePaths.join(
-      ", "
-    )}`
-  );
-}
-
-// Parse examples data from TypeScript files
-function parseExamplesData(srcDataPath) {
-  const examplesDir = path.resolve(srcDataPath, "examples");
-  const examples = [];
-
-  // List of example files
-  const exampleFiles = [
-    "simple-org-chart.ts",
-    "family-tree.ts",
-    "evolution-tree.ts",
-    "project-structure.ts",
-    "tournament-bracket.ts",
-    "train-station.ts",
-    "university-course.ts",
-  ];
-
-  exampleFiles.forEach((file) => {
-    try {
-      const filePath = path.resolve(examplesDir, file);
-      if (fs.existsSync(filePath)) {
-        const content = fs.readFileSync(filePath, "utf8");
-        const example = extractExampleFromContent(content);
-        if (example) {
-          examples.push(example);
-        }
-      }
-    } catch (error) {
-      console.error(`Error reading example file ${file}:`, error);
-    }
-  });
-
-  return examples;
-}
-
-// Parse docs sections and topics
-function parseDocsData(srcDataPath) {
-  const sectionsDir = path.resolve(srcDataPath, "sections");
-  const sections = [];
-
-  // List of section files
-  const sectionFiles = [
-    "getting-started.ts",
-    "core-concepts.ts",
-    "tree-options.ts",
-    "node-types.ts",
-    "edge-customization.ts",
-    "tree-alignment.ts",
-    "download-feature.ts",
-  ];
-
-  sectionFiles.forEach((file) => {
-    try {
-      const filePath = path.resolve(sectionsDir, file);
-      if (fs.existsSync(filePath)) {
-        const content = fs.readFileSync(filePath, "utf8");
-        const section = extractSectionFromContent(content, srcDataPath);
-        if (section) {
-          sections.push(section);
-        }
-      }
-    } catch (error) {
-      console.error(`Error reading section file ${file}:`, error);
-    }
-  });
-
-  return sections;
-}
-
-// Extract example metadata from TypeScript content
-function extractExampleFromContent(content) {
-  try {
-    // Extract title
-    const titleMatch = content.match(/title:\s*["']([^"']+)["']/);
-    const title = titleMatch ? titleMatch[1] : "";
-
-    // Extract description - handle multiline descriptions
-    const descMatch =
-      content.match(/description:\s*["']([^"']+)["']/s) ||
-      content.match(/description:\s*`([^`]+)`/s);
-    const description = descMatch ? descMatch[1] : "";
-
-    // Extract slug
-    const slugMatch = content.match(/slug:\s*["']([^"']+)["']/);
-    const slug = slugMatch ? slugMatch[1] : "";
-
-    // Extract tags array
-    const tagsMatch = content.match(/tags:\s*\[(.*?)\]/s);
-    let tags = [];
-    if (tagsMatch) {
-      const tagsContent = tagsMatch[1];
-      tags =
-        tagsContent
-          .match(/["']([^"']+)["']/g)
-          ?.map((tag) => tag.replace(/["']/g, "")) || [];
-    }
-
-    if (title && slug) {
-      return { title, description, slug, tags };
-    }
-
-    return null;
-  } catch (error) {
-    console.error("Error extracting example from content:", error);
-    return null;
-  }
-}
-
-// Extract section and topics data from TypeScript content
-function extractSectionFromContent(content, srcDataPath) {
-  try {
-    // Extract section metadata
-    const idMatch = content.match(/id:\s*["']([^"']+)["']/);
-    const id = idMatch ? idMatch[1] : "";
-
-    const titleMatch = content.match(/title:\s*["']([^"']+)["']/);
-    const title = titleMatch ? titleMatch[1] : "";
-
-    const descMatch = content.match(/description:\s*["']([^"']+)["']/);
-    const description = descMatch ? descMatch[1] : "";
-
-    if (!id || !title) return null;
-
-    const section = { id, title, description, topics: [] };
-
-    // Check if this section has topics in a subfolder
-    const sectionSubDir = path.resolve(srcDataPath, "sections", id);
-    if (fs.existsSync(sectionSubDir)) {
-      const topicFiles = fs
-        .readdirSync(sectionSubDir)
-        .filter((file) => file.endsWith(".ts"));
-
-      topicFiles.forEach((topicFile) => {
-        try {
-          const topicPath = path.resolve(sectionSubDir, topicFile);
-          const topicContent = fs.readFileSync(topicPath, "utf8");
-          const topic = extractTopicFromContent(topicContent, id);
-          if (topic) {
-            section.topics.push(topic);
-          }
-        } catch (error) {
-          console.error(`Error reading topic file ${topicFile}:`, error);
-        }
-      });
-    }
-
-    return section;
-  } catch (error) {
-    console.error("Error extracting section from content:", error);
-    return null;
-  }
-}
-
-// Extract topic data from TypeScript content
-function extractTopicFromContent(content, sectionId) {
-  try {
-    // Extract topic metadata
-    const idMatch = content.match(/id:\s*["']([^"']+)["']/);
-    const id = idMatch ? idMatch[1] : "";
-
-    const titleMatch = content.match(/title:\s*["']([^"']+)["']/);
-    const title = titleMatch ? titleMatch[1] : "";
-
-    const descMatch = content.match(/description:\s*["']([^"']+)["']/);
-    const description = descMatch ? descMatch[1] : "";
-
-    if (!id || !title) return null;
-
-    return {
-      id,
-      title,
-      description,
-      path: `/docs/${sectionId}/${id}`,
-      content: [], // We could extract content blocks here if needed for deeper search
-    };
-  } catch (error) {
-    console.error("Error extracting topic from content:", error);
-    return null;
-  }
-}
-
-// Main search function (matches your Next.js implementation)
+// Main search function
 function performSearch(query, data) {
   const results = [];
 
@@ -463,8 +336,7 @@ exports.handler = async (event, context) => {
     }
 
     // Get search query
-    const query =
-      event.queryStringParameters?.q || event.queryStringParameters?.query;
+    const query = event.queryStringParameters?.q || event.queryStringParameters?.query;
 
     if (!query || query.length < 2) {
       return {
@@ -476,15 +348,8 @@ exports.handler = async (event, context) => {
 
     const normalizedQuery = query.toLowerCase().trim();
 
-    // Load data from TypeScript files
-    const srcDataPath = findSrcDataPath();
-    const data = {
-      examples: parseExamplesData(srcDataPath),
-      docs: parseDocsData(srcDataPath),
-    };
-
-    // Perform search
-    const results = performSearch(normalizedQuery, data);
+    // Perform search using embedded data
+    const results = performSearch(normalizedQuery, SEARCH_DATA);
 
     return {
       statusCode: 200,

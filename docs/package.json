@@ -6,7 +6,7 @@
     "dev": "next dev",
     "dev:netlify": "netlify dev --dir . --functions netlify/functions",
     "dev:functions-only": "netlify functions:serve --port 9999",
-    "build": "node scripts/copy-data.js && next build",
+    "build": "node scripts/generate-search-function.js && next build",
     "start": "next start",
     "lint": "next lint",
     "export": "next build && next export"
