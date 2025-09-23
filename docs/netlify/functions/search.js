@@ -15,6 +15,8 @@ function findSrcDataPath() {
   const possiblePaths = [
     // Copied data files (production) - most likely correct path
     path.resolve(__dirname, "data"),
+    // Netlify production path - based on logs showing docs directory in current directory
+    path.resolve(process.cwd(), "docs/netlify/functions/data"),
     // Production path (Netlify) - if src files are available
     path.resolve(process.cwd(), "docs/src/data"),
     // Development paths
@@ -55,6 +57,24 @@ function findSrcDataPath() {
     const docsPath = path.resolve(currentDir, "docs");
     if (fs.existsSync(docsPath)) {
       console.log("Found docs directory. Contents:", fs.readdirSync(docsPath));
+      
+      // Check for netlify functions in docs
+      const docsNetlifyPath = path.resolve(docsPath, "netlify");
+      if (fs.existsSync(docsNetlifyPath)) {
+        console.log("Found netlify directory in docs. Contents:", fs.readdirSync(docsNetlifyPath));
+        
+        const docsFunctionsPath = path.resolve(docsNetlifyPath, "functions");
+        if (fs.existsSync(docsFunctionsPath)) {
+          console.log("Found functions directory. Contents:", fs.readdirSync(docsFunctionsPath));
+          
+          const docsDataPath = path.resolve(docsFunctionsPath, "data");
+          if (fs.existsSync(docsDataPath)) {
+            console.log("Found data directory in docs/netlify/functions/data!");
+            return docsDataPath;
+          }
+        }
+      }
+      
       const docsSrcPath = path.resolve(docsPath, "src");
       if (fs.existsSync(docsSrcPath)) {
         console.log(
