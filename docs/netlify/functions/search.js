@@ -5,21 +5,13 @@ const path = require("path");
 const SEARCH_DATA = {
   "examples": [
     {
-      "title": "Simple Organizational Chart",
-      "description": "A clean and straightforward organizational chart using right-angle connections with green styling, perfect for small to medium companies.",
-      "slug": "simple-org-chart",
+      "title": "Corporate Organizational Chart",
+      "description": "A professional organizational chart using right-angle connections, perfect for displaying corporate hierarchies with clean, structured layouts.",
+      "slug": "corporate-org-chart",
       "tags": [
-        "right-angle",
-        "regular-nodes"
-      ]
-    },
-    {
-      "title": "Family Tree Visualization",
-      "description": "A genealogical family tree using nodes with descriptions to display family relationships across multiple generations with detailed information.",
-      "slug": "family-tree",
-      "tags": [
-        "right-angle",
-        "node-with-description"
+        "core-concepts",
+        "regular-nodes",
+        "right-angle"
       ]
     },
     {
@@ -32,12 +24,40 @@ const SEARCH_DATA = {
       ]
     },
     {
+      "title": "Family Tree Visualization",
+      "description": "A genealogical family tree using nodes with descriptions to display family relationships across multiple generations with detailed information.",
+      "slug": "family-tree",
+      "tags": [
+        "right-angle",
+        "node-with-description"
+      ]
+    },
+    {
+      "title": "Interactive File System Explorer",
+      "description": "A dynamic file system visualization using curved connections, showcasing collapsible nodes and custom styling for different file types.",
+      "slug": "file-system-explorer",
+      "tags": [
+        "core-concepts",
+        "collapsible-node",
+        "curved"
+      ]
+    },
+    {
       "title": "Project Structure Visualization",
       "description": "A visual representation of a React project",
       "slug": "project-structure",
       "tags": [
         "right-angle",
         "custom-shape"
+      ]
+    },
+    {
+      "title": "Simple Organizational Chart",
+      "description": "A clean and straightforward organizational chart using right-angle connections with green styling, perfect for small to medium companies.",
+      "slug": "simple-org-chart",
+      "tags": [
+        "right-angle",
+        "regular-nodes"
       ]
     },
     {
@@ -71,51 +91,28 @@ const SEARCH_DATA = {
   ],
   "docs": [
     {
-      "id": "getting-started",
-      "title": "Getting Started",
-      "description": "Learn how to install and use TreeCharts in your project",
-      "topics": []
-    },
-    {
       "id": "core-concepts",
       "title": "Core Concepts",
       "description": "Understanding the fundamentals of TreeCharts",
       "topics": []
     },
     {
-      "id": "tree-options",
-      "title": "Tree Options",
-      "description": "Different tree layout and connection types",
-      "topics": [
-        {
-          "id": "all-directional",
-          "title": "All Directional",
-          "description": "Multi-directional tree layouts",
-          "path": "/docs/tree-options/all-directional",
-          "content": []
-        },
-        {
-          "id": "curved",
-          "title": "Curved Connection",
-          "description": "Smooth curved connections for organic tree layouts",
-          "path": "/docs/tree-options/curved",
-          "content": []
-        },
-        {
-          "id": "direct",
-          "title": "Direct Connection",
-          "description": "Simple straight-line connections between nodes",
-          "path": "/docs/tree-options/direct",
-          "content": []
-        },
-        {
-          "id": "right-angle",
-          "title": "Right Angle",
-          "description": "90-degree angle connections for structured layouts",
-          "path": "/docs/tree-options/right-angle",
-          "content": []
-        }
-      ]
+      "id": "download-feature",
+      "title": "Download Feature",
+      "description": "Export your tree visualizations as SVG files with customizable download options",
+      "topics": []
+    },
+    {
+      "id": "edge-customization",
+      "title": "Edge Customization",
+      "description": "Comprehensive styling and configuration options for connections between nodes",
+      "topics": []
+    },
+    {
+      "id": "getting-started",
+      "title": "Getting Started",
+      "description": "Learn how to install and use TreeCharts in your project",
+      "topics": []
     },
     {
       "id": "node-types",
@@ -160,22 +157,45 @@ const SEARCH_DATA = {
       ]
     },
     {
-      "id": "edge-customization",
-      "title": "Edge Customization",
-      "description": "Comprehensive styling and configuration options for connections between nodes",
-      "topics": []
-    },
-    {
       "id": "tree-alignment",
       "title": "Tree Alignment",
       "description": "Control the positioning and flow direction of your tree layouts",
       "topics": []
     },
     {
-      "id": "download-feature",
-      "title": "Download Feature",
-      "description": "Export your tree visualizations as SVG files with customizable download options",
-      "topics": []
+      "id": "tree-options",
+      "title": "Tree Options",
+      "description": "Different tree layout and connection types",
+      "topics": [
+        {
+          "id": "all-directional",
+          "title": "All Directional",
+          "description": "Multi-directional tree layouts",
+          "path": "/docs/tree-options/all-directional",
+          "content": []
+        },
+        {
+          "id": "curved",
+          "title": "Curved Connection",
+          "description": "Smooth curved connections for organic tree layouts",
+          "path": "/docs/tree-options/curved",
+          "content": []
+        },
+        {
+          "id": "direct",
+          "title": "Direct Connection",
+          "description": "Simple straight-line connections between nodes",
+          "path": "/docs/tree-options/direct",
+          "content": []
+        },
+        {
+          "id": "right-angle",
+          "title": "Right Angle",
+          "description": "90-degree angle connections for structured layouts",
+          "path": "/docs/tree-options/right-angle",
+          "content": []
+        }
+      ]
     }
   ]
 };

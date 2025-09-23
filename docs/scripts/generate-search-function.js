@@ -4,64 +4,54 @@ const path = require("path");
 // Read and parse all the data files
 function readDataFiles() {
   const srcDataPath = path.resolve(__dirname, "../src/data");
-  
+
   // Parse examples
   const examplesDir = path.resolve(srcDataPath, "examples");
   const examples = [];
-  
-  const exampleFiles = [
-    "simple-org-chart.ts",
-    "family-tree.ts", 
-    "evolution-tree.ts",
-    "project-structure.ts",
-    "tournament-bracket.ts",
-    "train-station.ts",
-    "university-course.ts",
-  ];
 
-  exampleFiles.forEach((file) => {
-    try {
-      const filePath = path.resolve(examplesDir, file);
-      if (fs.existsSync(filePath)) {
+  // Automatically scan for all .ts files in examples directory
+  if (fs.existsSync(examplesDir)) {
+    const exampleFiles = fs
+      .readdirSync(examplesDir)
+      .filter((file) => file.endsWith(".ts"));
+
+    exampleFiles.forEach((file) => {
+      try {
+        const filePath = path.resolve(examplesDir, file);
         const content = fs.readFileSync(filePath, "utf8");
         const example = extractExampleFromContent(content);
         if (example) {
           examples.push(example);
         }
+      } catch (error) {
+        console.error(`Error reading example file ${file}:`, error);
       }
-    } catch (error) {
-      console.error(`Error reading example file ${file}:`, error);
-    }
-  });
+    });
+  }
 
   // Parse docs sections
   const sectionsDir = path.resolve(srcDataPath, "sections");
   const sections = [];
 
-  const sectionFiles = [
-    "getting-started.ts",
-    "core-concepts.ts", 
-    "tree-options.ts",
-    "node-types.ts",
-    "edge-customization.ts",
-    "tree-alignment.ts",
-    "download-feature.ts",
-  ];
+  // Automatically scan for all .ts files in sections directory
+  if (fs.existsSync(sectionsDir)) {
+    const sectionFiles = fs
+      .readdirSync(sectionsDir)
+      .filter((file) => file.endsWith(".ts"));
 
-  sectionFiles.forEach((file) => {
-    try {
-      const filePath = path.resolve(sectionsDir, file);
-      if (fs.existsSync(filePath)) {
+    sectionFiles.forEach((file) => {
+      try {
+        const filePath = path.resolve(sectionsDir, file);
         const content = fs.readFileSync(filePath, "utf8");
         const section = extractSectionFromContent(content, srcDataPath);
         if (section) {
           sections.push(section);
         }
+      } catch (error) {
+        console.error(`Error reading section file ${file}:`, error);
       }
-    } catch (error) {
-      console.error(`Error reading section file ${file}:`, error);
-    }
-  });
+    });
+  }
 
   return { examples, docs: sections };
 }
@@ -72,8 +62,9 @@ function extractExampleFromContent(content) {
     const titleMatch = content.match(/title:\s*["']([^"']+)["']/);
     const title = titleMatch ? titleMatch[1] : "";
 
-    const descMatch = content.match(/description:\s*["']([^"']+)["']/s) ||
-                     content.match(/description:\s*`([^`]+)`/s);
+    const descMatch =
+      content.match(/description:\s*["']([^"']+)["']/s) ||
+      content.match(/description:\s*`([^`]+)`/s);
     const description = descMatch ? descMatch[1] : "";
 
     const slugMatch = content.match(/slug:\s*["']([^"']+)["']/);
@@ -83,7 +74,10 @@ function extractExampleFromContent(content) {
     let tags = [];
     if (tagsMatch) {
       const tagsContent = tagsMatch[1];
-      tags = tagsContent.match(/["']([^"']+)["']/g)?.map((tag) => tag.replace(/["']/g, "")) || [];
+      tags =
+        tagsContent
+          .match(/["']([^"']+)["']/g)
+          ?.map((tag) => tag.replace(/["']/g, "")) || [];
     }
 
     if (title && slug) {
@@ -115,7 +109,9 @@ function extractSectionFromContent(content, srcDataPath) {
     // Check if this section has topics in a subfolder
     const sectionSubDir = path.resolve(srcDataPath, "sections", id);
     if (fs.existsSync(sectionSubDir)) {
-      const topicFiles = fs.readdirSync(sectionSubDir).filter((file) => file.endsWith(".ts"));
+      const topicFiles = fs
+        .readdirSync(sectionSubDir)
+        .filter((file) => file.endsWith(".ts"));
 
       topicFiles.forEach((topicFile) => {
         try {
@@ -168,7 +164,7 @@ function extractTopicFromContent(content, sectionId) {
 // Generate the search function with embedded data
 function generateSearchFunction() {
   const data = readDataFiles();
-  
+
   const searchFunctionTemplate = `const fs = require("fs");
 const path = require("path");
 
@@ -378,5 +374,19 @@ const outputPath = path.resolve(__dirname, "../netlify/functions/search.js");
 fs.writeFileSync(outputPath, searchFunction, "utf8");
 console.log("Generated search function with embedded data at:", outputPath);
 console.log("Data includes:");
-console.log("- Examples:", JSON.stringify(readDataFiles().examples.map(e => e.title), null, 2));
-console.log("- Docs sections:", JSON.stringify(readDataFiles().docs.map(d => d.title), null, 2));
+console.log(
+  "- Examples:",
+  JSON.stringify(
+    readDataFiles().examples.map((e) => e.title),
+    null,
+    2
+  )
+);
+console.log(
+  "- Docs sections:",
+  JSON.stringify(
+    readDataFiles().docs.map((d) => d.title),
+    null,
+    2
+  )
+);
