@@ -15,7 +15,7 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
         rehypePlugins={[rehypeHighlight]}
         components={{
           // Custom styling for tables
-          table: ({ children, ...props }) => (
+          table: ({ children, node, ref, ...props }) => (
             <div className="overflow-x-auto mb-6">
               <table
                 className="min-w-full border border-gray-600 rounded-lg"
@@ -25,12 +25,12 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
               </table>
             </div>
           ),
-          thead: ({ children, ...props }) => (
+          thead: ({ children, node, ref, ...props }) => (
             <thead className="bg-gray-800" {...props}>
               {children}
             </thead>
           ),
-          th: ({ children, ...props }) => (
+          th: ({ children, node, ref, ...props }) => (
             <th
               className="border border-gray-600 px-4 py-3 text-left font-semibold text-white"
               {...props}
@@ -38,7 +38,7 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
               {children}
             </th>
           ),
-          td: ({ children, ...props }) => (
+          td: ({ children, node, ref, ...props }) => (
             <td
               className="border border-gray-600 px-4 py-2 text-gray-200"
               {...props}
@@ -47,12 +47,12 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
             </td>
           ),
           // Custom styling for headings
-          h1: ({ children, ...props }) => (
+          h1: ({ children, node, ref, ...props }) => (
             <h1 className="text-3xl font-bold mb-6 text-white" {...props}>
               {children}
             </h1>
           ),
-          h2: ({ children, ...props }) => (
+          h2: ({ children, node, ref, ...props }) => (
             <h2
               className="text-2xl font-semibold mb-4 mt-8 text-white"
               {...props}
@@ -60,7 +60,7 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
               {children}
             </h2>
           ),
-          h3: ({ children, ...props }) => (
+          h3: ({ children, node, ref, ...props }) => (
             <h3 className="text-xl font-medium mb-3 mt-6 text-white" {...props}>
               {children}
             </h3>
@@ -82,7 +82,7 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
               </code>
             );
           },
-          pre: ({ children, ...props }) => (
+          pre: ({ children, node, ref, ...props }) => (
             <pre
               className="bg-gray-800 p-4 rounded-lg overflow-x-auto mb-4 border border-gray-600"
               {...props}
@@ -91,34 +91,34 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
             </pre>
           ),
           // Custom styling for lists
-          ul: ({ children, ...props }) => (
+          ul: ({ children, node, ref, ...props }) => (
             <ul className="list-disc list-inside mb-4 space-y-1" {...props}>
               {children}
             </ul>
           ),
-          ol: ({ children, ...props }) => (
+          ol: ({ children, node, ref, ...props }) => (
             <ol className="list-decimal list-inside mb-4 space-y-1" {...props}>
               {children}
             </ol>
           ),
-          li: ({ children, ...props }) => (
+          li: ({ children, node, ref, ...props }) => (
             <li className="mb-1 text-gray-200" {...props}>
               {children}
             </li>
           ),
           // Custom styling for paragraphs
-          p: ({ children, ...props }) => (
+          p: ({ children, node, ref, ...props }) => (
             <p className="mb-4 leading-relaxed text-gray-200" {...props}>
               {children}
             </p>
           ),
           // Custom styling for strong and emphasis
-          strong: ({ children, ...props }) => (
+          strong: ({ children, node, ref, ...props }) => (
             <strong className="font-semibold text-white" {...props}>
               {children}
             </strong>
           ),
-          em: ({ children, ...props }) => (
+          em: ({ children, node, ref, ...props }) => (
             <em className="italic text-gray-300" {...props}>
               {children}
             </em>
